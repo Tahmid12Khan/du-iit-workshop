@@ -284,23 +284,19 @@
     });
   }
 
-  function commandPanel(id, steps) {
-    var panel = make('div', 'cmd-panel');
-    panel.setAttribute('role', 'region');
-    panel.setAttribute('aria-label', 'Commands of recording ' + id);
+  function commandColumn(id, steps) {
+    var col = make('ol', 'cmd-col');
+    col.setAttribute('aria-label', 'Commands of recording ' + id);
     steps.forEach(function (st, i) {
-      var row = make('div', 'cmd-step');
-      var head = make('p', 'cmd-head');
-      head.appendChild(make('span', 'cmd-where ' + st.where, (i + 1) + '. ' + (st.where === 'claude' ? 'In Claude Code' : 'In the terminal')));
-      if (st.note) head.appendChild(make('span', 'cmd-note', st.note));
-      row.appendChild(head);
-      var box = make('div', 'cmd-code');
-      box.appendChild(make('pre', null, st.cmd));
-      box.appendChild(copyButton('copy', 'Copy', 'Copy step ' + (i + 1) + ' of recording ' + id, function () { return st.cmd; }));
-      row.appendChild(box);
-      panel.appendChild(row);
+      var item = make('li', 'cmd-step ' + st.where);
+      item.appendChild(make('span', 'cmd-where', (i + 1) + ' · ' + (st.where === 'claude' ? 'Claude Code' : 'Terminal')));
+      var pre = make('pre', null, st.cmd);
+      pre.title = (st.note ? st.note + '\n\n' : '') + st.cmd;
+      item.appendChild(pre);
+      item.appendChild(copyButton('copy', 'Copy', 'Copy step ' + (i + 1) + ' of recording ' + id, function () { return st.cmd; }));
+      col.appendChild(item);
     });
-    return panel;
+    return col;
   }
 
   // Fewer rows give a larger font, because the player fits the whole terminal into the box.
@@ -328,23 +324,17 @@
     var id = host.dataset.cast;
     var wrap = make('div', 'term-wrap');
     host.parentNode.insertBefore(wrap, host);
-    wrap.appendChild(host);
-    var links = make('div', 'term-links');
+    var row = make('div', 'term-row');
+    wrap.appendChild(row);
+    row.appendChild(host);
     var steps = window.CMDS && window.CMDS[id];
     if (steps && steps.length) {
-      var panel = commandPanel(id, steps);
-      var toggle = make('button', 'cmds-toggle', 'Commands');
-      toggle.type = 'button';
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.addEventListener('mousedown', function (e) { e.preventDefault(); });
-      toggle.addEventListener('click', function () {
-        var open = wrap.classList.toggle('cmds-open');
-        toggle.setAttribute('aria-expanded', String(open));
-        toggle.textContent = open ? 'Hide commands' : 'Commands';
-      });
-      links.appendChild(toggle);
-      wrap.appendChild(panel);
+      var col = commandColumn(id, steps);
+      row.appendChild(col);
+      // One line per command only when the full cards do not fit, so no Copy button is out of view.
+      requestAnimationFrame(function () { if (col.scrollHeight > col.clientHeight + 1) col.classList.add('dense'); });
     }
+    var links = make('div', 'term-links');
     [['Terminal video', 'video/term/' + id + '.mp4'], ['Animation video', 'video/anim/' + id + '.mp4']].forEach(function (l) {
       var a = make('a', null, l[0]);
       a.href = l[1];
