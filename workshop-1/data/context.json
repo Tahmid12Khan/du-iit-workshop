@@ -1,73 +1,59 @@
 {
   "C1": {
-    "command": "claude -p \"Remember: our dev server port is 8081. Reply with OK.\" ; claude -p \"Read the whole file big.txt and tell me what it is about in one sentence.\" --allowedTools Read --resume <id>",
+    "command": "cd context && claude --model haiku --strict-mcp-config --setting-sources \"\" --no-chrome ; > Remember: our dev server port is 8081. Reply with OK. ; > Read the whole file big.txt and tell me what it is about in one sentence.",
     "result": "The model read the 99 KB, 679-entry log and summarised it in one sentence. The session now holds the port detail and the whole file.",
     "numbers": {
       "file_bytes": 99062,
-      "file_entries": 679,
-      "read_step_input_tokens_summed_over_calls": 72527,
-      "read_step_cache_creation_tokens": 36409,
-      "read_step_cache_read_tokens": 36114
+      "file_entries": 679
     },
-    "seconds": 4.8,
-    "cost_usd": 0.008,
-    "note": "seconds and cost are for the read step only; usage sums over the model calls of that step."
+    "note": "Interactive Claude Code session; C1 to C5 run in the same session."
   },
   "C2": {
-    "command": "claude -p \"/context\" --resume <id> | head -16",
-    "result": "Before compaction the window shows 54.5k of 1m tokens (5%). Messages hold 40.3k. Free space 912.5k.",
+    "command": "> /context",
+    "result": "Before compaction the window shows 73.3k of 1m tokens (7%). Messages hold 42.2k. Free space 893.7k.",
     "numbers": {
-      "used_tokens_k": 54.5,
+      "used_tokens_k": 73.3,
       "window": "1m",
-      "used_percent": 5,
-      "messages_k": 40.3,
-      "free_space_k": 912.5,
-      "system_prompt_k": 3.1,
-      "system_tools_k": 9,
+      "used_percent": 7,
+      "messages_k": 42.2,
+      "free_space_k": 893.7,
+      "system_prompt_k": 3.5,
+      "system_tools_k": 25.1,
+      "skills_k": 2.5,
+      "memory_files_tokens": 39,
       "autocompact_buffer_k": 33,
       "model": "claude-haiku-5-5"
     },
-    "seconds": 2.8,
-    "cost_usd": null,
     "note": "The window size is what /context printed for haiku (1m). Other models print other sizes."
   },
   "C3": {
-    "command": "claude -p \"/compact\" --resume <id>",
+    "command": "> /compact",
     "result": "Compaction finished without error. The model wrote a summary and the old messages left the context.",
-    "numbers": {
-      "duration_ms": 9191
-    },
-    "seconds": 9.2,
-    "cost_usd": 0.0128,
-    "note": "Cost as reported by claude for this call."
+    "numbers": {}
   },
   "C4": {
-    "command": "claude -p \"/context\" --resume <id>   # after /compact",
-    "result": "After compaction the window shows 17.4k of 1m tokens (2%). Messages hold 3.2k. Free space 949.6k.",
+    "command": "> /context   # after /compact",
+    "result": "After compaction the window shows 36.7k of 1m tokens (4%). Messages hold 6.4k. Free space 930.3k.",
     "numbers": {
-      "used_tokens_k": 17.4,
+      "used_tokens_k": 36.7,
       "window": "1m",
-      "used_percent": 2,
-      "messages_k": 3.2,
-      "free_space_k": 949.6,
-      "system_prompt_k": 3.1,
-      "system_tools_k": 8.9,
+      "used_percent": 4,
+      "messages_k": 6.4,
+      "free_space_k": 930.3,
+      "system_prompt_k": 3.5,
+      "system_tools_k": 24.4,
+      "skills_k": 2.5,
       "autocompact_buffer_k": 33,
       "model": "claude-haiku-5-5",
-      "messages_before_k": 40.3
-    },
-    "seconds": 2.1,
-    "cost_usd": null
+      "messages_before_k": 42.2
+    }
   },
   "C5": {
-    "command": "claude -p \"What exact port number did I give you at the start?\" --resume <id>   # after /compact",
+    "command": "> What exact port number did I give you at the start?   # after /compact",
     "result": "The model answered 8081. The summary kept the detail from before the big file.",
     "numbers": {
       "answer": "8081",
       "correct": true
-    },
-    "seconds": 2.4,
-    "cost_usd": 0.0143,
-    "note": "Cost as reported by claude for this call."
+    }
   }
 }

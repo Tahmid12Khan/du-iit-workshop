@@ -49,9 +49,9 @@
   <h1>Bangla transcript</h1>
   <p class="lead">The speaker notes of each slide, in order, with the plan time.</p>
   <ul class="stats">
-    <li><strong>69.5 min</strong> planned</li>
-    <li><strong>4825</strong> spoken words</li>
-    <li><strong>37</strong> slides</li>
+    <li><strong>71 min</strong> planned</li>
+    <li><strong>4952</strong> spoken words</li>
+    <li><strong>38</strong> slides</li>
   </ul>
   <p class="legend">Tags:
     <span class="cue cue-step">STEP n</span> animation step
@@ -61,7 +61,7 @@
     <span class="cue cue-do">DO: text</span> do it, do not say it
   </p>
   <div class="toolbar"><button type="button" onclick="window.print()">Print</button></div>
-  <nav class="jump" aria-label="Topics"><a href="#topic-1">Intro</a><a href="#topic-5">Tokens</a><a href="#topic-10">Context window</a><a href="#topic-14">Effort levels</a><a href="#topic-19">Hallucination</a><a href="#topic-23">Parts of a prompt</a><a href="#topic-26">Structured output</a><a href="#topic-29">Tool call</a><a href="#topic-32">Agent loop</a><a href="#topic-36">Wrap-up</a></nav>
+  <nav class="jump" aria-label="Topics"><a href="#topic-1">Intro</a><a href="#topic-5">Tokens</a><a href="#topic-10">Context window</a><a href="#topic-14">Effort levels</a><a href="#topic-20">Hallucination</a><a href="#topic-24">Parts of a prompt</a><a href="#topic-27">Structured output</a><a href="#topic-30">Tool call</a><a href="#topic-33">Agent loop</a><a href="#topic-37">Wrap-up</a></nav>
 <section class="topic" id="topic-1"><h2 class="topic-name">Intro</h2>
 <article class="slide-note" id="intro-0">
   <header>
@@ -162,9 +162,9 @@
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> আগের helper cc দিয়ে Hello-র জন্য পেয়েছিলাম 859 token। cc হলো claude -p, কিন্তু tools, skills আর settings ছাড়া। তাই সে এত হালকা।</p>
 <p><span class="cue cue-step">STEP 2</span> <span class="cue cue-demo">DEMO T5</span> <span class="cue cue-do">DO: T5 cast নিজে চলবে। শেষে usage-এর যোগফল দেখাও।</span> এবার একই Hello, একই model, কিন্তু default Claude Code দিয়ে। আমি শুধু একটা শব্দ লিখেছি।</p>
-<p><span class="cue cue-step">STEP 3</span> সংখ্যাটা 17,987, মানে প্রায় আঠারো হাজার। cc-র 859-এর পাশে এটা অনেক বড়।</p>
+<p><span class="cue cue-step">STEP 3</span> সংখ্যাটা 19,137, মানে প্রায় উনিশ হাজার। cc-র 859-এর পাশে এটা অনেক বড়।</p>
 <p><span class="cue cue-step">STEP 4</span> এই বাড়তি token কোথা থেকে এল? Claude Code প্রতিটা call-এ নিজের system prompt, নিজের tools আর skills জুড়ে দেয়। তুমি এগুলো দেখো না, কিন্তু model পড়ে। যেন তুমি একটা ছোট চিঠি পাঠালে, আর খামের ভেতরে পুরো নিয়মের বইও ঢুকে গেল। cache থেকে পড়া token কম খরচ হয়। কিন্তু context window-এ জায়গা ঠিকই নেয়।</p>
-<p><span class="cue cue-step">STEP 5</span> হিসাব করলে প্রায় 21 গুণ। <span class="cue cue-ask">ASK</span> ছোট প্রশ্নের খরচ মাপতে আমরা কোন tool নেব? <span class="cue cue-pause">PAUSE 3s</span> cc-র মতো হালকা helper।</p>
+<p><span class="cue cue-step">STEP 5</span> হিসাব করলে প্রায় 22 গুণ। <span class="cue cue-ask">ASK</span> ছোট প্রশ্নের খরচ মাপতে আমরা কোন tool নেব? <span class="cue cue-pause">PAUSE 3s</span> cc-র মতো হালকা helper।</p>
   </div>
 </article>
 <article class="slide-note" id="tokens-5">
@@ -210,30 +210,30 @@
 <article class="slide-note" id="context-3">
   <header>
     <span class="no">12</span>
-    <h3>A big file adds 40k tokens, not a full window</h3>
-    <p class="meta"><span>3.5 min</span><span>Start 17:30</span><span>End 21:00</span><span>212 words</span></p>
+    <h3>A big file adds 42k tokens, not a full window</h3>
+    <p class="meta"><span>3.5 min</span><span>Start 17:30</span><span>End 21:00</span><span>216 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> এবার context window নিজের চোখে দেখব। তিনটা কাজ। প্রথমে model-কে একটা তথ্য দিই, তারপর একটা বড় file পড়াই। এরপর /context দিয়ে window-টা দেখি। শেষে আমি live করে দেখাব।</p>
-<p><span class="cue cue-step">STEP 2</span> <span class="cue cue-demo">DEMO C1</span> <span class="cue cue-do">DO: C1 cast এই step-এ নিজে চলবে</span> প্রথম call-এ আমরা বললাম dev server-এর port 8081। দ্বিতীয় call-এ model পুরো big.txt পড়ল। এটা 99 KB-এর একটা log, 679টা entry। শেষে model এক বাক্যে বলল ফাইলটা কী নিয়ে।</p>
-<p><span class="cue cue-step">STEP 3</span> <span class="cue cue-demo">DEMO C2</span> <span class="cue cue-do">DO: C2 cast নিজে চলবে</span> এবার /context। এটা Claude Code-এর নিজের হিসাব। দেখো, Tokens: 54.5k, 1m-এর মধ্যে, মানে 5%। এই মোটের বড় অংশ আমাদের পড়ানো file।</p>
-<p><span class="cue cue-step">STEP 4</span> diagram-এ দেখো, 1m-এর window-এ ব্যবহার হয়েছে খুব সামান্য। Messages-এ 40.3k। বাকিটা system prompt 3.1k, tools 9k আর skills 2.1k, মিলিয়ে প্রায় 14k। এগুলো আমরা কিছু লেখার আগেই desk-এ থাকে। একটা file-ই desk-এর সবচেয়ে বড় অংশ নিয়েছে। Free space 912.5k। বাকি 33k autocompact-এর জন্য আলাদা রাখা। একটা জিনিস মনে রাখো। window-এর মাপ 1m এসেছে haiku-র জন্য। অন্য model-এ অন্য মাপ হতে পারে। তাই 200k মুখস্থ কোরো না।</p>
-<p><span class="cue cue-step">STEP 5</span> <span class="cue cue-demo">LIVE</span> <span class="cue cue-do">DO: cd /tmp/ws1-ctx, তারপর slide-এর claude command চালাও। /context লেখো। big.txt পড়াও। আবার /context লেখো। folder আগে থেকে bash demo/context/env.sh দিয়ে বানানো থাকবে।</span> এবার আমি নিজে চালাচ্ছি। দেখো, messages প্রায় শূন্য ছিল, এখন লাফিয়ে বেড়েছে। এখানে model একটা file পড়ার পর কী ঘটে, তুমি নিজের চোখে দেখবে। এই কারণেই বড় file পড়ানোর আগে দুইবার ভাবা ভালো। এখানের সংখ্যা cast-এর সংখ্যা থেকে আলাদা হবে। সংখ্যা না, আকারটা দেখো। তিনটা জিনিস খেয়াল করো। এক, শুরুতে messages প্রায় শূন্য। দুই, file পড়ার পর messages অনেক বেড়ে যায়। তিন, তবু free space অনেকটা বাকি থাকে। <span class="cue cue-do">DO: live-এর সংখ্যা প্রায় 30k থেকে প্রায় 100k হতে পারে। model দুইবার file পড়লেও ঘাবড়িয়ো না। screen-এ নিজের project বা tool-এর নাম এলে থামো। live না চললে C2 cast-এ ফিরে যাও।</span></p>
+<p><span class="cue cue-step">STEP 2</span> <span class="cue cue-demo">DEMO C1</span> <span class="cue cue-do">DO: C1 cast এই step-এ নিজে চলবে</span> Claude Code চালু করে প্রথম message-এ আমরা বললাম dev server-এর port 8081। দ্বিতীয় message-এ model পুরো big.txt পড়ল। এটা 99 KB-এর একটা log, 679টা entry। শেষে model এক বাক্যে বলল ফাইলটা কী নিয়ে।</p>
+<p><span class="cue cue-step">STEP 3</span> <span class="cue cue-demo">DEMO C2</span> <span class="cue cue-do">DO: C2 cast নিজে চলবে</span> এবার /context। এটা Claude Code-এর নিজের হিসাব। দেখো, 73.3k token, 1m-এর মধ্যে, মানে 7%। এই মোটের বড় অংশ আমাদের পড়ানো file।</p>
+<p><span class="cue cue-step">STEP 4</span> diagram-এ দেখো, 1m-এর window-এ ব্যবহার হয়েছে খুব সামান্য। Messages-এ 42.2k। বাকিটা system prompt 3.5k, tools 25.1k আর skills 2.5k, মিলিয়ে প্রায় 31k। এগুলো আমরা কিছু লেখার আগেই desk-এ থাকে। একটা file-ই desk-এর সবচেয়ে বড় অংশ নিয়েছে। Free space 893.7k। বাকি 33k autocompact-এর জন্য আলাদা রাখা। একটা জিনিস মনে রাখো। window-এর মাপ 1m এসেছে haiku-র জন্য। অন্য model-এ অন্য মাপ হতে পারে। তাই 200k মুখস্থ কোরো না।</p>
+<p><span class="cue cue-step">STEP 5</span> <span class="cue cue-demo">LIVE</span> <span class="cue cue-do">DO: workshop-1 folder থেকে cd demo/context, তারপর slide-এর claude command চালাও। /context লেখো। big.txt পড়াও। আবার /context লেখো।</span> এবার আমি নিজে চালাচ্ছি। দেখো, messages প্রায় শূন্য ছিল, এখন লাফিয়ে বেড়েছে। এখানে model একটা file পড়ার পর কী ঘটে, তুমি নিজের চোখে দেখবে। এই কারণেই বড় file পড়ানোর আগে দুইবার ভাবা ভালো। এখানের সংখ্যা cast-এর সংখ্যা থেকে আলাদা হবে। সংখ্যা না, আকারটা দেখো। তিনটা জিনিস খেয়াল করো। এক, শুরুতে messages প্রায় শূন্য। দুই, file পড়ার পর messages অনেক বেড়ে যায়। তিন, তবু free space অনেকটা বাকি থাকে। <span class="cue cue-do">DO: live-এর সংখ্যা প্রায় 30k থেকে প্রায় 100k হতে পারে। model দুইবার file পড়লেও ঘাবড়িয়ো না। screen-এ নিজের project বা tool-এর নাম এলে থামো। live না চললে C2 cast-এ ফিরে যাও।</span></p>
   </div>
 </article>
 <article class="slide-note" id="context-4">
   <header>
     <span class="no">13</span>
     <h3>Compaction keeps a summary and loses details</h3>
-    <p class="meta"><span>2 min</span><span>Start 21:00</span><span>End 23:00</span><span>131 words</span></p>
+    <p class="meta"><span>2 min</span><span>Start 21:00</span><span>End 23:00</span><span>124 words</span></p>
   </header>
   <div class="bn" lang="bn">
-<p><span class="cue cue-step">STEP 1</span> আগের অবস্থা মনে করো। messages-এ 40.3k token। মোট 54.5k, 1m-এর মধ্যে।</p>
-<p><span class="cue cue-step">STEP 2</span> <span class="cue cue-demo">DEMO C3</span> <span class="cue cue-do">DO: C3 cast নিজে চলবে</span> এবার /compact। model এখন পুরো chat-এর একটা ছোট summary লিখছে। এতে প্রায় 9 সেকেন্ড লাগল। output-এ কোনো উত্তর নেই। শুধু local_command compact আর is_error false। মানে কাজটা ঠিকভাবে হয়েছে।</p>
-<p><span class="cue cue-step">STEP 3</span> <span class="cue cue-demo">DEMO C4</span> <span class="cue cue-do">DO: C4 cast নিজে চলবে</span> আবার /context। messages নেমে এসেছে 3.2k-এ। মোট 17.4k, মানে 2%।</p>
+<p><span class="cue cue-step">STEP 1</span> আগের অবস্থা মনে করো। messages-এ 42.2k token। মোট 73.3k, 1m-এর মধ্যে।</p>
+<p><span class="cue cue-step">STEP 2</span> <span class="cue cue-demo">DEMO C3</span> <span class="cue cue-do">DO: C3 cast নিজে চলবে</span> এবার /compact। model এখন পুরো chat-এর একটা ছোট summary লিখছে। শেষে screen-এ লেখা আসে Compacted। কোনো error নেই। মানে কাজটা ঠিকভাবে হয়েছে।</p>
+<p><span class="cue cue-step">STEP 3</span> <span class="cue cue-demo">DEMO C4</span> <span class="cue cue-do">DO: C4 cast নিজে চলবে</span> আবার /context। messages নেমে এসেছে 6.4k-এ। মোট 36.7k, মানে 4%।</p>
 <p><span class="cue cue-step">STEP 4</span> diagram-এ দেখো। নিচের সারিতে system অংশ একই আছে, কিন্তু messages প্রায় মিলিয়ে গেছে। পুরোনো messages-এর জায়গায় এখন একটা summary।</p>
 <p><span class="cue cue-step">STEP 5</span> <span class="cue cue-demo">DEMO C5</span> <span class="cue cue-do">DO: C5 cast নিজে চলবে</span> এবার সেই প্রশ্ন: আমি শুরুতে কোন port দিয়েছিলাম? model বলল 8081। summary port-টা মনে রেখেছে।</p>
-<p><span class="cue cue-step">STEP 6</span> কিন্তু সাবধান। 40.3k নেমে 3.2k হয়েছে। মানে অনেক খুঁটিনাটি বাদ গেছে। summary গুরুত্বপূর্ণ কথা রাখে। কিন্তু log-এর হুবহু কোনো লাইন হারিয়ে যেতে পারে। <span class="cue cue-ask">ASK</span> তোমার কোন কাজে এই হারানোটা বিপদ ডেকে আনবে? <span class="cue cue-pause">PAUSE 5s</span> বাসায় worksheet-এ তোমরা নিজে /context, বড় file, /compact আর আবার /context করে দেখবে, কী বাদ পড়ল।</p>
+<p><span class="cue cue-step">STEP 6</span> কিন্তু সাবধান। 42.2k নেমে 6.4k হয়েছে। মানে অনেক খুঁটিনাটি বাদ গেছে। summary গুরুত্বপূর্ণ কথা রাখে। কিন্তু log-এর হুবহু কোনো লাইন হারিয়ে যেতে পারে। <span class="cue cue-ask">ASK</span> তোমার কোন কাজে এই হারানোটা বিপদ ডেকে আনবে? <span class="cue cue-pause">PAUSE 5s</span> বাসায় worksheet-এ তোমরা নিজে /context, বড় file, /compact আর আবার /context করে দেখবে, কী বাদ পড়ল।</p>
   </div>
 </article></section><section class="topic" id="topic-14"><h2 class="topic-name">Effort levels</h2>
 <article class="slide-note" id="effort-1">
@@ -295,21 +295,35 @@
   <header>
     <span class="no">18</span>
     <h3>Raise effort first, then the model</h3>
-    <p class="meta"><span>1 min</span><span>Start 30:30</span><span>End 31:30</span><span>88 words</span></p>
+    <p class="meta"><span>1 min</span><span>Start 30:30</span><span>End 31:30</span><span>87 words</span></p>
   </header>
   <div class="bn" lang="bn">
-<p><span class="cue cue-step">STEP 1</span> এবার model বাছাই। Haiku ছোট আর দ্রুত, Sonnet মাঝামাঝি, Opus সবচেয়ে শক্তিশালী।</p>
-<p><span class="cue cue-step">STEP 2</span> আর effort আছে low থেকে max। ডান দিকে, মানে low থেকে max-এ গেলে সময়, token আর খরচ বাড়ে। model-এর বেলায় নিচের দিকে গেলে ক্ষমতা আর দাম দুটোই বাড়ে। <span class="cue cue-demo">CLICK</span> <span class="cue cue-do">DO: দামের পাতাটা browser-এ খুলে দেখাও</span> slide-এ দাম লিখিনি, কারণ দাম বদলায়।</p>
+<p><span class="cue cue-step">STEP 1</span> এবার model বাছাই। Haiku ছোট আর দ্রুত, Sonnet মাঝামাঝি, Opus শক্তিশালী। Fable সবচেয়ে বড় আর সবচেয়ে শক্তিশালী।</p>
+<p><span class="cue cue-step">STEP 2</span> আর effort আছে low থেকে max। ডান দিকে গেলে সময়, token আর খরচ বাড়ে। model-এর বেলায় নিচের দিকে গেলে ক্ষমতা আর দাম দুটোই বাড়ে। <span class="cue cue-demo">CLICK</span> <span class="cue cue-do">DO: দামের পাতাটা browser-এ খুলে দেখাও</span> slide-এ দাম লিখিনি, কারণ দাম বদলায়।</p>
 <p><span class="cue cue-step">STEP 3</span> সহজ কাজে Haiku আর low। যেমন একটা variable-এর নাম বদলানো।</p>
-<p><span class="cue cue-step">STEP 4</span> কঠিন কাজে আগে effort বাড়াও। যেমন লুকোনো bug খোঁজা। আমাদের মাপে Haiku max effort-এও তিনবারই ঠিক ছিল।</p>
-<p><span class="cue cue-step">STEP 5</span> তারপরও ভুল হলে বড় model-এ যাও, মানে Sonnet, তারপর Opus। আর উত্তর সবসময় যাচাই করো। <span class="cue cue-pause">PAUSE 3s</span></p>
+<p><span class="cue cue-step">STEP 4</span> কঠিন কাজে আগে effort বাড়াও। আমাদের মাপে Haiku max effort-এও তিনবারই ঠিক ছিল।</p>
+<p><span class="cue cue-step">STEP 5</span> তারপরও ভুল হলে বড় model-এ যাও, মানে Sonnet, তারপর Opus, শেষে Fable। আর উত্তর সবসময় যাচাই করো। <span class="cue cue-pause">PAUSE 3s</span></p>
   </div>
-</article></section><section class="topic" id="topic-19"><h2 class="topic-name">Hallucination</h2>
-<article class="slide-note" id="hallucination-1">
+</article>
+<article class="slide-note" id="effort-6">
   <header>
     <span class="no">19</span>
+    <h3>Each vendor sells large, mid and small models</h3>
+    <p class="meta"><span>1.5 min</span><span>Start 31:30</span><span>End 33:00</span><span>114 words</span></p>
+  </header>
+  <div class="bn" lang="bn">
+<p><span class="cue cue-step">STEP 1</span> আমরা Anthropic-এর model দেখলাম। কিন্তু বাজারে আরও অনেক কোম্পানি আছে। OpenAI, Google, xAI, Meta, Mistral। প্রায় সবাই বড়, মাঝারি আর ছোট model বিক্রি করে। নামগুলো কয়েক মাস পর পর বদলায়। তাই নাম মুখস্থ কোরো না, মাপটা মনে রাখো।</p>
+<p><span class="cue cue-step">STEP 2</span> Anthropic-এ Fable 5.1 সবচেয়ে বড়। Opus আর Sonnet মাঝে। Haiku সবচেয়ে ছোট।</p>
+<p><span class="cue cue-step">STEP 3</span> কিছু model সবার জন্য খোলা নয়। Mythos 5.1 আসলে Fable 5.1, কিন্তু কিছু safety বাধা কম। শুধু যাচাই করা cyber আর life-science দল এটা পায়। OpenAI-এর GPT-5.6 Cyber-ও এমন।</p>
+<p><span class="cue cue-step">STEP 4</span> আবার কিছু model-এর weights খোলা। Kimi, GLM, DeepSeek, Qwen, Gemma। এগুলো নামিয়ে নিজের computer বা server-এ চালাতে পারো।</p>
+<p><span class="cue cue-step">STEP 5</span> আর Cursor-এর Composer 2.5 একটা coding model, Kimi K2.5-এর ওপর বানানো। <span class="cue cue-ask">ASK</span> তোমরা কে কোন model ব্যবহার করো? <span class="cue cue-pause">PAUSE 3s</span></p>
+  </div>
+</article></section><section class="topic" id="topic-20"><h2 class="topic-name">Hallucination</h2>
+<article class="slide-note" id="hallucination-1">
+  <header>
+    <span class="no">20</span>
     <h3>A confident answer is not always a correct answer</h3>
-    <p class="meta"><span>1.5 min</span><span>Start 31:30</span><span>End 33:00</span><span>98 words</span></p>
+    <p class="meta"><span>1.5 min</span><span>Start 33:00</span><span>End 34:30</span><span>98 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> ধরো তোমার viva হচ্ছে। Examiner একটা প্রশ্ন করেন। আমরা model-কে prompt দিয়ে প্রশ্ন করি।</p>
@@ -320,23 +334,23 @@
 </article>
 <article class="slide-note" id="hallucination-2">
   <header>
-    <span class="no">20</span>
+    <span class="no">21</span>
     <h3>The model gives an old version as a fact</h3>
-    <p class="meta"><span>2 min</span><span>Start 33:00</span><span>End 35:00</span><span>136 words</span></p>
+    <p class="meta"><span>2 min</span><span>Start 34:30</span><span>End 36:30</span><span>153 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> এবার একটা আসল পরীক্ষা। আমি model-কে জিজ্ঞেস করছি, npm package express-এর সর্বশেষ version কত? শুধু সংখ্যাটা বলতে বলেছি। প্রশ্ন সোজা, কোনো ধাঁধা নেই।</p>
-<p><span class="cue cue-step">STEP 2</span> <span class="cue cue-demo">DEMO H1</span> <span class="cue cue-do">DO: H1 cast নিজে চলবে</span> তিনবার চালিয়েছি। তিনবারই উত্তর 5.1.0, একটুও দ্বিধা নেই। কখনও কখনও model নিজেই বলে, আমি live registry দেখতে পারি না। সেটা ভালো আচরণ। কিন্তু এই recording-এ সে সোজা 5.1.0 বলেছে। <span class="cue cue-pause">PAUSE 3s</span></p>
+<p><span class="cue cue-step">STEP 2</span> <span class="cue cue-demo">DEMO H1</span> <span class="cue cue-do">DO: H1 cast নিজে চলবে</span> Claude Code চালিয়েছি --tools &quot;&quot; দিয়ে, মানে model-এর হাতে কোনো tool নেই। উত্তর এল 5.1.0, একটুও দ্বিধা নেই। কখনও কখনও model নিজেই বলে, আমি live registry দেখতে পারি না। সেটা ভালো আচরণ। কিন্তু এই recording-এ সে সোজা 5.1.0 বলেছে। <span class="cue cue-pause">PAUSE 3s</span></p>
 <p><span class="cue cue-step">STEP 3</span> এবার model-কে বিশ্বাস না করে আমরা npm-কে জিজ্ঞেস করি।</p>
-<p><span class="cue cue-step">STEP 4</span> <span class="cue cue-demo">DEMO H2</span> <span class="cue cue-do">DO: H2 cast নিজে চলবে</span> npm view express version। আমি যেদিন মেপেছি, মানে 2026-10-16, সেদিন npm বলছে 5.3.0। তুমি আজ চালালে নতুন version-ও দেখতে পারো।</p>
+<p><span class="cue cue-step">STEP 4</span> <span class="cue cue-demo">DEMO H2</span> <span class="cue cue-do">DO: H2 cast নিজে চলবে</span> একই session-এ ! দিয়ে shell command চালাই: npm view express version। আমি যেদিন মেপেছি, মানে 2026-10-16, সেদিন npm বলছে 5.3.0। তুমি আজ চালালে নতুন version-ও দেখতে পারো।</p>
 <p><span class="cue cue-step">STEP 5</span> তাহলে model-এর উত্তর পুরোনো। কেন? model শুধু training data পর্যন্ত জানে। এই training cutoff-এর পরে যা ঘটেছে, সে জানে না। আর সে নিজেও জানে না যে সে জানে না। তাই পুরোনো তথ্যও সে সত্যের মতো বলে, যেন পুরোনো খবরের কাগজ পড়ে আজকের খবর বলছে। <span class="cue cue-ask">ASK</span> তোমরা কি কখনও পুরোনো library version নিয়ে AI-এর কথায় ঝামেলায় পড়েছ? <span class="cue cue-pause">PAUSE 5s</span></p>
   </div>
 </article>
 <article class="slide-note" id="hallucination-3">
   <header>
-    <span class="no">21</span>
+    <span class="no">22</span>
     <h3>Let the model say I do not know</h3>
-    <p class="meta"><span>1.5 min</span><span>Start 35:00</span><span>End 36:30</span><span>122 words</span></p>
+    <p class="meta"><span>1.5 min</span><span>Start 36:30</span><span>End 38:00</span><span>122 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> এবার আরেকটা প্রশ্ন। একটা package, নাম fastjson-validator-kit। আমি নামটা বানিয়েছি, এটা আসলে নেই। prompt-এ একটা বাক্য যোগ করেছি: না জানলে বলো, I don't know।</p>
@@ -348,9 +362,9 @@
 </article>
 <article class="slide-note" id="hallucination-4">
   <header>
-    <span class="no">22</span>
+    <span class="no">23</span>
     <h3>Check each fact with a tool</h3>
-    <p class="meta"><span>1 min</span><span>Start 36:30</span><span>End 37:30</span><span>86 words</span></p>
+    <p class="meta"><span>1 min</span><span>Start 38:00</span><span>End 39:00</span><span>86 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> model একটা দাবি করে। যেমন, express-এর সর্বশেষ version 5.1.0। বা, fastjson-validator-kit নামে একটা package আছে।</p>
@@ -358,12 +372,12 @@
 <p><span class="cue cue-step">STEP 3</span> tool চালাও, আসল ফল দেখো। npm বলল 5.3.0, আর E404।</p>
 <p><span class="cue cue-step">STEP 4</span> ফল না মিললে দাবি বাতিল করো। agent loop-এর check ধাপে এই রকম যাচাই বসানো যায়। আজকের ছোট loop-এ check শুধু ঠিক করে, loop চলবে নাকি থামবে। বাসায় তুমি এখানে test বা npm view-এর মতো যাচাই যোগ করতে পারো।</p>
   </div>
-</article></section><section class="topic" id="topic-23"><h2 class="topic-name">Parts of a prompt</h2>
+</article></section><section class="topic" id="topic-24"><h2 class="topic-name">Parts of a prompt</h2>
 <article class="slide-note" id="prompt-1">
   <header>
-    <span class="no">23</span>
+    <span class="no">24</span>
     <h3>A good prompt has six parts</h3>
-    <p class="meta"><span>2 min</span><span>Start 37:30</span><span>End 39:30</span><span>163 words</span></p>
+    <p class="meta"><span>2 min</span><span>Start 39:00</span><span>End 41:00</span><span>163 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> model ভুল বলতে পারে, এটা দেখলাম। এবার প্রশ্ন, ভালো prompt লিখলে কি ভুল কমে? ধরো তুমি মেসের বাবুর্চিকে বললে, &quot;ভাত আর ডাল রাঁধো।&quot; বাবুর্চি কীভাবে রাঁধবে? ঝাল দেবে কি না, কীসে দেবে, কতটা বানাবে? সে অনুমান করবে। model-ও ঠিক এমন। সে তোমার মাথার ভেতরটা দেখতে পায় না, শুধু তোমার লেখাটুকু পায়। শুধু task দিলে সে অনুমান করে। এই task-টাই প্রথম অংশ। <span class="cue cue-ask">ASK</span> তোমরা কেউ কি এমন ছোট prompt লিখে ভুল উত্তর পেয়েছ? <span class="cue cue-pause">PAUSE 3s</span></p>
@@ -376,9 +390,9 @@
 </article>
 <article class="slide-note" id="prompt-2">
   <header>
-    <span class="no">24</span>
+    <span class="no">25</span>
     <h3>The structured prompt gives a short, exact answer</h3>
-    <p class="meta"><span>2.5 min</span><span>Start 39:30</span><span>End 42:00</span><span>162 words</span></p>
+    <p class="meta"><span>2.5 min</span><span>Start 41:00</span><span>End 43:30</span><span>162 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> এবার আসল ফল দেখি। প্রথমে ছোট prompt: &quot;write a BD phone number validator&quot;। এক লাইন, শুধু task। আমরা সবাই প্রতিদিন প্রায় এভাবেই লিখি।</p>
@@ -391,9 +405,9 @@
 </article>
 <article class="slide-note" id="prompt-3">
   <header>
-    <span class="no">25</span>
+    <span class="no">26</span>
     <h3>Normal numbers pass. Edge numbers break the naive prompt</h3>
-    <p class="meta"><span>2.5 min</span><span>Start 42:00</span><span>End 44:30</span><span>158 words</span></p>
+    <p class="meta"><span>2.5 min</span><span>Start 43:30</span><span>End 46:00</span><span>158 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> <span class="cue cue-ask">ASK</span> naive prompt-এ শুধু task আছে। role, context, examples, constraints আর format নেই। বলো, কোন অংশ না থাকায় naive validator 017-1234-5678 নম্বরটা মেনে নেবে? A, B, C, D, নাকি E? <span class="cue cue-pause">PAUSE 10s</span> হাত তোলো। কেউ কেউ নিশ্চয়ই অন্য অংশ বলেছ, ভালো। উত্তর এখনই বলছি না। আগে test চালাই।</p>
@@ -402,12 +416,12 @@
 <p><span class="cue cue-step">STEP 4</span> <span class="cue cue-demo">DEMO P4</span> <span class="cue cue-do">DO: P4 cast নিজে চলবে</span> এবার তিনটা edge number: মাঝখানে dash দেওয়া number, প্রথমে শূন্য নেই এমন number, আর শুরুতে space-ওয়ালা number। <span class="cue cue-pause">PAUSE 5s</span></p>
 <p><span class="cue cue-step">STEP 5</span> ফল: naive দুইটা number-কে true বলেছে, dash-ওয়ালাটা আর space-ওয়ালাটা। আমাদের spec-এ তিনটাই false। structured তিনটাতেই false বলেছে। উত্তর D, constraints। prompt-এ লিখেছিলাম, &quot;শুধু এই তিন format নাও।&quot; এই এক লাইনই বাকিটা আটকেছে। মনে রেখো, এটা সব অংশ আলাদা করে খুলে করা পরীক্ষা না, এটা একটা উদাহরণ। আর model-এর উত্তর প্রতিবার একরকম হয় না, তাই এই recording-ই আমাদের প্রমাণ।</p>
   </div>
-</article></section><section class="topic" id="topic-26"><h2 class="topic-name">Structured output</h2>
+</article></section><section class="topic" id="topic-27"><h2 class="topic-name">Structured output</h2>
 <article class="slide-note" id="structured-1">
   <header>
-    <span class="no">26</span>
+    <span class="no">27</span>
     <h3>Software needs fields, not prose</h3>
-    <p class="meta"><span>1.5 min</span><span>Start 44:30</span><span>End 46:00</span><span>107 words</span></p>
+    <p class="meta"><span>1.5 min</span><span>Start 46:00</span><span>End 47:30</span><span>107 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> একটা নোটিশ লিখলে মানুষ সেটা সহজে পড়ে বোঝে। এটা prose। এই hackathon-এর নোটিশটা দেখো: নাম, তারিখ, জায়গা, fee, সব এক prose-এ। আমাদের চোখে এটা পরিষ্কার।</p>
@@ -418,9 +432,9 @@
 </article>
 <article class="slide-note" id="structured-2">
   <header>
-    <span class="no">27</span>
+    <span class="no">28</span>
     <h3>Without a schema, JSON.parse can fail</h3>
-    <p class="meta"><span>1.5 min</span><span>Start 46:00</span><span>End 47:30</span><span>101 words</span></p>
+    <p class="meta"><span>1.5 min</span><span>Start 47:30</span><span>End 49:00</span><span>101 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> এবার schema ছাড়া চেষ্টা করি। prompt-এ শুধু লিখছি, &quot;JSON দাও।&quot; কোনো schema নেই। অনেকে এভাবেই শুরু করে।</p>
@@ -432,9 +446,9 @@
 </article>
 <article class="slide-note" id="structured-3">
   <header>
-    <span class="no">28</span>
+    <span class="no">29</span>
     <h3>With a schema, the output is valid JSON</h3>
-    <p class="meta"><span>2 min</span><span>Start 47:30</span><span>End 49:30</span><span>122 words</span></p>
+    <p class="meta"><span>2 min</span><span>Start 49:00</span><span>End 51:00</span><span>122 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> এবার schema দিয়ে করি। schema হলো চারটা ঘর আর তাদের type: event, date, venue string, আর fee number। এটা আমরা prompt-এর সঙ্গে model-কে দিই।</p>
@@ -443,12 +457,12 @@
 <p><span class="cue cue-step">STEP 4</span> <span class="cue cue-demo">LIVE</span> <span class="cue cue-do">DO: দ্বিতীয় command-টাও terminal-এ চালাও, না হলে recording চালাও।</span> এবার output Node-এ পাঠাই। parse.mjs ফাইল JSON পড়ে। <span class="cue cue-pause">PAUSE 10s</span></p>
 <p><span class="cue cue-step">STEP 5</span> দেখো, typeof fee হলো number। fee যোগ 100 হলো 600। তারিখ থেকে বার বের হলো: Saturday, 24 October 2026। এখন আমাদের code এই data-র ওপর ভরসা করতে পারে। এই জিনিসটার ওপরেই tool call দাঁড়িয়ে আছে, কারণ model-এর উত্তর এখন এমন আকারে আসে, যা code সরাসরি পড়তে পারে।</p>
   </div>
-</article></section><section class="topic" id="topic-29"><h2 class="topic-name">Tool call</h2>
+</article></section><section class="topic" id="topic-30"><h2 class="topic-name">Tool call</h2>
 <article class="slide-note" id="toolcall-1">
   <header>
-    <span class="no">29</span>
+    <span class="no">30</span>
     <h3>The model asks. Our code acts.</h3>
-    <p class="meta"><span>2.5 min</span><span>Start 49:30</span><span>End 52:00</span><span>170 words</span></p>
+    <p class="meta"><span>2.5 min</span><span>Start 51:00</span><span>End 53:30</span><span>170 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> এবার একটা জরুরি কথা বলি। model নিজের হাতে কিছু চালাতে পারে না, সে শুধু লিখতে পারে। ভাবো তুমি হোটেলে বসে একটা order slip লিখলে, এক প্লেট ভাত আর এক বাটি ডাল। slip লেখা পর্যন্তই তোমার কাজ, রান্না তুমি করো না। model-ও ঠিক তাই করে। সে একটা slip লেখে, যেখানে আছে কোন tool আর কোন folder। এখানে tool হলো list_dir, folder হলো ./notes।</p>
@@ -460,9 +474,9 @@
 </article>
 <article class="slide-note" id="toolcall-2">
   <header>
-    <span class="no">30</span>
+    <span class="no">31</span>
     <h3>A tool call is a request in JSON</h3>
-    <p class="meta"><span>2 min</span><span>Start 52:00</span><span>End 54:00</span><span>129 words</span></p>
+    <p class="meta"><span>2 min</span><span>Start 53:30</span><span>End 55:30</span><span>129 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> আমাদের loop.mjs-এ model একটা JSON ফেরত দেয়। এতে দুটো জিনিস জরুরি: action আর args। action বলে কোন tool, args বলে সেই tool-এর input, যেমন path। এটা আমাদের নিজেদের বানানো format। thought নামে একটা বাড়তি field-ও আছে, সেটা আমরা শুধু দেখার জন্য রাখি।</p>
@@ -474,9 +488,9 @@
 </article>
 <article class="slide-note" id="toolcall-3">
   <header>
-    <span class="no">31</span>
+    <span class="no">32</span>
     <h3>Our code runs the command, not the model</h3>
-    <p class="meta"><span>2.5 min</span><span>Start 54:00</span><span>End 56:30</span><span>155 words</span></p>
+    <p class="meta"><span>2.5 min</span><span>Start 55:30</span><span>End 58:00</span><span>155 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> <span class="cue cue-ask">ASK</span> এবার তোমাদের একটা প্রশ্ন। model যখন বলে list_dir, তখন command-টা কে চালায়? A, model। নাকি B, আমাদের code? অনুমান করলেও চলবে, ভুল হলে সমস্যা নেই। হাত তোলো। A কে কে? <span class="cue cue-pause">PAUSE 5s</span> আর B কে কে? <span class="cue cue-pause">PAUSE 5s</span></p>
@@ -484,12 +498,12 @@
 <p><span class="cue cue-step">STEP 3</span> উত্তর হলো B। command চালিয়েছে আমাদের code। model শুধু request লিখেছে। আর এই কারণেই নিয়ন্ত্রণ আমাদের হাতে থাকে। যারা A বলেছিলে, চিন্তা নেই, এটা প্রথমে সবারই গুলিয়ে যায়।</p>
 <p><span class="cue cue-step">STEP 4</span> দ্বিতীয়বার model আবার ভেবেছে। এবার সে চেয়েছে read_file, ./notes/trip.md। এবার তার input 1630 token, একটু বেশি, কারণ আগের ফল জমা হয়েছে। মোট model দুবার চলেছে, tool একবার, সময় লেগেছে প্রায় 10 সেকেন্ড।</p>
   </div>
-</article></section><section class="topic" id="topic-32"><h2 class="topic-name">Agent loop</h2>
+</article></section><section class="topic" id="topic-33"><h2 class="topic-name">Agent loop</h2>
 <article class="slide-note" id="agentloop-1">
   <header>
-    <span class="no">32</span>
+    <span class="no">33</span>
     <h3>An agent is a loop: context, plan, act, check</h3>
-    <p class="meta"><span>3 min</span><span>Start 56:30</span><span>End 59:30</span><span>200 words</span></p>
+    <p class="meta"><span>3 min</span><span>Start 58:00</span><span>End 61:00</span><span>200 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> এবার আজকের সবচেয়ে বড় idea: agent মানে একটা loop। Dhaka-র রাস্তার কথা ভাবো। তুমি Google Maps খুলে গাড়ি চালাচ্ছ। প্রথমে তুমি live map দেখো, কোথায় জ্যাম। agent-এ এটাই context। মানে task আর আগের সব ফল, যা model এখন দেখতে পায়।</p>
@@ -501,9 +515,9 @@
 </article>
 <article class="slide-note" id="agentloop-2">
   <header>
-    <span class="no">33</span>
+    <span class="no">34</span>
     <h3>The agent finishes the task in 6 steps</h3>
-    <p class="meta"><span>3 min</span><span>Start 59:30</span><span>End 62:30</span><span>226 words</span></p>
+    <p class="meta"><span>3 min</span><span>Start 61:00</span><span>End 64:00</span><span>226 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> এবার সেই loop চালাব। task হলো: ./notes folder-এ চারটা note আছে। কোনটা সবচেয়ে বড় আর সেটা কী নিয়ে? খেয়াল করো, list_dir শুধু file-এর নাম দেয়, size দেয় না। তাই model আগে থেকে জানে না কোনটা বড়। command হলো MAX_STEPS=8 node loop.mjs। মানে limit আট step।</p>
@@ -515,9 +529,9 @@
 </article>
 <article class="slide-note" id="agentloop-3">
   <header>
-    <span class="no">34</span>
+    <span class="no">35</span>
     <h3>A step limit stops a loop that does not finish</h3>
-    <p class="meta"><span>2 min</span><span>Start 62:30</span><span>End 64:30</span><span>127 words</span></p>
+    <p class="meta"><span>2 min</span><span>Start 64:00</span><span>End 66:00</span><span>127 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> এবার একই task, কিন্তু limit চার। আগের run-এ ছয় step লেগেছিল, তাই চারে হবে না। command হলো MAX_STEPS=4 node loop.mjs। এটা একটা guardrail, মানে একটা দেয়াল, যেটা loop-কে চিরকাল ঘুরতে দেয় না।</p>
@@ -529,21 +543,21 @@
 </article>
 <article class="slide-note" id="agentloop-4">
   <header>
-    <span class="no">35</span>
+    <span class="no">36</span>
     <h3>Each step sends the full context again</h3>
-    <p class="meta"><span>1 min</span><span>Start 64:30</span><span>End 65:30</span><span>73 words</span></p>
+    <p class="meta"><span>1 min</span><span>Start 66:00</span><span>End 67:00</span><span>73 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> এখানে একটা জিনিস খেয়াল করো। প্রথম step-এ model 1583 token পড়ল। এর বেশিরভাগই নির্দেশনা, task খুব ছোট।</p>
 <p><span class="cue cue-step">STEP 2</span> প্রতিটা tool-এর ফল transcript-এ জমে। তাই ছয় নম্বর step-এ model পড়ল 2298 token। প্রতি step-এ model পুরো context আবার পড়ে, কারণ তার কোনো memory নেই। যেন পরীক্ষার খাতাটা প্রতিবার গোড়া থেকে আবার পড়ে শোনাতে হচ্ছে।</p>
 <p><span class="cue cue-step">STEP 3</span> ছয় step মিলিয়ে মোট 11,394 token। loop যত লম্বা, খরচ তত বাড়ে, আর কাজও তত ধীর হয়। তাই step limit জরুরি।</p>
   </div>
-</article></section><section class="topic" id="topic-36"><h2 class="topic-name">Wrap-up</h2>
+</article></section><section class="topic" id="topic-37"><h2 class="topic-name">Wrap-up</h2>
 <article class="slide-note" id="outro-1">
   <header>
-    <span class="no">36</span>
+    <span class="no">37</span>
     <h3>One loop uses all eight ideas</h3>
-    <p class="meta"><span>2 min</span><span>Start 65:30</span><span>End 67:30</span><span>156 words</span></p>
+    <p class="meta"><span>2 min</span><span>Start 67:00</span><span>End 69:00</span><span>156 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> শুরুতে তুমি Hello লিখে ভেবেছিলে, box-এর ভেতরে কী ঘটে? এখন box খোলা। ভেতরে আছে token, context window আর একটা loop। এবার সব জোড়া লাগাই। এই চারটা ধাপ, context, plan, act আর check, মিলে হলো agent loop। আজ আমরা এটাই টুকরো টুকরো করে দেখলাম। ওপরের চিপগুলো হলো আজকের আটটা idea।</p>
@@ -555,9 +569,9 @@
 </article>
 <article class="slide-note" id="outro-2">
   <header>
-    <span class="no">37</span>
+    <span class="no">38</span>
     <h3>You write one agent at home</h3>
-    <p class="meta"><span>2 min</span><span>Start 67:30</span><span>End 69:30</span><span>138 words</span></p>
+    <p class="meta"><span>2 min</span><span>Start 69:00</span><span>End 71:00</span><span>138 words</span></p>
   </header>
   <div class="bn" lang="bn">
 <p><span class="cue cue-step">STEP 1</span> আজ যা দেখলে, বাসায় নিজে হাতে করবে। একটা worksheet আছে। আটটা task, প্রতিটা topic-এর জন্য একটা করে। প্রতিটা task-এর সঙ্গে লেখা আছে কী লক্ষ করতে হবে, মানে what to notice।</p>

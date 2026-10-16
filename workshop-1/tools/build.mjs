@@ -9,7 +9,7 @@ const W = join(dirname(fileURLToPath(import.meta.url)), '..');
 const STRICT = process.argv.includes('--strict');
 const QUIET = process.argv.includes('--quiet');
 const WORDS_PER_MIN = 75;
-const PLAN_MINUTES = 69.5;
+const PLAN_MINUTES = 71;
 const BANGLA = /[ঀ-৿]/;
 
 const errors = [];
@@ -83,7 +83,72 @@ for (const f of list('casts', '.cast')) {
   if (BANGLA.test(txt)) err(`casts/${f}: Bangla text in a terminal recording`);
   if (PRIVATE.test(txt)) err(`casts/${f}: private data in a terminal recording`);
 }
-const castScript = '<script>window.CASTS=' + JSON.stringify(casts).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029') + ';</script>';
+// ---------- copyable commands ----------
+// Each recording gets a list of steps { where: 'terminal' | 'claude', note, cmd } that a student can paste one at a time.
+// No step holds a # line: an interactive zsh has no interactivecomments, so a pasted comment fails there.
+const SETUP = { where: 'terminal', note: 'Set the workshop folder and load the helpers. Run this step inside the repo.', cmd: 'W="${W:-$(git rev-parse --show-toplevel)/workshop-1}"\ncd "$W/demo"\nsource ./cc.sh' };
+function bashWord(s, i) {
+  let out = '';
+  for (; i < s.length && !/\s/.test(s[i]); i++) {
+    if (s[i] === "'") {
+      const j = s.indexOf("'", i + 1);
+      out += s.slice(i + 1, j);
+      i = j;
+    } else if (s[i] === '"') {
+      for (i++; s[i] !== '"'; i++) out += s[i] === '\\' && '"\\$`'.includes(s[i + 1]) ? s[++i] : s[i];
+    } else out += s[i];
+  }
+  return [out, i];
+}
+// demo/<ID>.sh: lib.sh becomes the setup step, each show is a step, each say is the note of the next step.
+function shSteps(sh) {
+  const steps = [{ ...SETUP }];
+  let note = '';
+  for (let i = 0; i < sh.length; ) {
+    const eol = sh.indexOf('\n', i) < 0 ? sh.length : sh.indexOf('\n', i);
+    const line = sh.slice(i, eol);
+    const kw = line.split(' ')[0];
+    if (kw === 'show' || kw === 'say') {
+      const [word, end] = bashWord(sh, i + kw.length + 1);
+      if (kw === 'say') note = word;
+      else { steps.push({ where: 'terminal', note, cmd: word }); note = ''; }
+      i = sh.indexOf('\n', end) < 0 ? sh.length : sh.indexOf('\n', end) + 1;
+      continue;
+    }
+    if (line.trim() && !/^source .*\/lib\.sh"$/.test(line) && !/^\s*#/.test(line)) {
+      const last = steps[steps.length - 1];
+      if (last.where === 'setup') last.cmd += '\n' + line;
+      else steps.push({ where: 'setup', note: 'Prepare the demo.', cmd: line });
+    }
+    i = eol + 1;
+  }
+  // A demo function (for example claude() in T5) would stay in the shell and change the next demos.
+  const fns = [...sh.matchAll(/^(\w+)\(\) \{/gm)].map((m) => m[1]);
+  if (fns.length) steps.push({ where: 'setup', note: 'Remove the demo function from the shell.', cmd: 'unset -f ' + fns.join(' ') });
+  return steps.map((st) => st.where === 'setup' ? { ...st, where: 'terminal' } : st);
+}
+// demo/<ID>.claude: "$ " runs in the terminal, "> " is typed into Claude Code, "# " is the note of the next step.
+function claudeSteps(src) {
+  const steps = [];
+  let note = '';
+  for (const line of src.split('\n')) {
+    if (line.startsWith('# ')) note = line.slice(2);
+    else if (/^[$>] /.test(line)) {
+      if (line[0] === '$' && !steps.length) steps.push({ ...SETUP });
+      steps.push({ where: line[0] === '$' ? 'terminal' : 'claude', note, cmd: line.slice(2) });
+      note = '';
+    }
+  }
+  return steps;
+}
+const cmds = {};
+for (const id of Object.keys(casts)) {
+  if (existsSync(join(W, 'demo', id + '.sh'))) cmds[id] = shSteps(read(join('demo', id + '.sh')));
+  else if (existsSync(join(W, 'demo', id + '.claude'))) cmds[id] = claudeSteps(read(join('demo', id + '.claude')));
+  else warn(`casts/${id}.cast: no demo/${id}.sh or demo/${id}.claude`);
+}
+
+const castScript = '<script>window.CMDS=' + JSON.stringify(cmds).replace(/</g, '\\u003c') + ';window.CASTS=' + JSON.stringify(casts).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029') + ';</script>';
 
 // ---------- other Bangla scan ----------
 for (const f of list('demo', '.sh')) if (BANGLA.test(read(join('demo', f)))) err(`demo/${f}: Bangla text`);

@@ -1,0 +1,4 @@
+# Start Claude Code with no tools. The model can answer only from its memory.
+$ claude --model haiku --tools "" --strict-mcp-config --setting-sources "" --no-chrome
+# Ask for a fact that changes over time.
+> Reply with ONLY the latest version number of the npm package express. No other words.

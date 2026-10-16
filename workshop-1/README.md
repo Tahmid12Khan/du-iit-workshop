@@ -1,7 +1,7 @@
 # Workshop 1: Foundations of LLMs and Agentic Systems
 
 HTML slide deck, speaker notes, demo recordings and a take-home worksheet.
-Length: 69.5 minutes of slides plus 5.5 minutes of buffer (ceiling 75).
+Length: 71 minutes of slides plus 4 minutes of buffer (ceiling 75).
 Audience: 3rd and 4th year software-engineering students. The presenter speaks Bangla.
 
 **Language rule.** Bangla appears only in `<aside class="notes" lang="bn">` (the speaker transcript) and in `transcript.html` (generated from the notes).
@@ -45,14 +45,14 @@ Arrow keys and Space are ignored while a button has focus. Play (button) advance
 | Intro (title slide and 3 slides) | 4 | 3.5 | none | none |
 | Tokens (with next-token and cost extras) | 5 | 10 | T1 to T5 | none |
 | Context window (with the no-memory extra) | 4 | 9.5 | C1 to C5 | `/context` in Claude Code (context-3) |
-| Effort levels | 5 | 8.5 | E1 to E3 | none |
+| Effort levels | 6 | 10 | E1 to E3 | none |
 | Hallucination | 4 | 6 | H1 to H4 | none |
 | Parts of a prompt | 3 | 7 | P1 to P4 | none |
 | Structured output | 3 | 5 | S1 to S3 | S2 and S3 (structured-3) |
 | Tool call | 3 | 7 | L1 | none |
 | Agent loop | 4 | 9 | L2, L3 | none |
 | Wrap-up | 2 | 4 | none | none |
-| **Total** | **37** | **69.5** | 27 casts | 2 live demos |
+| **Total** | **38** | **71** | 27 casts | 2 live demos |
 
 - The presenter runs every command. Students do not type during the session.
 - Two demos run live in the room: `/context` (slide context-3) and structured output (slide structured-3). Every other demo plays a recorded cast inside the slide. Each live slide keeps its cast as a fallback.
@@ -65,15 +65,21 @@ Arrow keys and Space are ignored while a button has focus. Play (button) advance
 
 ```bash
 cd workshop-1/demo
-bash context/env.sh          # creates /tmp/ws1-ctx with big.txt (context demo); runs in a subshell
 source cc.sh                 # cc and tokens helpers (structured output demo)
 ```
 
-- Context demo, once before the session: run `cd /tmp/ws1-ctx && claude --model haiku --strict-mcp-config --setting-sources "" --no-chrome`. Choose Yes on the folder trust prompt. Then exit.
-- Context demo, live: open a new terminal in `/tmp/ws1-ctx` and run the same command (it is on slide context-3). This gives a clean profile, so no private tool names show.
+- Context demo, once before the session: run `cd demo/context && claude --model haiku --strict-mcp-config --setting-sources "" --no-chrome`. Choose Yes on the folder trust prompt. Then exit.
+- Context demo, live: open a new terminal in `demo/context` and run the same command (it is on slide context-3). This gives a clean profile, so no private tool names show.
 - Live numbers differ from the recording: about 30k to 100k tokens, depending on the run. Show the shape, not the numbers. Two reads of `big.txt` are normal.
 - Structured output demo: run the two commands shown on slide structured-3 from the `demo/` folder. If the live run fails, play the recording in the slide.
 - Never press N on the projector window. Use the presenter window (P) to read the notes.
+
+## Run the demos yourself
+
+- Under each recording in the deck, click Commands. Copy each step, in order, into one terminal.
+- A step marked "In the terminal" goes to the shell. A step marked "In Claude Code" goes to the Claude Code prompt.
+- Step 1 sets `W` to the `workshop-1` folder and loads the helpers. Run it inside the repo.
+- The steps are the same for bash and zsh. They hold no `#` comment lines, because an interactive zsh does not accept comments. If you paste comments in zsh, run `setopt interactivecomments` first.
 
 ## Files
 
@@ -86,10 +92,11 @@ slides/           one HTML fragment per topic: 00-intro ... 90-outro (edit these
 casts/            27 asciinema recordings, inlined into index.html
 video/term/       27 terminal MP4 (from the casts)
 video/anim/       27 animation MP4 (from the anim-only slides) and manifest.json
-demo/             <ID>.sh scripts, lib.sh, cc.sh, loop.mjs, loop.starter.mjs, notes/, inputs
+demo/             <ID>.sh scripts, <ID>.claude sessions (C1-C5, H1-H4), lib.sh, cc.sh, loop.mjs, loop.starter.mjs, notes/, inputs
+work/             scratch output of the tools (git-ignored)
 data/             measured results per topic, commands.json (the 27 fixed ids)
 vendor/           deck engine, styles, fonts, asciinema-player (works offline)
-tools/            build.mjs, record.sh, render-anim.mjs, check.mjs, CONTRACT.md
+tools/            build.mjs, record.sh, record-claude.mjs, render-anim.mjs, check.mjs, CONTRACT.md
 ```
 
 `tools/CONTRACT.md` holds the slide format, the note rules and the design tokens.
@@ -103,17 +110,22 @@ cd .. && node tools/build.mjs           # table of slides, minutes, steps, notes
 node tools/build.mjs --strict           # exit 1 on Bangla outside the notes
 ```
 
-The build warns when `data-steps` differs from the caption count, when the notes length is more than 20% off 75 words per minute, or when the minutes do not add up to 69.5.
+The build warns when `data-steps` differs from the caption count, when the notes length is more than 20% off 75 words per minute, or when the minutes do not add up to 71.
 
 ## Re-record a command
 
-Tools needed: `claude` CLI, `asciinema`, `agg`, `ffmpeg`, `jq`, Node.
+Tools needed: `claude` CLI, `asciinema`, `agg`, `ffmpeg`, `jq`, `tmux`, Node.
 
 ```bash
-tools/record.sh T1          # runs demo/T1.sh, writes casts/T1.cast and video/term/T1.mp4
+tools/record.sh T1                          # runs demo/T1.sh, writes casts/T1.cast and video/term/T1.mp4
+node tools/record-claude.mjs C1 C2 C3 C4 C5 # types demo/C1.claude ... into one interactive Claude Code session
+node tools/record-claude.mjs H1 H2 H3 H4
 ```
 
-1. Run `bash demo/<ID>.sh` once without recording. Check the output.
+- A `.claude` file holds one line per input: `$ ` goes to the shell, `> ` goes to Claude Code, `# ` is a note. The recorder skips `> /exit`.
+- `record-claude.mjs` runs tmux in `work/`. It waits for each answer, then for a quiet screen. It sets `SHELL=/bin/bash`, so a `!` command does not load your zsh setup.
+
+1. Run `bash demo/<ID>.sh` once without recording (or type the `.claude` lines by hand). Check the output.
 2. Record. The cast must show the real result. Never fake output.
 3. Check privacy: `node tools/build.mjs --strict` fails if a cast contains `/Users/` or a term from `tools/privacy-terms.txt` (git-ignored, one term per line: your name, employer, clients, work tools).
 4. Update `data/<topic>.json` with the new measured numbers.
@@ -122,9 +134,9 @@ tools/record.sh T1          # runs demo/T1.sh, writes casts/T1.cast and video/te
 
 Order rules:
 
-- Context demos (C1 to C5) form a chain in `/tmp/ws1-ctx`. Record C1 first, then C2 to C5.
+- Context demos (C1 to C5) form one session in `demo/context`. Record them together. The same applies to H1 to H4.
 - E1 to E3 call `demo/effort/runs.sh` (parallel runs, raw results in `demo/effort/out/`). E3 takes several minutes.
-- H2 and H4 call `npm view`. The registry answer can change. Run them again on the recording day.
+- H2 and H4 run `npm view` with `!` inside Claude Code. The registry answer can change. Run them again on the recording day.
 
 ## Re-render an animation video
 
@@ -142,13 +154,13 @@ node tools/render-anim.mjs <slideId>     # any slide, for example tokens-2
 ## Check everything
 
 ```bash
-node tools/check.mjs --out /tmp/w1-check
+node tools/check.mjs                 # output in work/check
 ```
 
 The script runs 32 checks and exits 1 on a failure. It covers:
 
 - Build, 27 casts, 27 terminal MP4, 27 animation MP4 (size, length, fingerprint).
-- Minutes (69.5), caption count equals `data-steps`, Bangla notes on every normal slide, no Bangla elsewhere, privacy grep.
+- Minutes (71), caption count equals `data-steps`, Bangla notes on every normal slide, no Bangla elsewhere, privacy grep.
 - Every step of every slide in light and dark: text outside the diagram, overlapping text, caption overflow, SVG text size, console errors.
 - 375 px width, `prefers-reduced-motion`, keys, presenter sync, casts that play inside slides, `videos.html`.
 - Notes length per slide against 75 words per minute.

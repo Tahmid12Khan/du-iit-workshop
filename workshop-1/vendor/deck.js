@@ -249,6 +249,30 @@
   }
 
   /* ---------- Components ---------- */
+  function copyButton(cls, label, aria, getText) {
+    var b = make('button', cls, label);
+    b.type = 'button';
+    b.setAttribute('aria-label', aria);
+    b.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    b.addEventListener('click', function () {
+      var text = getText();
+      var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = label; }, 1500); };
+      var fallback = function () {
+        var ta = make('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        ta.remove();
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+      else fallback();
+    });
+    return b;
+  }
+
   function initCommands() {
     $$('pre.cmd').forEach(function (pre) {
       if (pre.parentNode.classList.contains('cmdbox')) return;
@@ -256,28 +280,27 @@
       pre.parentNode.insertBefore(box, pre);
       if (pre.hasAttribute('data-live')) box.appendChild(make('span', 'live-tag', 'LIVE'));
       box.appendChild(pre);
-      var b = make('button', 'copy', 'Copy');
-      b.type = 'button';
-      b.setAttribute('aria-label', 'Copy the command');
-      b.addEventListener('mousedown', function (e) { e.preventDefault(); });
-      b.addEventListener('click', function () {
-        var cmd = pre.textContent.trim();
-        var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1500); };
-        var fallback = function () {
-          var ta = make('textarea');
-          ta.value = cmd;
-          ta.style.position = 'fixed';
-          ta.style.opacity = '0';
-          document.body.appendChild(ta);
-          ta.select();
-          try { document.execCommand('copy'); done(); } catch (e) {}
-          ta.remove();
-        };
-        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(cmd).then(done, fallback);
-        else fallback();
-      });
-      box.appendChild(b);
+      box.appendChild(copyButton('copy', 'Copy', 'Copy the command', function () { return pre.textContent.trim(); }));
     });
+  }
+
+  function commandPanel(id, steps) {
+    var panel = make('div', 'cmd-panel');
+    panel.setAttribute('role', 'region');
+    panel.setAttribute('aria-label', 'Commands of recording ' + id);
+    steps.forEach(function (st, i) {
+      var row = make('div', 'cmd-step');
+      var head = make('p', 'cmd-head');
+      head.appendChild(make('span', 'cmd-where ' + st.where, (i + 1) + '. ' + (st.where === 'claude' ? 'In Claude Code' : 'In the terminal')));
+      if (st.note) head.appendChild(make('span', 'cmd-note', st.note));
+      row.appendChild(head);
+      var box = make('div', 'cmd-code');
+      box.appendChild(make('pre', null, st.cmd));
+      box.appendChild(copyButton('copy', 'Copy', 'Copy step ' + (i + 1) + ' of recording ' + id, function () { return st.cmd; }));
+      row.appendChild(box);
+      panel.appendChild(row);
+    });
+    return panel;
   }
 
   // Fewer rows give a larger font, because the player fits the whole terminal into the box.
@@ -307,6 +330,21 @@
     host.parentNode.insertBefore(wrap, host);
     wrap.appendChild(host);
     var links = make('div', 'term-links');
+    var steps = window.CMDS && window.CMDS[id];
+    if (steps && steps.length) {
+      var panel = commandPanel(id, steps);
+      var toggle = make('button', 'cmds-toggle', 'Commands');
+      toggle.type = 'button';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.addEventListener('mousedown', function (e) { e.preventDefault(); });
+      toggle.addEventListener('click', function () {
+        var open = wrap.classList.toggle('cmds-open');
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.textContent = open ? 'Hide commands' : 'Commands';
+      });
+      links.appendChild(toggle);
+      wrap.appendChild(panel);
+    }
     [['Terminal video', 'video/term/' + id + '.mp4'], ['Animation video', 'video/anim/' + id + '.mp4']].forEach(function (l) {
       var a = make('a', null, l[0]);
       a.href = l[1];

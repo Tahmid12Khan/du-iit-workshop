@@ -11,7 +11,6 @@ import { spawnSync, execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, symlinkSync, rmSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { animHash } from './anim-hash.mjs';
 import { join, dirname } from 'node:path';
-import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const TOOLS = dirname(fileURLToPath(import.meta.url));
@@ -54,7 +53,8 @@ async function openPage(browser, id) {
 
 async function renderOne(browser, id, outName) {
   const { ctx, page, errors } = await openPage(browser, id);
-  const dir = mkdtempSync(join(tmpdir(), `w1-anim-${outName}-`));
+  mkdirSync(join(W, 'work'), { recursive: true });
+  const dir = mkdtempSync(join(W, 'work', `anim-${outName}-`));
   const entries = []; // { file, duration }
   let n = 0;
   const shot = async () => {

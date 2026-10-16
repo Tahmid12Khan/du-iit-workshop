@@ -165,19 +165,19 @@
 <section class="slide" id="tokens-4" data-topic="Tokens" data-minutes="2" data-steps="5">
   <h2>Claude Code adds many tokens to a short prompt</h2>
   <div class="stage">
-    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Two bars. The cc helper sends 859 tokens for the word Hello. Default Claude Code sends 17,987 tokens for the same word, which is 21 times more.">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Two bars. The cc helper sends 859 tokens for the word Hello. Default Claude Code sends 19,137 tokens for the same word, which is 22 times more.">
 <g data-step="1 5">
-<text class="lbl lg" x="20" y="100">cc</text><rect class="node c1" x="210" y="56" width="42" height="66" rx="10"/><text class="big hl" x="270" y="106" data-count="859" data-count-step="1" data-count-fmt="comma">0</text><text class="lbl-2" x="210" y="160">cc = claude -p with no tools, no skills, no settings</text>
+<text class="lbl lg" x="20" y="100">cc</text><rect class="node c1" x="210" y="56" width="40" height="66" rx="10"/><text class="big hl" x="270" y="106" data-count="859" data-count-step="1" data-count-fmt="comma">0</text><text class="lbl-2" x="210" y="160">cc = claude -p with no tools, no skills, no settings</text>
 </g>
 <g class="until" data-step="3 4 5" data-from="3">
-<text class="lbl" x="20" y="268">Claude Code</text><rect class="node c3" x="210" y="214" width="880" height="80" rx="10"/><text class="big" x="232" y="270" data-count="17987" data-count-step="3" data-count-fmt="comma">0</text>
+<text class="lbl" x="20" y="268">Claude Code</text><rect class="node c3" x="210" y="214" width="880" height="80" rx="10"/><text class="big" x="232" y="270" data-count="19137" data-count-step="3" data-count-fmt="comma">0</text>
 </g>
 <text class="lbl-2" x="210" y="334" data-step="4">Claude Code adds to each call:</text>
 <g data-step="4">
 <rect class="node c1" x="210" y="352" width="270" height="96" rx="14"/><text class="lbl lg mid" x="345" y="412">System prompt</text><rect class="node c2" x="500" y="352" width="270" height="96" rx="14"/><text class="lbl lg mid" x="635" y="412">Tool list</text><rect class="node c4" x="790" y="352" width="270" height="96" rx="14"/><text class="lbl lg mid" x="925" y="412">Skills</text>
 </g>
 <g class="until" data-step="5" data-from="5">
-<text class="huge hl" x="640" y="108" data-count="21" data-count-step="5">0</text><text class="lbl lg" x="722" y="106">times more tokens</text>
+<text class="huge hl" x="640" y="108" data-count="22" data-count-step="5">0</text><text class="lbl lg" x="722" y="106">times more tokens</text>
 </g>
 </svg>
     <div class="ov">
@@ -187,11 +187,11 @@
   <ol class="captions">
     <li>The cc helper sends the word Hello with 859 tokens. It has no tools or skills.</li>
     <li>Play T5. Default Claude Code gets the same word.</li>
-    <li>Claude Code sends 17,987 tokens for the word Hello.</li>
+    <li>Claude Code sends 19,137 tokens for the word Hello.</li>
     <li>Claude Code adds its system prompt, its tools and its skills.</li>
-    <li>That is 21 times more tokens than cc.</li>
+    <li>That is 22 times more tokens than cc.</li>
   </ol>
-  <aside class="notes" lang="bn">[STEP 1] আগের helper cc দিয়ে Hello-র জন্য পেয়েছিলাম 859 token। cc হলো claude -p, কিন্তু tools, skills আর settings ছাড়া। তাই সে এত হালকা। [STEP 2] [DEMO T5] [DO: T5 cast নিজে চলবে। শেষে usage-এর যোগফল দেখাও।] এবার একই Hello, একই model, কিন্তু default Claude Code দিয়ে। আমি শুধু একটা শব্দ লিখেছি। [STEP 3] সংখ্যাটা 17,987, মানে প্রায় আঠারো হাজার। cc-র 859-এর পাশে এটা অনেক বড়। [STEP 4] এই বাড়তি token কোথা থেকে এল? Claude Code প্রতিটা call-এ নিজের system prompt, নিজের tools আর skills জুড়ে দেয়। তুমি এগুলো দেখো না, কিন্তু model পড়ে। যেন তুমি একটা ছোট চিঠি পাঠালে, আর খামের ভেতরে পুরো নিয়মের বইও ঢুকে গেল। cache থেকে পড়া token কম খরচ হয়। কিন্তু context window-এ জায়গা ঠিকই নেয়। [STEP 5] হিসাব করলে প্রায় 21 গুণ। [ASK] ছোট প্রশ্নের খরচ মাপতে আমরা কোন tool নেব? [PAUSE 3s] cc-র মতো হালকা helper।</aside>
+  <aside class="notes" lang="bn">[STEP 1] আগের helper cc দিয়ে Hello-র জন্য পেয়েছিলাম 859 token। cc হলো claude -p, কিন্তু tools, skills আর settings ছাড়া। তাই সে এত হালকা। [STEP 2] [DEMO T5] [DO: T5 cast নিজে চলবে। শেষে usage-এর যোগফল দেখাও।] এবার একই Hello, একই model, কিন্তু default Claude Code দিয়ে। আমি শুধু একটা শব্দ লিখেছি। [STEP 3] সংখ্যাটা 19,137, মানে প্রায় উনিশ হাজার। cc-র 859-এর পাশে এটা অনেক বড়। [STEP 4] এই বাড়তি token কোথা থেকে এল? Claude Code প্রতিটা call-এ নিজের system prompt, নিজের tools আর skills জুড়ে দেয়। তুমি এগুলো দেখো না, কিন্তু model পড়ে। যেন তুমি একটা ছোট চিঠি পাঠালে, আর খামের ভেতরে পুরো নিয়মের বইও ঢুকে গেল। cache থেকে পড়া token কম খরচ হয়। কিন্তু context window-এ জায়গা ঠিকই নেয়। [STEP 5] হিসাব করলে প্রায় 22 গুণ। [ASK] ছোট প্রশ্নের খরচ মাপতে আমরা কোন tool নেব? [PAUSE 3s] cc-র মতো হালকা helper।</aside>
   <script>Deck.onStep('tokens-4',function(s,el){var o=el.querySelector('.ov');if(o)o.classList.toggle('on',[2].indexOf(s)>=0);});</script>
 </section>
 
@@ -384,9 +384,9 @@
 </section>
 
 <section class="slide anim-only" id="anim-T5" data-cmd="T5" data-steps="5">
-  <h2>Claude Code sends 17,987 tokens for one word</h2>
+  <h2>Claude Code sends 19,137 tokens for one word</h2>
   <div class="stage">
-<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Command, Claude Code adds a system prompt, tools and skills, the model reads them, the usage shows 17,987 tokens, and cc sent only 859 for the same word.">
+<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Command, Claude Code adds a system prompt, tools and skills, the model reads them, the usage shows 19,137 tokens, and cc sent only 859 for the same word.">
 <g data-step="1">
 <rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">$ claude -p &quot;Hello&quot; --output-format json | jq .usage</text>
 </g>
@@ -401,11 +401,11 @@
 <path class="edge" d="M656 245 H706" marker-end="url(#arrow)" data-step="3 4"/>
 <g data-step="4">
 <rect class="node plain" x="710" y="132" width="470" height="216" rx="18"/><text class="lbl lg" x="734" y="170">usage</text><g class="until" data-from="4">
-<text class="lbl mono" x="734" y="214">input_tokens</text><text class="lbl mono end" x="1156" y="214">2</text><text class="lbl-2 mono" x="734" y="246">cache_creation_input_tokens</text><text class="lbl mono end" x="1156" y="246">0</text><text class="lbl-2 mono" x="734" y="278">cache_read_input_tokens</text><text class="lbl mono end" x="1156" y="278">17,985</text><text class="lbl-2" x="734" y="322">Total</text><text class="big hl end" x="1156" y="326" data-count="17987" data-count-step="4" data-count-fmt="comma">0</text>
+<text class="lbl mono" x="734" y="214">input_tokens</text><text class="lbl mono end" x="1156" y="214">2</text><text class="lbl-2 mono" x="734" y="246">cache_creation_input_tokens</text><text class="lbl mono end" x="1156" y="246">19,135</text><text class="lbl-2 mono" x="734" y="278">cache_read_input_tokens</text><text class="lbl mono end" x="1156" y="278">0</text><text class="lbl-2" x="734" y="322">Total</text><text class="big hl end" x="1156" y="326" data-count="19137" data-count-step="4" data-count-fmt="comma">0</text>
 </g>
 </g>
 <g class="until" data-step="5" data-from="5">
-<text class="lbl lg" x="20" y="408">cc</text><rect class="node c1" x="130" y="380" width="42" height="40" rx="8"/><text class="lbl" x="190" y="408">859</text><text class="lbl" x="20" y="462">Claude Code</text><rect class="node c3" x="190" y="436" width="880" height="40" rx="8"/><text class="lbl" x="1090" y="466">17,987</text><text class="big hl" x="480" y="408" data-count="21" data-count-step="5">0</text><text class="lbl lg" x="540" y="406">times more tokens</text>
+<text class="lbl lg" x="20" y="408">cc</text><rect class="node c1" x="130" y="380" width="40" height="40" rx="8"/><text class="lbl" x="190" y="408">859</text><text class="lbl" x="20" y="462">Claude Code</text><rect class="node c3" x="190" y="436" width="880" height="40" rx="8"/><text class="lbl" x="1090" y="466">19,137</text><text class="big hl" x="480" y="408" data-count="22" data-count-step="5">0</text><text class="lbl lg" x="540" y="406">times more tokens</text>
 </g>
 </svg>
   </div>
@@ -413,7 +413,7 @@
     <li>Run the word Hello in default Claude Code.</li>
     <li>Claude Code adds its system prompt, its tool list and its skills.</li>
     <li>The model reads all of it.</li>
-    <li>The usage field shows 17,987 input tokens in total.</li>
-    <li>The cc helper sent 859 tokens for the same word. Claude Code sends 21 times more.</li>
+    <li>The usage field shows 19,137 input tokens in total.</li>
+    <li>The cc helper sent 859 tokens for the same word. Claude Code sends 22 times more.</li>
   </ol>
 </section>

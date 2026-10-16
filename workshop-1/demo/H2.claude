@@ -1,0 +1,2 @@
+# Check the fact in the npm registry. A line that starts with ! runs in the shell.
+> !npm view express version

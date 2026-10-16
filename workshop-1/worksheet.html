@@ -21,7 +21,8 @@
   <section class="rule" aria-labelledby="budget-h">
     <h4 id="budget-h">Cost rule</h4>
     <p>Every command in this worksheet has <code>--max-budget-usd 0.10</code>. The flag stops a call that costs more than 10 US cents.</p>
-    <p>The helpers <code>cc</code> and <code>tokens</code> in <code>demo/cc.sh</code> already set this flag. When you call <code>claude</code> yourself, add the flag.</p>
+    <p>The helpers <code>cc</code> and <code>tokens</code> in <code>demo/cc.sh</code> already set this flag. When you call <code>claude -p</code> yourself, add the flag.</p>
+    <p>Tasks 2 and 4 use Claude Code in interactive mode. This mode has no budget flag. Use the model <code>haiku</code> to keep the cost low.</p>
   </section>
 
   <section class="setup" aria-labelledby="setup-h">
@@ -34,6 +35,7 @@
     </ol>
     <pre class="code"><code>cd workshop-1
 source demo/cc.sh</code></pre>
+    <p class="note">The commands work in bash and in zsh. In zsh, do not paste a line that starts with <code>#</code>. An interactive zsh does not accept comments, and the line fails.</p>
     <p class="note">Run the second command again in each new terminal window. Each task also has a demo script in <code>demo/</code>. Run it to see the presenter version.</p>
   </section>
 
@@ -67,33 +69,27 @@ tokens 'Software engineers build reliable systems by testing early and often.'</
 
   <!-- 2 -->
   <section class="task" id="task-2">
-    <header><span class="num">2</span><h2>Context window</h2><span class="time">Demo scripts: demo/C1.sh to demo/C5.sh</span></header>
+    <header><span class="num">2</span><h2>Context window</h2><span class="time">Demo files: demo/C1.claude to demo/C5.claude</span></header>
     <p><strong>Goal.</strong> Watch the context window fill, then shrink after <code>/compact</code>. Find what the summary lost.</p>
     <ol>
-      <li>Make a work folder and copy the large file.</li>
+      <li>Start Claude Code in the folder with the large file.</li>
       <li>Give the model one detail. Then make it read the large file.</li>
       <li>Look at the context. Compact it. Look at the context again.</li>
       <li>Ask for the detail from the start.</li>
     </ol>
-    <pre class="code"><code>W=$PWD
-mkdir -p /tmp/ws1-ctx &amp;&amp; cp demo/context/big.txt /tmp/ws1-ctx/ &amp;&amp; cd /tmp/ws1-ctx
-
-claude -p "Remember: our dev server port is 8081. Reply with OK." \
-  --model haiku --output-format json --max-budget-usd 0.10 | jq -r .session_id &gt; session.tmp
-mv session.tmp session.id
-claude -p "Read the whole file big.txt and tell me what it is about in one sentence." \
-  --model haiku --allowedTools Read --resume "$(cat session.id)" \
-  --output-format json --max-budget-usd 0.10 | jq -r .session_id &gt; session.tmp
-mv session.tmp session.id
-
-claude -p "/context" --model haiku --resume "$(cat session.id)" --max-budget-usd 0.10
-claude -p "/compact" --model haiku --resume "$(cat session.id)" \
-  --output-format json --max-budget-usd 0.10 | jq -r .session_id &gt; session2.id
-claude -p "/context" --model haiku --resume "$(cat session2.id)" --max-budget-usd 0.10
-
-claude -p "What exact port number did I give you at the start?" \
-  --model haiku --resume "$(cat session2.id)" --max-budget-usd 0.10
-cd "$W"</code></pre>
+    <p>In the terminal:</p>
+    <pre class="code"><code>cd demo/context
+claude --model haiku --strict-mcp-config --setting-sources "" --no-chrome</code></pre>
+    <p>In Claude Code, type each line and wait for the answer:</p>
+    <pre class="code"><code>Remember: our dev server port is 8081. Reply with OK.
+Read the whole file big.txt and tell me what it is about in one sentence.
+/context
+/compact
+/context
+What exact port number did I give you at the start?
+/exit</code></pre>
+    <p>In the terminal, go back to the <code>workshop-1</code> folder:</p>
+    <pre class="code"><code>cd ../..</code></pre>
     <div class="notice">
       <h4>What to notice</h4>
       <ul>
@@ -137,17 +133,16 @@ done</code></pre>
 
   <!-- 4 -->
   <section class="task" id="task-4">
-    <header><span class="num">4</span><h2>Hallucination</h2><span class="time">Demo scripts: demo/H1.sh to demo/H4.sh</span></header>
+    <header><span class="num">4</span><h2>Hallucination</h2><span class="time">Demo files: demo/H1.claude to demo/H4.claude</span></header>
     <p><strong>Goal.</strong> Check two model answers against the npm registry. Find which answer is wrong and why.</p>
-    <pre class="code"><code>for i in 1 2 3; do
-  cc "Reply with ONLY the latest version number of the npm package express. No other words." \
-    --max-budget-usd 0.10 | jq -r .result
-done
-npm view express version
-
-cc "What config options does the npm package fastjson-validator-kit support? If you are not sure, say I don't know." \
-  --max-budget-usd 0.10 | jq -r .result
-npm view fastjson-validator-kit version</code></pre>
+    <p>In the terminal, start Claude Code with no tools. The model can then use only its training data:</p>
+    <pre class="code"><code>claude --model haiku --tools "" --strict-mcp-config --setting-sources "" --no-chrome</code></pre>
+    <p>In Claude Code, type each line and wait for the answer. A line that starts with <code>!</code> runs a shell command. The model sees its output.</p>
+    <pre class="code"><code>Reply with ONLY the latest version number of the npm package express. No other words.
+!npm view express version
+What config options does the npm package fastjson-validator-kit support? If you are not sure, say I don't know.
+!npm view fastjson-validator-kit version 2&gt;&amp;1 | head -3
+/exit</code></pre>
     <p><strong>Bonus.</strong> Ask the second question again without the sentence "If you are not sure, say I don't know." Compare the two answers.</p>
     <div class="notice">
       <h4>What to notice</h4>

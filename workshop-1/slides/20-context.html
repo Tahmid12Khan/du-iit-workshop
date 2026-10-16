@@ -92,9 +92,9 @@
 #context-3 .live pre.cmd.in::before{content:'> '}
 </style>
 <section class="slide" id="context-3" data-topic="Context window" data-minutes="3.5" data-steps="5">
-  <h2>A big file adds 40k tokens, not a full window</h2>
+  <h2>A big file adds 42k tokens, not a full window</h2>
   <div class="stage">
-    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A plan of three boxes: read a big file, look at the window, and run slash context live. The numbers step shows 54.5k of 1m tokens used and the categories.">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A plan of three boxes: read a big file, look at the window, and run slash context live. The numbers step shows 73.3k of 1m tokens used and the categories.">
 <g id="c3-plan">
 <path class="edge" d="M364 240 H424" marker-end="url(#arrow)" data-step="1"/>
 <path class="edge" d="M774 240 H834" marker-end="url(#arrow)" data-step="1"/>
@@ -110,13 +110,13 @@
 </g>
 <g class="until" data-step="4" data-from="4">
 <text class="lbl-2" x="20" y="38">Context window of this model: 1m tokens</text>
-<rect class="node plain" x="20" y="52" width="1160" height="44" rx="10"/><rect class="node c2" x="20" y="52" width="64" height="44" rx="10"/>
-<text class="lbl-2 mid" x="640" y="82">Free space 912.5k</text>
-<text class="lbl hl" x="20" y="132">Used: 54.5k of 1m (5%)</text>
-<text class="lbl" x="20" y="188">System prompt</text><rect class="node c1" x="240" y="160" width="54" height="40" rx="8"/><text class="lbl mono" x="308" y="189">3.1k</text>
-<text class="lbl" x="20" y="246">System tools</text><rect class="node c1" x="240" y="218" width="157" height="40" rx="8"/><text class="lbl mono" x="411" y="247">9k</text>
-<text class="lbl" x="20" y="304">Skills</text><rect class="node c1" x="240" y="276" width="37" height="40" rx="8"/><text class="lbl mono" x="291" y="305">2.1k</text>
-<text class="lbl" x="20" y="362">Messages</text><rect class="node c4" x="240" y="334" width="700" height="40" rx="8"/><text class="lbl mono" x="954" y="363">40.3k</text>
+<rect class="node plain" x="20" y="52" width="1160" height="44" rx="10"/><rect class="node c2" x="20" y="52" width="85" height="44" rx="10"/>
+<text class="lbl-2 mid" x="640" y="82">Free space 893.7k</text>
+<text class="lbl hl" x="20" y="132">Used: 73.3k of 1m (7%)</text>
+<text class="lbl" x="20" y="188">System prompt</text><rect class="node c1" x="240" y="160" width="61" height="40" rx="8"/><text class="lbl mono" x="315" y="189">3.5k</text>
+<text class="lbl" x="20" y="246">System tools</text><rect class="node c1" x="240" y="218" width="436" height="40" rx="8"/><text class="lbl mono" x="690" y="247">25.1k</text>
+<text class="lbl" x="20" y="304">Skills</text><rect class="node c1" x="240" y="276" width="43" height="40" rx="8"/><text class="lbl mono" x="297" y="305">2.5k</text>
+<text class="lbl" x="20" y="362">Messages</text><rect class="node c4" x="240" y="334" width="733" height="40" rx="8"/><text class="lbl mono" x="987" y="363">42.2k</text>
 <text class="lbl-2" x="240" y="420">Messages hold the port and the whole file.</text>
 </g>
 </svg>
@@ -125,7 +125,7 @@
       <div class="tslot until" data-from="3"><div class="term" data-cast="C2" data-play-step="3" data-rows="20"></div></div>
       <div class="tslot until live" data-from="5">
         <p class="lv-h">LIVE in Claude Code</p>
-        <pre class="cmd" data-live>cd /tmp/ws1-ctx</pre>
+        <pre class="cmd" data-live>cd demo/context</pre>
         <pre class="cmd" data-live>claude --model haiku --strict-mcp-config --setting-sources "" --no-chrome</pre>
         <pre class="cmd in" data-live>/context</pre>
         <pre class="cmd in" data-live>Read the whole file big.txt and tell me what it is about in one sentence.</pre>
@@ -136,11 +136,11 @@
   <ol class="captions">
     <li>Plan: give one fact, read a big file, look at the window.</li>
     <li>Play C1. The model reads the whole log of 99 KB.</li>
-    <li>Play C2. The window holds 54.5k of 1m tokens.</li>
-    <li>Messages hold 40.3k tokens. The window is 5% full.</li>
+    <li>Play C2. The window holds 73.3k of 1m tokens.</li>
+    <li>Messages hold 42.2k tokens. The window is 7% full.</li>
     <li>Live: run /context in Claude Code. Read big.txt. Run /context again.</li>
   </ol>
-  <aside class="notes" lang="bn">[STEP 1] এবার context window নিজের চোখে দেখব। তিনটা কাজ। প্রথমে model-কে একটা তথ্য দিই, তারপর একটা বড় file পড়াই। এরপর /context দিয়ে window-টা দেখি। শেষে আমি live করে দেখাব। [STEP 2] [DEMO C1] [DO: C1 cast এই step-এ নিজে চলবে] প্রথম call-এ আমরা বললাম dev server-এর port 8081। দ্বিতীয় call-এ model পুরো big.txt পড়ল। এটা 99 KB-এর একটা log, 679টা entry। শেষে model এক বাক্যে বলল ফাইলটা কী নিয়ে। [STEP 3] [DEMO C2] [DO: C2 cast নিজে চলবে] এবার /context। এটা Claude Code-এর নিজের হিসাব। দেখো, Tokens: 54.5k, 1m-এর মধ্যে, মানে 5%। এই মোটের বড় অংশ আমাদের পড়ানো file। [STEP 4] diagram-এ দেখো, 1m-এর window-এ ব্যবহার হয়েছে খুব সামান্য। Messages-এ 40.3k। বাকিটা system prompt 3.1k, tools 9k আর skills 2.1k, মিলিয়ে প্রায় 14k। এগুলো আমরা কিছু লেখার আগেই desk-এ থাকে। একটা file-ই desk-এর সবচেয়ে বড় অংশ নিয়েছে। Free space 912.5k। বাকি 33k autocompact-এর জন্য আলাদা রাখা। একটা জিনিস মনে রাখো। window-এর মাপ 1m এসেছে haiku-র জন্য। অন্য model-এ অন্য মাপ হতে পারে। তাই 200k মুখস্থ কোরো না। [STEP 5] [LIVE] [DO: cd /tmp/ws1-ctx, তারপর slide-এর claude command চালাও। /context লেখো। big.txt পড়াও। আবার /context লেখো। folder আগে থেকে bash demo/context/env.sh দিয়ে বানানো থাকবে।] এবার আমি নিজে চালাচ্ছি। দেখো, messages প্রায় শূন্য ছিল, এখন লাফিয়ে বেড়েছে। এখানে model একটা file পড়ার পর কী ঘটে, তুমি নিজের চোখে দেখবে। এই কারণেই বড় file পড়ানোর আগে দুইবার ভাবা ভালো। এখানের সংখ্যা cast-এর সংখ্যা থেকে আলাদা হবে। সংখ্যা না, আকারটা দেখো। তিনটা জিনিস খেয়াল করো। এক, শুরুতে messages প্রায় শূন্য। দুই, file পড়ার পর messages অনেক বেড়ে যায়। তিন, তবু free space অনেকটা বাকি থাকে। [DO: live-এর সংখ্যা প্রায় 30k থেকে প্রায় 100k হতে পারে। model দুইবার file পড়লেও ঘাবড়িয়ো না। screen-এ নিজের project বা tool-এর নাম এলে থামো। live না চললে C2 cast-এ ফিরে যাও।]</aside>
+  <aside class="notes" lang="bn">[STEP 1] এবার context window নিজের চোখে দেখব। তিনটা কাজ। প্রথমে model-কে একটা তথ্য দিই, তারপর একটা বড় file পড়াই। এরপর /context দিয়ে window-টা দেখি। শেষে আমি live করে দেখাব। [STEP 2] [DEMO C1] [DO: C1 cast এই step-এ নিজে চলবে] Claude Code চালু করে প্রথম message-এ আমরা বললাম dev server-এর port 8081। দ্বিতীয় message-এ model পুরো big.txt পড়ল। এটা 99 KB-এর একটা log, 679টা entry। শেষে model এক বাক্যে বলল ফাইলটা কী নিয়ে। [STEP 3] [DEMO C2] [DO: C2 cast নিজে চলবে] এবার /context। এটা Claude Code-এর নিজের হিসাব। দেখো, 73.3k token, 1m-এর মধ্যে, মানে 7%। এই মোটের বড় অংশ আমাদের পড়ানো file। [STEP 4] diagram-এ দেখো, 1m-এর window-এ ব্যবহার হয়েছে খুব সামান্য। Messages-এ 42.2k। বাকিটা system prompt 3.5k, tools 25.1k আর skills 2.5k, মিলিয়ে প্রায় 31k। এগুলো আমরা কিছু লেখার আগেই desk-এ থাকে। একটা file-ই desk-এর সবচেয়ে বড় অংশ নিয়েছে। Free space 893.7k। বাকি 33k autocompact-এর জন্য আলাদা রাখা। একটা জিনিস মনে রাখো। window-এর মাপ 1m এসেছে haiku-র জন্য। অন্য model-এ অন্য মাপ হতে পারে। তাই 200k মুখস্থ কোরো না। [STEP 5] [LIVE] [DO: workshop-1 folder থেকে cd demo/context, তারপর slide-এর claude command চালাও। /context লেখো। big.txt পড়াও। আবার /context লেখো।] এবার আমি নিজে চালাচ্ছি। দেখো, messages প্রায় শূন্য ছিল, এখন লাফিয়ে বেড়েছে। এখানে model একটা file পড়ার পর কী ঘটে, তুমি নিজের চোখে দেখবে। এই কারণেই বড় file পড়ানোর আগে দুইবার ভাবা ভালো। এখানের সংখ্যা cast-এর সংখ্যা থেকে আলাদা হবে। সংখ্যা না, আকারটা দেখো। তিনটা জিনিস খেয়াল করো। এক, শুরুতে messages প্রায় শূন্য। দুই, file পড়ার পর messages অনেক বেড়ে যায়। তিন, তবু free space অনেকটা বাকি থাকে। [DO: live-এর সংখ্যা প্রায় 30k থেকে প্রায় 100k হতে পারে। model দুইবার file পড়লেও ঘাবড়িয়ো না। screen-এ নিজের project বা tool-এর নাম এলে থামো। live না চললে C2 cast-এ ফিরে যাও।]</aside>
   <script>Deck.onStep('context-3',function(s,el){var o=el.querySelector('.ov');if(o)o.classList.toggle('on',[2,3,5].indexOf(s)>=0);var p=el.querySelector('#c3-plan');if(p)p.classList.toggle('gone',s===4);});</script>
 </section>
 
@@ -154,15 +154,15 @@
 <section class="slide" id="context-4" data-topic="Context window" data-minutes="2" data-steps="6">
   <h2>Compaction keeps a summary and loses details</h2>
   <div class="stage">
-    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Two bars. Before compaction messages hold 40.3k tokens and the total is 54.5k. After compaction messages hold 3.2k tokens and the total is 17.4k. A card says the summary kept the port but cannot keep every line of the log.">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Two bars. Before compaction messages hold 42.2k tokens and the total is 73.3k. After compaction messages hold 6.4k tokens and the total is 36.7k. A card says the summary kept the port but cannot keep every line of the log.">
 <g data-step="1">
-<text class="lbl lg" x="20" y="112">Before</text><rect class="node c1" x="180" y="60" width="235" height="80" rx="10"/><text class="lbl mid" x="297" y="108">System + tools</text><rect class="node c4" x="415" y="60" width="665" height="80" rx="10"/><text class="lbl lg mid" x="747" y="110">Messages 40.3k</text><text class="lbl" x="180" y="176">Total 54.5k of 1m (5%)</text>
+<text class="lbl lg" x="20" y="112">Before</text><rect class="node c1" x="180" y="60" width="382" height="80" rx="10"/><text class="lbl mid" x="371" y="108">System + tools</text><rect class="node c4" x="562" y="60" width="518" height="80" rx="10"/><text class="lbl lg mid" x="821" y="110">Messages 42.2k</text><text class="lbl" x="180" y="176">Total 73.3k of 1m (7%)</text>
 </g>
 <path class="edge" d="M330 196 V250" marker-end="url(#arrow)" class="until" data-step="4" data-from="4"/>
 <text class="lbl mono" x="350" y="232" class="until" data-step="4" data-from="4">/compact</text>
 <text class="lbl-2" x="490" y="232" class="until" data-step="4" data-from="4">The model writes a summary.</text>
 <g class="until" data-step="4" data-from="4">
-<text class="lbl lg" x="20" y="314">After</text><rect class="node c1" x="180" y="262" width="234" height="80" rx="10"/><text class="lbl mid" x="297" y="310">System + tools</text><rect class="node c3" x="414" y="262" width="53" height="80" rx="10"/><text class="lbl lg" x="484" y="312">Messages 3.2k</text><text class="lbl" x="180" y="378">Total 17.4k of 1m (2%)</text>
+<text class="lbl lg" x="20" y="314">After</text><rect class="node c1" x="180" y="262" width="373" height="80" rx="10"/><text class="lbl mid" x="366" y="310">System + tools</text><rect class="node c3" x="553" y="262" width="79" height="80" rx="10"/><text class="lbl lg" x="650" y="312">Messages 6.4k</text><text class="lbl" x="180" y="378">Total 36.7k of 1m (4%)</text>
 </g>
 <g class="until" data-step="6" data-from="6">
 <rect class="node c3" x="20" y="396" width="1160" height="96" rx="18"/><text class="lbl lg" x="48" y="440">The summary kept the port: 8081.</text><text class="lbl-2" x="48" y="474">It cannot keep every line of the log.</text>
@@ -175,14 +175,14 @@
     </div>
   </div>
   <ol class="captions">
-    <li>Before compaction, messages hold 40.3k tokens. The total is 54.5k.</li>
+    <li>Before compaction, messages hold 42.2k tokens. The total is 73.3k.</li>
     <li>Play C3. The model writes a summary and drops the old messages.</li>
-    <li>Play C4. Messages now hold 3.2k tokens. The total is 17.4k.</li>
+    <li>Play C4. Messages now hold 6.4k tokens. The total is 36.7k.</li>
     <li>The summary replaces the old messages.</li>
     <li>Play C5. The model still answers 8081.</li>
     <li>The summary keeps key facts. Small details can leave.</li>
   </ol>
-  <aside class="notes" lang="bn">[STEP 1] আগের অবস্থা মনে করো। messages-এ 40.3k token। মোট 54.5k, 1m-এর মধ্যে। [STEP 2] [DEMO C3] [DO: C3 cast নিজে চলবে] এবার /compact। model এখন পুরো chat-এর একটা ছোট summary লিখছে। এতে প্রায় 9 সেকেন্ড লাগল। output-এ কোনো উত্তর নেই। শুধু local_command compact আর is_error false। মানে কাজটা ঠিকভাবে হয়েছে। [STEP 3] [DEMO C4] [DO: C4 cast নিজে চলবে] আবার /context। messages নেমে এসেছে 3.2k-এ। মোট 17.4k, মানে 2%। [STEP 4] diagram-এ দেখো। নিচের সারিতে system অংশ একই আছে, কিন্তু messages প্রায় মিলিয়ে গেছে। পুরোনো messages-এর জায়গায় এখন একটা summary। [STEP 5] [DEMO C5] [DO: C5 cast নিজে চলবে] এবার সেই প্রশ্ন: আমি শুরুতে কোন port দিয়েছিলাম? model বলল 8081। summary port-টা মনে রেখেছে। [STEP 6] কিন্তু সাবধান। 40.3k নেমে 3.2k হয়েছে। মানে অনেক খুঁটিনাটি বাদ গেছে। summary গুরুত্বপূর্ণ কথা রাখে। কিন্তু log-এর হুবহু কোনো লাইন হারিয়ে যেতে পারে। [ASK] তোমার কোন কাজে এই হারানোটা বিপদ ডেকে আনবে? [PAUSE 5s] বাসায় worksheet-এ তোমরা নিজে /context, বড় file, /compact আর আবার /context করে দেখবে, কী বাদ পড়ল।</aside>
+  <aside class="notes" lang="bn">[STEP 1] আগের অবস্থা মনে করো। messages-এ 42.2k token। মোট 73.3k, 1m-এর মধ্যে। [STEP 2] [DEMO C3] [DO: C3 cast নিজে চলবে] এবার /compact। model এখন পুরো chat-এর একটা ছোট summary লিখছে। শেষে screen-এ লেখা আসে Compacted। কোনো error নেই। মানে কাজটা ঠিকভাবে হয়েছে। [STEP 3] [DEMO C4] [DO: C4 cast নিজে চলবে] আবার /context। messages নেমে এসেছে 6.4k-এ। মোট 36.7k, মানে 4%। [STEP 4] diagram-এ দেখো। নিচের সারিতে system অংশ একই আছে, কিন্তু messages প্রায় মিলিয়ে গেছে। পুরোনো messages-এর জায়গায় এখন একটা summary। [STEP 5] [DEMO C5] [DO: C5 cast নিজে চলবে] এবার সেই প্রশ্ন: আমি শুরুতে কোন port দিয়েছিলাম? model বলল 8081। summary port-টা মনে রেখেছে। [STEP 6] কিন্তু সাবধান। 42.2k নেমে 6.4k হয়েছে। মানে অনেক খুঁটিনাটি বাদ গেছে। summary গুরুত্বপূর্ণ কথা রাখে। কিন্তু log-এর হুবহু কোনো লাইন হারিয়ে যেতে পারে। [ASK] তোমার কোন কাজে এই হারানোটা বিপদ ডেকে আনবে? [PAUSE 5s] বাসায় worksheet-এ তোমরা নিজে /context, বড় file, /compact আর আবার /context করে দেখবে, কী বাদ পড়ল।</aside>
   <script>Deck.onStep('context-4',function(s,el){var o=el.querySelector('.ov');if(o)o.classList.toggle('on',[2,3,5].indexOf(s)>=0);});</script>
 </section>
 
@@ -191,8 +191,8 @@
   <div class="stage">
 <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Command, the file big.txt, the Read tool, the context window with the file inside, and the result.">
 <g data-step="1">
-<rect class="node inv" x="20" y="16" width="1160" height="96" rx="14"/><text class="lbl mono inv-text" x="44" y="50">$ claude -p &quot;Read the whole file big.txt and tell me what it is about</text>
-<text class="lbl mono inv-text" x="44" y="84">  in one sentence.&quot; --allowedTools Read --resume &quot;$(cat session.id)&quot;</text>
+<rect class="node inv" x="20" y="16" width="1160" height="96" rx="14"/><text class="lbl mono inv-text" x="44" y="50">&gt; Read the whole file big.txt and tell me what it is about</text>
+<text class="lbl mono inv-text" x="44" y="84">  in one sentence.</text>
 </g>
 <rect class="node ring" x="14" y="10" width="1172" height="108" rx="18" data-step="1"/>
 <path class="edge" d="M165 118 V146" marker-end="url(#arrow)" data-step="2"/>
@@ -216,7 +216,7 @@
 </svg>
   </div>
   <ol class="captions">
-    <li>Run claude with the file big.txt and the Read tool.</li>
+    <li>In Claude Code, ask the model to read the file big.txt.</li>
     <li>The file is 99 KB. It holds 679 log entries.</li>
     <li>The Read tool puts the whole file into the context window.</li>
     <li>The model writes one sentence about the log.</li>
@@ -225,11 +225,11 @@
 </section>
 
 <section class="slide anim-only" id="anim-C2" data-cmd="C2" data-steps="5">
-  <h2>Before compaction the window is 5% full</h2>
+  <h2>Before compaction the window is 7% full</h2>
   <div class="stage">
-<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Before compaction the window is 5% full. Command, the context command, tokens by category, the totals.">
+<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Before compaction the window is 7% full. Command, the context command, tokens by category, the totals.">
 <g data-step="1">
-<rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">$ claude -p &quot;/context&quot; --resume &quot;$(cat session.id)&quot; | head -16</text>
+<rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">&gt; /context</text>
 </g>
 <rect class="node ring" x="14" y="10" width="1172" height="82" rx="18" data-step="1"/>
 <path class="edge" d="M165 92 V146" marker-end="url(#arrow)" data-step="2"/>
@@ -239,29 +239,29 @@
 <path class="edge" d="M284 247 H326" marker-end="url(#arrow)" data-step="2 3"/>
 <rect class="node plain" x="330" y="152" width="850" height="190" rx="18"/>
 <g data-step="3">
-<text class="lbl-2" x="350" y="192">System prompt</text><rect class="node c1" x="540" y="170" width="37" height="28" rx="6"/><text class="lbl-2 mono" x="589" y="192">3.1k</text>
+<text class="lbl-2" x="350" y="192">System prompt</text><rect class="node c1" x="540" y="170" width="42" height="28" rx="6"/><text class="lbl-2 mono" x="594" y="192">3.5k</text>
 </g>
 <g data-step="3">
-<text class="lbl-2" x="350" y="230">System tools</text><rect class="node c1" x="540" y="208" width="107" height="28" rx="6"/><text class="lbl-2 mono" x="659" y="230">9k</text>
+<text class="lbl-2" x="350" y="230">System tools</text><rect class="node c1" x="540" y="208" width="299" height="28" rx="6"/><text class="lbl-2 mono" x="851" y="230">25.1k</text>
 </g>
 <g data-step="3">
-<text class="lbl-2" x="350" y="268">Skills</text><rect class="node c1" x="540" y="246" width="25" height="28" rx="6"/><text class="lbl-2 mono" x="577" y="268">2.1k</text>
+<text class="lbl-2" x="350" y="268">Skills</text><rect class="node c1" x="540" y="246" width="30" height="28" rx="6"/><text class="lbl-2 mono" x="582" y="268">2.5k</text>
 </g>
 <g data-step="3 5">
-<text class="lbl-2" x="350" y="306">Messages</text><rect class="node c4" x="540" y="284" width="480" height="28" rx="6"/><text class="lbl-2 mono" x="1032" y="306">40.3k</text>
+<text class="lbl-2" x="350" y="306">Messages</text><rect class="node c4" x="540" y="284" width="503" height="28" rx="6"/><text class="lbl-2 mono" x="1055" y="306">42.2k</text>
 </g>
 
 <g class="until" data-step="4" data-from="4">
-<rect class="node plain" x="20" y="366" width="560" height="100" rx="16"/><text class="lbl-2" x="40" y="400">Used</text><text class="big hl" x="40" y="448">54.5k of 1m (5%)</text><rect class="node c2" x="600" y="366" width="580" height="100" rx="16"/><text class="lbl-2" x="620" y="400">Free space</text><text class="big" x="620" y="448">912.5k</text>
+<rect class="node plain" x="20" y="366" width="560" height="100" rx="16"/><text class="lbl-2" x="40" y="400">Used</text><text class="big hl" x="40" y="448">73.3k of 1m (7%)</text><rect class="node c2" x="600" y="366" width="580" height="100" rx="16"/><text class="lbl-2" x="620" y="400">Free space</text><text class="big" x="620" y="448">893.7k</text>
 </g>
 </svg>
   </div>
   <ol class="captions">
-    <li>Run /context on the same session.</li>
+    <li>Run /context in the same session.</li>
     <li>Claude Code counts the tokens of the window.</li>
     <li>The tokens split into categories. Messages are the largest part.</li>
-    <li>The window holds 54.5k of 1m tokens (5%). Free space is 912.5k.</li>
-    <li>Messages hold 40.3k tokens. The big file is in them.</li>
+    <li>The window holds 73.3k of 1m tokens (7%). Free space is 893.7k.</li>
+    <li>Messages hold 42.2k tokens. The big file is in them.</li>
   </ol>
 </section>
 
@@ -270,7 +270,7 @@
   <div class="stage">
 <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Command, old messages go to the model, the model writes a summary, the result, and the old messages leave the window.">
 <g data-step="1">
-<rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">$ claude -p &quot;/compact&quot; --resume &quot;$(cat session.id)&quot; --output-format json</text>
+<rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">&gt; /compact</text>
 </g>
 <rect class="node ring" x="14" y="10" width="1172" height="82" rx="18" data-step="1"/>
 <path class="edge" d="M165 92 V146" marker-end="url(#arrow)" data-step="2"/>
@@ -289,7 +289,7 @@
 <rect class="node c3" x="680" y="152" width="500" height="190" rx="18"/><text class="lbl lg" x="704" y="190">Summary</text><rect class="skel" x="704" y="222" width="300" height="12" rx="6"/><rect class="skel" x="704" y="252" width="240" height="12" rx="6"/><rect class="skel" x="704" y="282" width="270" height="12" rx="6"/>
 </g>
 <g class="until" data-step="4" data-from="4">
-<rect class="node plain" x="20" y="366" width="760" height="100" rx="16"/><text class="lbl mono" x="40" y="405">local_command: compact</text><text class="lbl mono" x="40" y="442">is_error: false   duration_ms: 9191</text>
+<rect class="node plain" x="20" y="366" width="760" height="100" rx="16"/><text class="lbl mono" x="40" y="405">Compacted (ctrl+o to see full summary)</text><text class="lbl mono" x="40" y="442">Referenced file big.txt</text>
 </g>
 <g class="until" data-step="5" data-from="5">
 <rect class="node c2" x="800" y="366" width="380" height="100" rx="16"/><text class="lbl" x="820" y="408">Old messages leave</text><text class="lbl" x="820" y="440">the window.</text>
@@ -297,20 +297,20 @@
 </svg>
   </div>
   <ol class="captions">
-    <li>Run /compact on the same session.</li>
+    <li>Run /compact in the same session.</li>
     <li>Claude Code sends the old messages to the model.</li>
     <li>The model writes a short summary.</li>
-    <li>The result shows no error. The call took 9.2 seconds.</li>
+    <li>Claude Code shows Compacted. It shows no error.</li>
     <li>The old messages leave the window. The summary stays.</li>
   </ol>
 </section>
 
 <section class="slide anim-only" id="anim-C4" data-cmd="C4" data-steps="5">
-  <h2>After compaction the window is 2% full</h2>
+  <h2>After compaction the window is 4% full</h2>
   <div class="stage">
-<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="After compaction the window is 2% full. Command, the context command, tokens by category, the totals.">
+<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="After compaction the window is 4% full. Command, the context command, tokens by category, the totals.">
 <g data-step="1">
-<rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">$ claude -p &quot;/context&quot; --resume &quot;$(cat session-compacted.id)&quot; | head -16</text>
+<rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">&gt; /context</text>
 </g>
 <rect class="node ring" x="14" y="10" width="1172" height="82" rx="18" data-step="1"/>
 <path class="edge" d="M165 92 V146" marker-end="url(#arrow)" data-step="2"/>
@@ -320,31 +320,31 @@
 <path class="edge" d="M284 247 H326" marker-end="url(#arrow)" data-step="2 3"/>
 <rect class="node plain" x="330" y="152" width="850" height="190" rx="18"/>
 <g data-step="3">
-<text class="lbl-2" x="350" y="192">System prompt</text><rect class="node c1" x="540" y="170" width="37" height="28" rx="6"/><text class="lbl-2 mono" x="589" y="192">3.1k</text>
+<text class="lbl-2" x="350" y="192">System prompt</text><rect class="node c1" x="540" y="170" width="42" height="28" rx="6"/><text class="lbl-2 mono" x="594" y="192">3.5k</text>
 </g>
 <g data-step="3">
-<text class="lbl-2" x="350" y="230">System tools</text><rect class="node c1" x="540" y="208" width="106" height="28" rx="6"/><text class="lbl-2 mono" x="658" y="230">8.9k</text>
+<text class="lbl-2" x="350" y="230">System tools</text><rect class="node c1" x="540" y="208" width="290" height="28" rx="6"/><text class="lbl-2 mono" x="842" y="230">24.4k</text>
 </g>
 <g data-step="3">
-<text class="lbl-2" x="350" y="268">Skills</text><rect class="node c1" x="540" y="246" width="25" height="28" rx="6"/><text class="lbl-2 mono" x="577" y="268">2.1k</text>
+<text class="lbl-2" x="350" y="268">Skills</text><rect class="node c1" x="540" y="246" width="30" height="28" rx="6"/><text class="lbl-2 mono" x="582" y="268">2.5k</text>
 </g>
 <g data-step="3 5">
-<text class="lbl-2" x="350" y="306">Messages</text><rect class="node c4" x="540" y="284" width="38" height="28" rx="6"/><text class="lbl-2 mono" x="590" y="306">3.2k</text>
+<text class="lbl-2" x="350" y="306">Messages</text><rect class="node c4" x="540" y="284" width="76" height="28" rx="6"/><text class="lbl-2 mono" x="628" y="306">6.4k</text>
 </g>
 <g class="until" data-step="5" data-from="5">
-<rect class="node dashed" x="540" y="278" width="480" height="40" rx="8"/><text class="lbl-3" x="1030" y="306">Before: 40.3k</text>
+<rect class="node dashed" x="540" y="278" width="503" height="40" rx="8"/><text class="lbl-3 end" x="1031" y="306">Before: 42.2k</text>
 </g>
 <g class="until" data-step="4" data-from="4">
-<rect class="node plain" x="20" y="366" width="560" height="100" rx="16"/><text class="lbl-2" x="40" y="400">Used</text><text class="big hl" x="40" y="448">17.4k of 1m (2%)</text><rect class="node c2" x="600" y="366" width="580" height="100" rx="16"/><text class="lbl-2" x="620" y="400">Free space</text><text class="big" x="620" y="448">949.6k</text>
+<rect class="node plain" x="20" y="366" width="560" height="100" rx="16"/><text class="lbl-2" x="40" y="400">Used</text><text class="big hl" x="40" y="448">36.7k of 1m (4%)</text><rect class="node c2" x="600" y="366" width="580" height="100" rx="16"/><text class="lbl-2" x="620" y="400">Free space</text><text class="big" x="620" y="448">930.3k</text>
 </g>
 </svg>
   </div>
   <ol class="captions">
-    <li>Run /context on the compacted session.</li>
+    <li>Run /context again in the same session.</li>
     <li>Claude Code counts the tokens of the window again.</li>
     <li>The categories are the same. Messages are now much smaller.</li>
-    <li>The window holds 17.4k of 1m tokens (2%). Free space is 949.6k.</li>
-    <li>Messages fell from 40.3k to 3.2k tokens.</li>
+    <li>The window holds 36.7k of 1m tokens (4%). Free space is 930.3k.</li>
+    <li>Messages fell from 42.2k to 6.4k tokens.</li>
   </ol>
 </section>
 
@@ -353,11 +353,10 @@
   <div class="stage">
 <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Command, the question, the summary in the window, the model, the answer 8081, and a takeaway.">
 <g data-step="1">
-<rect class="node inv" x="20" y="16" width="1160" height="96" rx="14"/><text class="lbl mono inv-text" x="44" y="50">$ claude -p &quot;What exact port number did I give you at the start?&quot;</text>
-<text class="lbl mono inv-text" x="44" y="84">  --resume &quot;$(cat session-compacted.id)&quot;</text>
+<rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">&gt; What exact port number did I give you at the start?</text>
 </g>
-<rect class="node ring" x="14" y="10" width="1172" height="108" rx="18" data-step="1"/>
-<path class="edge" d="M165 118 V146" marker-end="url(#arrow)" data-step="2"/>
+<rect class="node ring" x="14" y="10" width="1172" height="82" rx="18" data-step="1"/>
+<path class="edge" d="M165 92 V146" marker-end="url(#arrow)" data-step="2"/>
 <g data-step="2">
 <rect class="node c1" x="20" y="152" width="240" height="190" rx="18"/><text class="lbl lg mid" x="140" y="204">Question</text><text class="lbl-2 mid" x="140" y="252">What port did I</text><text class="lbl-2 mid" x="140" y="282">give you first?</text>
 </g>

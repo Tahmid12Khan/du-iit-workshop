@@ -1,0 +1,6 @@
+# Start Claude Code in the folder of the large file.
+$ cd context && claude --model haiku --strict-mcp-config --setting-sources "" --no-chrome
+# Give the model one detail to remember.
+> Remember: our dev server port is 8081. Reply with OK.
+# Make the model read a 99 KB file.
+> Read the whole file big.txt and tell me what it is about in one sentence.

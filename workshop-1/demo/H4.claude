@@ -1,0 +1,4 @@
+# Check the made-up package in the npm registry.
+> !npm view fastjson-validator-kit version 2>&1 | head -3
+# Leave Claude Code.
+> /exit

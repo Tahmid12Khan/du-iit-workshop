@@ -41,12 +41,12 @@
   <div class="stage">
     <div class="over" data-step="2"><div class="term" data-cast="H1" data-play-step="2"></div></div>
     <div class="over" data-step="4"><div class="term" data-cast="H2" data-play-step="4"></div></div>
-    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Flow one: ask the model for the latest express version, the model answers 5.1.0 in 3 of 3 runs. Flow two: ask npm, the registry answers 5.3.0. A timeline shows the training cutoff between what the model knows and what it does not know.">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Flow one: ask the model for the latest express version, the model answers 5.1.0. Flow two: ask npm, the registry answers 5.3.0. A timeline shows the training cutoff between what the model knows and what it does not know.">
 <g data-step="1 2 5" data-from="">
 <rect class="node plain" x="10" y="30" width="330" height="130" rx="18"/><text class="lbl lg mid" x="175" y="91">Ask the model</text><text class="lbl-2 mid" x="175" y="127">Latest version of express?</text><path class="edge" d="M344 95 H406" marker-end="url(#arrow)"/><rect class="node c1" x="410" y="30" width="330" height="130" rx="18"/><text class="lbl lg mid" x="575" y="91">Model</text><text class="lbl-2 mid" x="575" y="127">No tools. Training text only.</text><path class="edge" d="M744 95 H806" marker-end="url(#arrow)"/>
 </g>
 <g data-step="2 5" data-from="2">
-<rect class="node c4" x="810" y="30" width="380" height="130" rx="18"/><text class="huge mono mid" x="1000" y="99">5.1.0</text><text class="lbl-2 mid" x="1000" y="141">In 3 of 3 runs</text>
+<rect class="node c4" x="810" y="30" width="380" height="130" rx="18"/><text class="huge mono mid" x="1000" y="99">5.1.0</text><text class="lbl-2 mid" x="1000" y="141">No doubt shown</text>
 </g>
 <g data-step="3 4 5" data-from="3">
 <rect class="node plain" x="10" y="190" width="330" height="130" rx="18"/><text class="lbl lg mid" x="175" y="251">Ask npm</text><text class="lbl-2 mono mid" x="175" y="287">npm view express version</text><path class="edge" d="M344 255 H406" marker-end="url(#arrow)"/><rect class="node c1" x="410" y="190" width="330" height="130" rx="18"/><text class="lbl lg mid" x="575" y="251">npm registry</text><text class="lbl-2 mid" x="575" y="287">Live data</text><path class="edge" d="M744 255 H806" marker-end="url(#arrow)"/>
@@ -66,12 +66,12 @@
   </div>
   <ol class="captions">
     <li>Ask the model for the latest version of express.</li>
-    <li>The model answers 5.1.0 in 3 of 3 runs. It shows no doubt.</li>
+    <li>The model answers 5.1.0. It shows no doubt.</li>
     <li>Ask npm for the real version.</li>
     <li>npm returns 5.3.0.</li>
     <li>The model gave an old version. Its knowledge stops at the training cutoff.</li>
   </ol>
-  <aside class="notes" lang="bn">[STEP 1] এবার একটা আসল পরীক্ষা। আমি model-কে জিজ্ঞেস করছি, npm package express-এর সর্বশেষ version কত? শুধু সংখ্যাটা বলতে বলেছি। প্রশ্ন সোজা, কোনো ধাঁধা নেই। [STEP 2] [DEMO H1] [DO: H1 cast নিজে চলবে] তিনবার চালিয়েছি। তিনবারই উত্তর 5.1.0, একটুও দ্বিধা নেই। কখনও কখনও model নিজেই বলে, আমি live registry দেখতে পারি না। সেটা ভালো আচরণ। কিন্তু এই recording-এ সে সোজা 5.1.0 বলেছে। [PAUSE 3s] [STEP 3] এবার model-কে বিশ্বাস না করে আমরা npm-কে জিজ্ঞেস করি। [STEP 4] [DEMO H2] [DO: H2 cast নিজে চলবে] npm view express version। আমি যেদিন মেপেছি, মানে 2026-10-16, সেদিন npm বলছে 5.3.0। তুমি আজ চালালে নতুন version-ও দেখতে পারো। [STEP 5] তাহলে model-এর উত্তর পুরোনো। কেন? model শুধু training data পর্যন্ত জানে। এই training cutoff-এর পরে যা ঘটেছে, সে জানে না। আর সে নিজেও জানে না যে সে জানে না। তাই পুরোনো তথ্যও সে সত্যের মতো বলে, যেন পুরোনো খবরের কাগজ পড়ে আজকের খবর বলছে। [ASK] তোমরা কি কখনও পুরোনো library version নিয়ে AI-এর কথায় ঝামেলায় পড়েছ? [PAUSE 5s]</aside>
+  <aside class="notes" lang="bn">[STEP 1] এবার একটা আসল পরীক্ষা। আমি model-কে জিজ্ঞেস করছি, npm package express-এর সর্বশেষ version কত? শুধু সংখ্যাটা বলতে বলেছি। প্রশ্ন সোজা, কোনো ধাঁধা নেই। [STEP 2] [DEMO H1] [DO: H1 cast নিজে চলবে] Claude Code চালিয়েছি --tools "" দিয়ে, মানে model-এর হাতে কোনো tool নেই। উত্তর এল 5.1.0, একটুও দ্বিধা নেই। কখনও কখনও model নিজেই বলে, আমি live registry দেখতে পারি না। সেটা ভালো আচরণ। কিন্তু এই recording-এ সে সোজা 5.1.0 বলেছে। [PAUSE 3s] [STEP 3] এবার model-কে বিশ্বাস না করে আমরা npm-কে জিজ্ঞেস করি। [STEP 4] [DEMO H2] [DO: H2 cast নিজে চলবে] একই session-এ ! দিয়ে shell command চালাই: npm view express version। আমি যেদিন মেপেছি, মানে 2026-10-16, সেদিন npm বলছে 5.3.0। তুমি আজ চালালে নতুন version-ও দেখতে পারো। [STEP 5] তাহলে model-এর উত্তর পুরোনো। কেন? model শুধু training data পর্যন্ত জানে। এই training cutoff-এর পরে যা ঘটেছে, সে জানে না। আর সে নিজেও জানে না যে সে জানে না। তাই পুরোনো তথ্যও সে সত্যের মতো বলে, যেন পুরোনো খবরের কাগজ পড়ে আজকের খবর বলছে। [ASK] তোমরা কি কখনও পুরোনো library version নিয়ে AI-এর কথায় ঝামেলায় পড়েছ? [PAUSE 5s]</aside>
 </section>
 
 <section class="slide" id="hallucination-3" data-topic="Hallucination" data-minutes="1.5" data-steps="5">
@@ -140,12 +140,12 @@
 <section class="slide anim-only" id="anim-H1" data-cmd="H1" data-steps="5">
   <h2>The model answers 5.1.0 with no doubt</h2>
   <div class="stage">
-    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The command asks the model for the latest express version. Our code sends the prompt. The model has no tools. The result is 5.1.0 in 3 of 3 runs.">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The prompt asks the model for the latest express version. Claude Code sends the prompt. The model has no tools. The result is 5.1.0.">
 <g data-step="1" data-from="">
-<rect class="node plain" x="10" y="10" width="1180" height="110" rx="16"/><text class="lbl mono" x="34" y="54">$ cc &quot;Reply with ONLY the latest version number of the npm</text><text class="lbl mono" x="34" y="94">     package express. No other words.&quot;</text>
+<rect class="node plain" x="10" y="10" width="1180" height="110" rx="16"/><text class="lbl mono" x="34" y="54">&gt; Reply with ONLY the latest version number of the npm</text><text class="lbl mono" x="34" y="94">  package express. No other words.</text>
 </g>
 <g data-step="2" data-from="">
-<rect class="node plain" x="10" y="170" width="340" height="190" rx="18"/><text class="lbl lg mid" x="180" y="261">Our code</text><text class="lbl-2 mid" x="180" y="297">Sends the prompt</text>
+<rect class="node plain" x="10" y="170" width="340" height="190" rx="18"/><text class="lbl lg mid" x="180" y="261">Claude Code</text><text class="lbl-2 mid" x="180" y="297">Sends the prompt</text>
 </g>
 <path class="edge" d="M354 265 H436" marker-end="url(#arrow)" data-step="2 3"/>
 <g data-step="3" data-from="">
@@ -153,7 +153,7 @@
 </g>
 <path class="edge" d="M784 265 H866" marker-end="url(#arrow)" data-step="3 4"/>
 <g class="until" data-step="4 5" data-from="4">
-<rect class="node c4" x="870" y="170" width="320" height="190" rx="18"/><text class="huge mono mid" x="1030" y="269">5.1.0</text><text class="lbl-2 mid" x="1030" y="311">In 3 of 3 runs</text>
+<rect class="node c4" x="870" y="170" width="320" height="190" rx="18"/><text class="huge mono mid" x="1030" y="269">5.1.0</text><text class="lbl-2 mid" x="1030" y="311">No doubt shown</text>
 </g>
 <g class="until" data-step="5" data-from="5">
 <rect class="node c3" x="10" y="390" width="1180" height="80" rx="16"/><text class="lbl lg mid" x="600" y="440">The answer is firm. Check it with npm next.</text>
@@ -161,10 +161,10 @@
 </svg>
   </div>
   <ol class="captions">
-    <li>Type the command. It asks for the latest version of express 3 times.</li>
-    <li>Our code sends the prompt to the model.</li>
+    <li>Type the prompt in Claude Code. It asks for the latest version of express.</li>
+    <li>Claude Code sends the prompt to the model.</li>
     <li>The model has no tools. It answers from training text.</li>
-    <li>Result: 5.1.0 in 3 of 3 runs.</li>
+    <li>Result: 5.1.0.</li>
     <li>The answer is firm. Check it with npm next.</li>
   </ol>
 </section>
@@ -174,10 +174,10 @@
   <div class="stage">
     <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The command npm view express version asks the registry. The registry returns 5.3.0. The model said 5.1.0, so its answer is old.">
 <g data-step="1" data-from="">
-<rect class="node plain" x="10" y="10" width="1180" height="70" rx="16"/><text class="lbl mono" x="34" y="54">$ npm view express version</text>
+<rect class="node plain" x="10" y="10" width="1180" height="70" rx="16"/><text class="lbl mono" x="34" y="54">&gt; !npm view express version</text>
 </g>
 <g data-step="2" data-from="">
-<rect class="node plain" x="10" y="130" width="340" height="190" rx="18"/><text class="lbl lg mid" x="180" y="221">Terminal</text><text class="lbl-2 mid" x="180" y="257">Runs npm</text>
+<rect class="node plain" x="10" y="130" width="340" height="190" rx="18"/><text class="lbl lg mid" x="180" y="221">! command</text><text class="lbl-2 mid" x="180" y="257">Runs npm in a shell</text>
 </g>
 <path class="edge" d="M354 225 H436" marker-end="url(#arrow)" data-step="2 3"/>
 <g data-step="3" data-from="">
@@ -193,8 +193,8 @@
 </svg>
   </div>
   <ol class="captions">
-    <li>Type the command. It asks npm for the real version.</li>
-    <li>The terminal runs npm.</li>
+    <li>In Claude Code, type ! and the command. It asks npm for the real version.</li>
+    <li>Claude Code runs npm in a shell.</li>
     <li>npm asks the registry. The registry has live data.</li>
     <li>Result: 5.3.0 on 2026-10-16.</li>
     <li>The model said 5.1.0. That answer is old.</li>
@@ -206,7 +206,7 @@
   <div class="stage">
     <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The prompt asks about the package fastjson-validator-kit and allows the answer I do not know. The model says I do not know and invents no options.">
 <g data-step="1" data-from="">
-<rect class="node plain" x="10" y="10" width="1180" height="110" rx="16"/><text class="lbl mono" x="34" y="54">$ cc &quot;What config options does the npm package fastjson-validator-kit</text><text class="lbl mono" x="34" y="94">     support? If you are not sure, say I don't know.&quot;</text>
+<rect class="node plain" x="10" y="10" width="1180" height="110" rx="16"/><text class="lbl mono" x="34" y="54">&gt; What config options does the npm package fastjson-validator-kit</text><text class="lbl mono" x="34" y="94">  support? If you are not sure, say I don't know.</text>
 </g>
 <g data-step="2" data-from="">
 <rect class="node plain" x="10" y="170" width="340" height="190" rx="18"/><text class="lbl lg mid" x="180" y="244">Prompt</text><text class="lbl-2 mid" x="180" y="280">Allows the answer</text><text class="lbl-2 mid" x="180" y="312">I do not know</text>
@@ -225,8 +225,8 @@
 </svg>
   </div>
   <ol class="captions">
-    <li>Type the command. The prompt allows the answer I do not know.</li>
-    <li>Our code sends the prompt to the model.</li>
+    <li>Type the prompt. It allows the answer I do not know.</li>
+    <li>Claude Code sends the prompt to the model.</li>
     <li>The model does not know this package.</li>
     <li>Result: I do not know. It invents 0 options.</li>
     <li>In this run the model stays honest. Check it with a tool.</li>
@@ -238,10 +238,10 @@
   <div class="stage">
     <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The command npm view fastjson-validator-kit asks the registry. The registry returns E404, package not found.">
 <g data-step="1" data-from="">
-<rect class="node plain" x="10" y="10" width="1180" height="70" rx="16"/><text class="lbl mono" x="34" y="54">$ npm view fastjson-validator-kit version</text>
+<rect class="node plain" x="10" y="10" width="1180" height="70" rx="16"/><text class="lbl mono" x="34" y="54">&gt; !npm view fastjson-validator-kit version 2&gt;&amp;1 | head -3</text>
 </g>
 <g data-step="2" data-from="">
-<rect class="node plain" x="10" y="130" width="340" height="190" rx="18"/><text class="lbl lg mid" x="180" y="221">Terminal</text><text class="lbl-2 mid" x="180" y="257">Runs npm</text>
+<rect class="node plain" x="10" y="130" width="340" height="190" rx="18"/><text class="lbl lg mid" x="180" y="221">! command</text><text class="lbl-2 mid" x="180" y="257">Runs npm in a shell</text>
 </g>
 <path class="edge" d="M354 225 H436" marker-end="url(#arrow)" data-step="2 3"/>
 <g data-step="3" data-from="">
@@ -257,8 +257,8 @@
 </svg>
   </div>
   <ol class="captions">
-    <li>Type the command. It asks npm for the package.</li>
-    <li>The terminal runs npm.</li>
+    <li>Type ! and the command. It asks npm for the package.</li>
+    <li>Claude Code runs npm in a shell.</li>
     <li>npm asks the registry. The registry has no such package.</li>
     <li>Result: E404. The package does not exist.</li>
     <li>The tool proves the package does not exist.</li>

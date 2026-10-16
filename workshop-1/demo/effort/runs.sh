@@ -1,14 +1,19 @@
 # Sourced after lib.sh. Parallel puzzle runs with a live table.
 # usage: runs <expected> <n> <effort>...   (reads $PUZZLE, $RUN_ID; writes demo/effort/out/$RUN_ID.json)
 runs() {
+  [ -n "$ZSH_VERSION" ] && setopt local_options null_glob
   local expected="$1" n="$2"; shift 2
-  local dir; dir="$(mktemp -d)"
+  local dir="../work/runs"
+  rm -rf "$dir" && mkdir -p "$dir"
   local e i
-  for e in "$@"; do
-    for ((i = 1; i <= n; i++)); do
-      ( cc "$PUZZLE" --effort "$e" --max-budget-usd 1 > "$dir/$e.$i.json" 2>/dev/null; touch "$dir/$e.$i.done" ) &
+  # The outer subshell keeps an interactive shell from printing a job notice for each run.
+  (
+    for e in "$@"; do
+      for ((i = 1; i <= n; i++)); do
+        ( cc "$PUZZLE" --effort "$e" --max-budget-usd 1 > "$dir/$e.$i.json" 2>/dev/null; touch "$dir/$e.$i.done" ) &
+      done
     done
-  done
+  )
   local total=$(($# * n)) shown=0 f
   printf '%-7s %-4s %-8s %-9s %-8s %s\n' effort run answer correct? tokens seconds
   while [ "$shown" -lt "$total" ]; do

@@ -4,7 +4,8 @@ set -euo pipefail
 W="$(cd "$(dirname "$0")/.." && pwd)"
 id="$1"
 [ -f "$W/demo/$id.sh" ] || { echo "missing demo/$id.sh" >&2; exit 1; }
-tmp="$(mktemp -d)"
+tmp="$W/work/rec-$id"
+mkdir -p "$tmp"
 asciinema rec --overwrite --headless --window-size 100x26 -i 2 \
   -c "bash $W/demo/$id.sh" "$W/casts/$id.cast"
 # the header holds the absolute script path (privacy)

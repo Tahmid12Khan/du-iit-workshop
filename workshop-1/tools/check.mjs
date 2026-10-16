@@ -5,14 +5,13 @@ import { chromium } from 'playwright';
 import { spawnSync, execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync, existsSync, statSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
-import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { animHash } from './anim-hash.mjs';
 
 const TOOLS = dirname(fileURLToPath(import.meta.url));
 const W = join(TOOLS, '..');
 const argv = process.argv.slice(2);
-const OUT = argv.includes('--out') ? argv[argv.indexOf('--out') + 1] : join(tmpdir(), 'w1-check');
+const OUT = argv.includes('--out') ? argv[argv.indexOf('--out') + 1] : join(W, 'work', 'check');
 const SHOTS = !argv.includes('--skip-shots');
 mkdirSync(OUT, { recursive: true });
 
@@ -90,8 +89,8 @@ const dom = await main.page.evaluate(() => [...document.querySelectorAll('sectio
   };
 }));
 const sumMin = dom.filter((d) => !d.animOnly).reduce((a, d) => a + d.minutes, 0);
-check('slide counts', normal.length === 37 && anim.length === 27, `${normal.length} normal + ${anim.length} anim-only = ${slides.length}`);
-check('data-minutes on normal slides sum to 69.5', Math.abs(sumMin - 69.5) < 0.01, `sum ${sumMin}`);
+check('slide counts', normal.length === 38 && anim.length === 27, `${normal.length} normal + ${anim.length} anim-only = ${slides.length}`);
+check('data-minutes on normal slides sum to 71', Math.abs(sumMin - 71) < 0.01, `sum ${sumMin}`);
 const capBad = dom.filter((d) => d.steps !== d.caps).map((d) => `${d.id} steps ${d.steps} caps ${d.caps}`);
 check('captions count == data-steps on every slide', capBad.length === 0, capBad.length ? short(capBad) : `${dom.length} slides`);
 const animIds = new Set(anim.map((s) => s.cmd));
@@ -421,7 +420,7 @@ writeFileSync(join(OUT, 'defects.txt'), defectLog.join('\n'));
   const ordered = tr.ids.length === wantIds.length && tr.ids.every((id, i) => id === wantIds[i]);
   const headNums = tr.head.match(/[\d.]+/g) || [];
   check('transcript.html: one Bangla block per normal slide in deck order, Hind Siliguri, line-height 1.7, theme toggle, cue tags, totals in the header',
-    ordered && tr.bnBlocks === 37 && /Hind Siliguri/.test(tr.font) && Math.abs(tr.lh - 1.7) < 0.02 && tr.toggle === 3 && tr.cues > 100 && headNums[0] === '69.5',
+    ordered && tr.bnBlocks === 38 && /Hind Siliguri/.test(tr.font) && Math.abs(tr.lh - 1.7) < 0.02 && tr.toggle === 3 && tr.cues > 100 && headNums[0] === '71',
     `${tr.ids.length} articles, ${tr.bnBlocks} Bangla blocks, font ${tr.font}, lh ${tr.lh.toFixed(2)}, toggle ${tr.toggle}, cues ${tr.cues}, header ${tr.head.replace(/\s+/g, ' ')}`);
   await c3.close();
 }

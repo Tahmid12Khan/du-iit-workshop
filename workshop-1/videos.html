@@ -51,37 +51,37 @@
 <article class="card" id="cmd-T5">
   <header><span class="badge">T5</span><h3>See the Claude Code overhead on Hello</h3></header>
   <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;Hello&quot; --output-format json | jq .usage</pre></div>
-  <div class="field"><h4>Real result</h4><pre class="code result">Default Claude Code sends 17987 input tokens for the word Hello (2 + 0 + 17985), against 859 with the lean cc helper. Model haiku, no MCP servers, no plugins, no settings.</pre><ul class="nums"><li><span>total_tokens</span> 17987</li><li><span>input_tokens</span> 2</li><li><span>cache_creation_input_tokens</span> 0</li><li><span>cache_read_input_tokens</span> 17985</li><li><span>output_tokens</span> 62</li><li><span>lean_cc_total_tokens</span> 859</li><li><span>ratio_vs_lean</span> 20.9</li></ul><p class="note">Measured: 2.6 s, $0.0002</p></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Default Claude Code sends 19137 input tokens for the word Hello (2 + 19135 + 0), against 859 with the lean cc helper. Model haiku, no MCP servers, no plugins, no settings.</pre><ul class="nums"><li><span>total_tokens</span> 19137</li><li><span>input_tokens</span> 2</li><li><span>cache_creation_input_tokens</span> 19135</li><li><span>cache_read_input_tokens</span> 0</li><li><span>output_tokens</span> 93</li><li><span>lean_cc_total_tokens</span> 859</li><li><span>ratio_vs_lean</span> 22.3</li></ul></div>
   <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/T5.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/T5.mp4"></video></div></div>
 </article></div></section><section class="group" id="context"><h2>Context window</h2><div class="cards">
 <article class="card" id="cmd-C1">
   <header><span class="badge">C1</span><h3>Read a large file into the context</h3></header>
-  <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;Remember: our dev server port is 8081. Reply with OK.&quot; ; claude -p &quot;Read the whole file big.txt and tell me what it is about in one sentence.&quot; --allowedTools Read --resume &lt;id&gt;</pre></div>
-  <div class="field"><h4>Real result</h4><pre class="code result">The model read the 99 KB, 679-entry log and summarised it in one sentence. The session now holds the port detail and the whole file.</pre><ul class="nums"><li><span>file_bytes</span> 99062</li><li><span>file_entries</span> 679</li><li><span>read_step_input_tokens_summed_over_calls</span> 72527</li><li><span>read_step_cache_creation_tokens</span> 36409</li><li><span>read_step_cache_read_tokens</span> 36114</li></ul><p class="note">Measured: 4.8 s, $0.008</p></div>
+  <div class="field"><h4>Command</h4><pre class="code">cd context &amp;&amp; claude --model haiku --strict-mcp-config --setting-sources &quot;&quot; --no-chrome ; &gt; Remember: our dev server port is 8081. Reply with OK. ; &gt; Read the whole file big.txt and tell me what it is about in one sentence.</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model read the 99 KB, 679-entry log and summarised it in one sentence. The session now holds the port detail and the whole file.</pre><ul class="nums"><li><span>file_bytes</span> 99062</li><li><span>file_entries</span> 679</li></ul></div>
   <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/C1.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/C1.mp4"></video></div></div>
 </article>
 <article class="card" id="cmd-C2">
   <header><span class="badge">C2</span><h3>Look at the context window</h3></header>
-  <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;/context&quot; --resume &lt;id&gt; | head -16</pre></div>
-  <div class="field"><h4>Real result</h4><pre class="code result">Before compaction the window shows 54.5k of 1m tokens (5%). Messages hold 40.3k. Free space 912.5k.</pre><ul class="nums"><li><span>used_tokens_k</span> 54.5</li><li><span>window</span> 1m</li><li><span>used_percent</span> 5</li><li><span>messages_k</span> 40.3</li><li><span>free_space_k</span> 912.5</li><li><span>system_prompt_k</span> 3.1</li><li><span>system_tools_k</span> 9</li><li><span>autocompact_buffer_k</span> 33</li><li><span>model</span> claude-haiku-5-5</li></ul><p class="note">Measured: 2.8 s</p></div>
+  <div class="field"><h4>Command</h4><pre class="code">&gt; /context</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Before compaction the window shows 73.3k of 1m tokens (7%). Messages hold 42.2k. Free space 893.7k.</pre><ul class="nums"><li><span>used_tokens_k</span> 73.3</li><li><span>window</span> 1m</li><li><span>used_percent</span> 7</li><li><span>messages_k</span> 42.2</li><li><span>free_space_k</span> 893.7</li><li><span>system_prompt_k</span> 3.5</li><li><span>system_tools_k</span> 25.1</li><li><span>skills_k</span> 2.5</li><li><span>memory_files_tokens</span> 39</li><li><span>autocompact_buffer_k</span> 33</li><li><span>model</span> claude-haiku-5-5</li></ul></div>
   <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/C2.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/C2.mp4"></video></div></div>
 </article>
 <article class="card" id="cmd-C3">
   <header><span class="badge">C3</span><h3>Compact the conversation</h3></header>
-  <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;/compact&quot; --resume &lt;id&gt;</pre></div>
-  <div class="field"><h4>Real result</h4><pre class="code result">Compaction finished without error. The model wrote a summary and the old messages left the context.</pre><ul class="nums"><li><span>duration_ms</span> 9191</li></ul><p class="note">Measured: 9.2 s, $0.0128</p></div>
+  <div class="field"><h4>Command</h4><pre class="code">&gt; /compact</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Compaction finished without error. The model wrote a summary and the old messages left the context.</pre></div>
   <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/C3.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/C3.mp4"></video></div></div>
 </article>
 <article class="card" id="cmd-C4">
   <header><span class="badge">C4</span><h3>Look at the context window again</h3></header>
-  <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;/context&quot; --resume &lt;id&gt;   # after /compact</pre></div>
-  <div class="field"><h4>Real result</h4><pre class="code result">After compaction the window shows 17.4k of 1m tokens (2%). Messages hold 3.2k. Free space 949.6k.</pre><ul class="nums"><li><span>used_tokens_k</span> 17.4</li><li><span>window</span> 1m</li><li><span>used_percent</span> 2</li><li><span>messages_k</span> 3.2</li><li><span>free_space_k</span> 949.6</li><li><span>system_prompt_k</span> 3.1</li><li><span>system_tools_k</span> 8.9</li><li><span>autocompact_buffer_k</span> 33</li><li><span>model</span> claude-haiku-5-5</li><li><span>messages_before_k</span> 40.3</li></ul><p class="note">Measured: 2.1 s</p></div>
+  <div class="field"><h4>Command</h4><pre class="code">&gt; /context   # after /compact</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">After compaction the window shows 36.7k of 1m tokens (4%). Messages hold 6.4k. Free space 930.3k.</pre><ul class="nums"><li><span>used_tokens_k</span> 36.7</li><li><span>window</span> 1m</li><li><span>used_percent</span> 4</li><li><span>messages_k</span> 6.4</li><li><span>free_space_k</span> 930.3</li><li><span>system_prompt_k</span> 3.5</li><li><span>system_tools_k</span> 24.4</li><li><span>skills_k</span> 2.5</li><li><span>autocompact_buffer_k</span> 33</li><li><span>model</span> claude-haiku-5-5</li><li><span>messages_before_k</span> 42.2</li></ul></div>
   <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/C4.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/C4.mp4"></video></div></div>
 </article>
 <article class="card" id="cmd-C5">
   <header><span class="badge">C5</span><h3>Ask what the summary kept</h3></header>
-  <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;What exact port number did I give you at the start?&quot; --resume &lt;id&gt;   # after /compact</pre></div>
-  <div class="field"><h4>Real result</h4><pre class="code result">The model answered 8081. The summary kept the detail from before the big file.</pre><ul class="nums"><li><span>answer</span> 8081</li><li><span>correct</span> true</li></ul><p class="note">Measured: 2.4 s, $0.0143</p></div>
+  <div class="field"><h4>Command</h4><pre class="code">&gt; What exact port number did I give you at the start?   # after /compact</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model answered 8081. The summary kept the detail from before the big file.</pre><ul class="nums"><li><span>answer</span> 8081</li><li><span>correct</span> true</li></ul></div>
   <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/C5.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/C5.mp4"></video></div></div>
 </article></div></section><section class="group" id="effort"><h2>Effort levels</h2><div class="cards">
 <article class="card" id="cmd-E1">
@@ -104,26 +104,26 @@
 </article></div></section><section class="group" id="hallucination"><h2>Hallucination</h2><div class="cards">
 <article class="card" id="cmd-H1">
   <header><span class="badge">H1</span><h3>Ask for the latest version of express</h3></header>
-  <div class="field"><h4>Command</h4><pre class="code">for i in 1 2 3; do cc &quot;Reply with ONLY the latest version number of the npm package express. No other words.&quot; | jq -r .result; done</pre></div>
-  <div class="field"><h4>Real result</h4><pre class="code result">The model answered 5.1.0 in all 3 runs, with no doubt.</pre><ul class="nums"><li><span>model</span> haiku</li><li><span>runs</span> 3</li><li><span>answers</span> [&quot;5.1.0&quot;,&quot;5.1.0&quot;,&quot;5.1.0&quot;]</li><li><span>tokens_per_run_example</span> [177,119,129]</li><li><span>seconds_per_run_example</span> [4.3,2.8,2.2]</li><li><span>note</span> tokens, seconds and cost measured in a separate run of the same command</li></ul><p class="note">Measured: 9.3 s, $0.0002</p></div>
+  <div class="field"><h4>Command</h4><pre class="code">claude --model haiku --tools &quot;&quot; --strict-mcp-config --setting-sources &quot;&quot; --no-chrome ; &gt; Reply with ONLY the latest version number of the npm package express. No other words.</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model answered 5.1.0, with no doubt.</pre><ul class="nums"><li><span>model</span> haiku</li><li><span>answer</span> 5.1.0</li></ul></div>
   <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/H1.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/H1.mp4"></video></div></div>
 </article>
 <article class="card" id="cmd-H2">
   <header><span class="badge">H2</span><h3>Check the version with npm</h3></header>
-  <div class="field"><h4>Command</h4><pre class="code">npm view express version</pre></div>
-  <div class="field"><h4>Real result</h4><pre class="code result">The real latest version of express on 2026-10-16 is 5.3.0.</pre><ul class="nums"><li><span>npm_latest</span> 5.3.0</li><li><span>date</span> 2026-10-16</li><li><span>model_answer</span> 5.1.0</li></ul><p class="note">Measured: 2 s, $0</p></div>
+  <div class="field"><h4>Command</h4><pre class="code">&gt; !npm view express version</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The real latest version of express on 2026-10-16 is 5.3.0. The model then said its first answer was out of date.</pre><ul class="nums"><li><span>npm_latest</span> 5.3.0</li><li><span>date</span> 2026-10-16</li><li><span>model_answer</span> 5.1.0</li></ul></div>
   <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/H2.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/H2.mp4"></video></div></div>
 </article>
 <article class="card" id="cmd-H3">
   <header><span class="badge">H3</span><h3>Ask about a package that does not exist</h3></header>
-  <div class="field"><h4>Command</h4><pre class="code">cc &quot;What config options does the npm package fastjson-validator-kit support? If you are not sure, say I don't know.&quot; | jq -r .result</pre></div>
-  <div class="field"><h4>Real result</h4><pre class="code result">The model said &quot;I don't know&quot; and gave no made-up options.</pre><ul class="nums"><li><span>model</span> haiku</li><li><span>package</span> fastjson-validator-kit</li><li><span>invented_options</span> 0</li><li><span>said_dont_know</span> true</li><li><span>tokens_example</span> 205</li><li><span>seconds_example</span> 2.6</li><li><span>note</span> tokens, seconds and cost measured in a separate run of the same command</li></ul><p class="note">Measured: 2.6 s, $0.0001</p></div>
+  <div class="field"><h4>Command</h4><pre class="code">&gt; What config options does the npm package fastjson-validator-kit support? If you are not sure, say I don't know.</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model said &quot;I don't know&quot; and gave no made-up options.</pre><ul class="nums"><li><span>model</span> haiku</li><li><span>package</span> fastjson-validator-kit</li><li><span>invented_options</span> 0</li><li><span>said_dont_know</span> true</li></ul></div>
   <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/H3.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/H3.mp4"></video></div></div>
 </article>
 <article class="card" id="cmd-H4">
   <header><span class="badge">H4</span><h3>Check the made-up package with npm</h3></header>
-  <div class="field"><h4>Command</h4><pre class="code">npm view fastjson-validator-kit version 2&gt;&amp;1 | head -3</pre></div>
-  <div class="field"><h4>Real result</h4><pre class="code result">npm returns E404: the package does not exist.</pre><ul class="nums"><li><span>package</span> fastjson-validator-kit</li><li><span>http_status</span> 404</li><li><span>date</span> 2026-10-16</li></ul><p class="note">Measured: 1.4 s, $0</p></div>
+  <div class="field"><h4>Command</h4><pre class="code">&gt; !npm view fastjson-validator-kit version 2&gt;&amp;1 | head -3</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">npm returns E404: the package does not exist.</pre><ul class="nums"><li><span>package</span> fastjson-validator-kit</li><li><span>http_status</span> 404</li><li><span>date</span> 2026-10-16</li></ul></div>
   <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/H4.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/H4.mp4"></video></div></div>
 </article></div></section><section class="group" id="prompt"><h2>Parts of a prompt</h2><div class="cards">
 <article class="card" id="cmd-P1">

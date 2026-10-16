@@ -1,5 +1,5 @@
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
-mkdir -p /tmp/ws1-neutral && cd /tmp/ws1-neutral
+mkdir -p ../work/neutral && cd ../work/neutral
 # Default Claude Code, with settings, plugins and MCP servers of the presenter turned off.
 claude() {
   command claude "$@" --strict-mcp-config --mcp-config '{"mcpServers":{}}' --setting-sources "" --model haiku --no-session-persistence </dev/null
