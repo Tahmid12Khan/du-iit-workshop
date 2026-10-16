@@ -1,0 +1,40 @@
+{
+  "S1": {
+    "command": "cc \"Extract event, date, venue and fee as JSON from: $(cat structured/notice.txt)\" | jq -r .result | node structured/plain.mjs",
+    "result": "The model wraps the JSON in a ```json fence. JSON.parse throws: Unexpected token '`'. The date field holds extra text and the fee is a nested object.",
+    "numbers": {
+      "parse_ok": false,
+      "output_tokens": 521,
+      "thinking_tokens": 380,
+      "fee_type_in_answer": "object",
+      "date_has_extra_text": true,
+      "time_field": false
+    },
+    "seconds": 4.0,
+    "cost_usd": 0.00027
+  },
+  "S2": {
+    "command": "jq -c '.properties | map_values(.type)' structured/schema.json ; cc \"Extract ...\" --json-schema \"$(cat structured/schema.json)\" | jq .structured_output",
+    "result": "The model returns exactly 4 fields: event, date 2026-10-24, venue, fee 500 as a number.",
+    "numbers": {
+      "fields": 4,
+      "date": "2026-10-24",
+      "fee": 500,
+      "output_tokens": 276,
+      "thinking_tokens": 129
+    },
+    "seconds": 2.5,
+    "cost_usd": 0.00015
+  },
+  "S3": {
+    "command": "cc \"Extract ...\" --json-schema \"$(cat structured/schema.json)\" | node structured/parse.mjs",
+    "result": "typeof fee is number. fee + 100 is 600. new Date(date) is Saturday, 24 October 2026.",
+    "numbers": {
+      "typeof_fee": "number",
+      "fee_plus_100": 600,
+      "date_parsed": "Saturday, 24 October 2026"
+    },
+    "seconds": 5.6,
+    "cost_usd": 0.0002
+  }
+}

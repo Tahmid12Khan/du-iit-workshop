@@ -1,0 +1,63 @@
+{
+  "L2": {
+    "command": "MAX_STEPS=8 node loop.mjs",
+    "result": "Answer at step 6 of 8: gradient-descent.md is the longest note. Steps 1-5 were tool calls (list_dir, then read_file on trip, schedule, gradient-descent, budget). Step 6 was final_answer.",
+    "numbers": {
+      "steps": 6,
+      "max_steps": 8,
+      "tool_calls": 5,
+      "input_tokens_per_step": [
+        1583,
+        1630,
+        1807,
+        1871,
+        2205,
+        2298
+      ],
+      "transcript_chars_per_step": [
+        62,
+        157,
+        543,
+        668,
+        1641,
+        1814
+      ],
+      "tool_result_chars": {
+        "list_dir ./notes": 49,
+        "trip.md": 331,
+        "schedule.md": 66,
+        "gradient-descent.md": 906,
+        "budget.md": 116
+      },
+      "longest_file": "gradient-descent.md"
+    },
+    "seconds": 32.6,
+    "cost_usd": 0.0021
+  },
+  "L3": {
+    "command": "MAX_STEPS=4 node loop.mjs",
+    "result": "Stopped at the step limit of 4 with no answer. The model read trip, schedule and gradient-descent but not budget.md. The program printed the GUARDRAIL message and exited with code 1.",
+    "numbers": {
+      "steps": 4,
+      "max_steps": 4,
+      "tool_calls": 4,
+      "files_read": 3,
+      "files_unread": 1,
+      "input_tokens_per_step": [
+        1583,
+        1630,
+        1807,
+        1871
+      ],
+      "transcript_chars_per_step": [
+        62,
+        157,
+        543,
+        668
+      ],
+      "answer_given": false
+    },
+    "seconds": 22.1,
+    "cost_usd": 0.0009
+  }
+}

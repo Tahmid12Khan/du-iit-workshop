@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workshop 1 videos</title>
+<link rel="stylesheet" href="vendor/fonts.css">
+<link rel="stylesheet" href="vendor/tokens.css">
+<link rel="stylesheet" href="vendor/pages.css">
+<script src="vendor/theme.js"></script>
+</head>
+<body>
+<header class="site">
+  <nav aria-label="Pages"><a href="index.html">Deck</a><a href="videos.html" aria-current="page">Videos</a><a href="worksheet.html">Worksheet</a><a href="transcript.html">Transcript</a></nav>
+  <span data-theme-toggle></span>
+</header>
+<main>
+  <h1>Videos for each command</h1>
+  <p class="lead">Each command has a terminal video and an animation video. Both show the real result.</p>
+  <ul class="stats">
+    <li><strong>27 / 27</strong> terminal videos</li>
+    <li><strong>27 / 27</strong> animation videos</li>
+    <li><strong>27 / 27</strong> measured results</li>
+  </ul>
+  <nav class="jump" aria-label="Topics"><a href="#tokens">Tokens</a><a href="#context">Context window</a><a href="#effort">Effort levels</a><a href="#hallucination">Hallucination</a><a href="#prompt">Parts of a prompt</a><a href="#structured">Structured output</a><a href="#toolcall">Tool call</a><a href="#agentloop">Agent loop</a></nav>
+<section class="group" id="tokens"><h2>Tokens</h2><div class="cards">
+<article class="card" id="cmd-T1">
+  <header><span class="badge">T1</span><h3>Count the tokens of Hello</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">cc &quot;Hello&quot; | jq .usage ...  then  tokens &quot;Hello&quot;</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Hello costs 859 input tokens in total: 2 input + 0 cache write + 857 cache read.</pre><ul class="nums"><li><span>total_tokens</span> 859</li><li><span>net_tokens</span> 2</li><li><span>input_tokens</span> 2</li><li><span>cache_creation_input_tokens</span> 0</li><li><span>cache_read_input_tokens</span> 857</li><li><span>baseline_tokens</span> 857</li></ul><p class="note">Measured: 1.9 s, $0.000015</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/T1.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/T1.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-T2">
+  <header><span class="badge">T2</span><h3>Count the tokens of the same word as JSON</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">tokens '{&quot;greeting&quot;:&quot;Hello&quot;}'</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The JSON form costs 868 tokens in total, 11 net.</pre><ul class="nums"><li><span>total_tokens</span> 868</li><li><span>net_tokens</span> 11</li><li><span>baseline_tokens</span> 857</li></ul><p class="note">Measured: 1.9 s, $0.00002</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/T2.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/T2.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-T3">
+  <header><span class="badge">T3</span><h3>Count the tokens of one line of code</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">tokens 'const sum = (a, b) =&gt; a + b;'</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">One line of code costs 870 tokens in total, 13 net.</pre><ul class="nums"><li><span>total_tokens</span> 870</li><li><span>net_tokens</span> 13</li><li><span>baseline_tokens</span> 857</li></ul><p class="note">Measured: 2.7 s, $0.000085</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/T3.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/T3.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-T4">
+  <header><span class="badge">T4</span><h3>Count the tokens of one English sentence</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">tokens &quot;.&quot; ; tokens 'Software engineers build reliable systems by testing early and often.'</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Baseline '.' is 857 tokens. The English sentence is 874 in total, 17 net.</pre><ul class="nums"><li><span>baseline_tokens</span> 857</li><li><span>total_tokens</span> 874</li><li><span>net_tokens</span> 17</li></ul><p class="note">Measured: 2.1 s, $0.00007</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/T4.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/T4.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-T5">
+  <header><span class="badge">T5</span><h3>See the Claude Code overhead on Hello</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;Hello&quot; --output-format json | jq .usage</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Default Claude Code sends 17987 input tokens for the word Hello (2 + 0 + 17985), against 859 with the lean cc helper. Model haiku, no MCP servers, no plugins, no settings.</pre><ul class="nums"><li><span>total_tokens</span> 17987</li><li><span>input_tokens</span> 2</li><li><span>cache_creation_input_tokens</span> 0</li><li><span>cache_read_input_tokens</span> 17985</li><li><span>output_tokens</span> 62</li><li><span>lean_cc_total_tokens</span> 859</li><li><span>ratio_vs_lean</span> 20.9</li></ul><p class="note">Measured: 2.6 s, $0.0002</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/T5.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/T5.mp4"></video></div></div>
+</article></div></section><section class="group" id="context"><h2>Context window</h2><div class="cards">
+<article class="card" id="cmd-C1">
+  <header><span class="badge">C1</span><h3>Read a large file into the context</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;Remember: our dev server port is 8081. Reply with OK.&quot; ; claude -p &quot;Read the whole file big.txt and tell me what it is about in one sentence.&quot; --allowedTools Read --resume &lt;id&gt;</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model read the 99 KB, 679-entry log and summarised it in one sentence. The session now holds the port detail and the whole file.</pre><ul class="nums"><li><span>file_bytes</span> 99062</li><li><span>file_entries</span> 679</li><li><span>read_step_input_tokens_summed_over_calls</span> 72527</li><li><span>read_step_cache_creation_tokens</span> 36409</li><li><span>read_step_cache_read_tokens</span> 36114</li></ul><p class="note">Measured: 4.8 s, $0.008</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/C1.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/C1.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-C2">
+  <header><span class="badge">C2</span><h3>Look at the context window</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;/context&quot; --resume &lt;id&gt; | head -16</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Before compaction the window shows 54.5k of 1m tokens (5%). Messages hold 40.3k. Free space 912.5k.</pre><ul class="nums"><li><span>used_tokens_k</span> 54.5</li><li><span>window</span> 1m</li><li><span>used_percent</span> 5</li><li><span>messages_k</span> 40.3</li><li><span>free_space_k</span> 912.5</li><li><span>system_prompt_k</span> 3.1</li><li><span>system_tools_k</span> 9</li><li><span>autocompact_buffer_k</span> 33</li><li><span>model</span> claude-haiku-5-5</li></ul><p class="note">Measured: 2.8 s</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/C2.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/C2.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-C3">
+  <header><span class="badge">C3</span><h3>Compact the conversation</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;/compact&quot; --resume &lt;id&gt;</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Compaction finished without error. The model wrote a summary and the old messages left the context.</pre><ul class="nums"><li><span>duration_ms</span> 9191</li></ul><p class="note">Measured: 9.2 s, $0.0128</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/C3.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/C3.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-C4">
+  <header><span class="badge">C4</span><h3>Look at the context window again</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;/context&quot; --resume &lt;id&gt;   # after /compact</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">After compaction the window shows 17.4k of 1m tokens (2%). Messages hold 3.2k. Free space 949.6k.</pre><ul class="nums"><li><span>used_tokens_k</span> 17.4</li><li><span>window</span> 1m</li><li><span>used_percent</span> 2</li><li><span>messages_k</span> 3.2</li><li><span>free_space_k</span> 949.6</li><li><span>system_prompt_k</span> 3.1</li><li><span>system_tools_k</span> 8.9</li><li><span>autocompact_buffer_k</span> 33</li><li><span>model</span> claude-haiku-5-5</li><li><span>messages_before_k</span> 40.3</li></ul><p class="note">Measured: 2.1 s</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/C4.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/C4.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-C5">
+  <header><span class="badge">C5</span><h3>Ask what the summary kept</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">claude -p &quot;What exact port number did I give you at the start?&quot; --resume &lt;id&gt;   # after /compact</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model answered 8081. The summary kept the detail from before the big file.</pre><ul class="nums"><li><span>answer</span> 8081</li><li><span>correct</span> true</li></ul><p class="note">Measured: 2.4 s, $0.0143</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/C5.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/C5.mp4"></video></div></div>
+</article></div></section><section class="group" id="effort"><h2>Effort levels</h2><div class="cards">
+<article class="card" id="cmd-E1">
+  <header><span class="badge">E1</span><h3>Ask one puzzle 10 times at low effort</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">runs 27 10 low</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">low effort: correct 9/10, mean 4009 output tokens, mean 16.7 s</pre><ul class="nums"><li><span>effort</span> low</li><li><span>expected</span> 27</li><li><span>correct</span> 9</li><li><span>runs</span> 10</li><li><span>mean_output_tokens</span> 4009</li><li><span>mean_seconds</span> 16.7</li><li><span>min_tokens</span> 3030</li><li><span>max_tokens</span> 5220</li><li><span>answers</span> [&quot;27&quot;,&quot;27&quot;,&quot;27&quot;,&quot;26&quot;,&quot;27&quot;,&quot;27&quot;,&quot;27&quot;,&quot;27&quot;,&quot;27&quot;,&quot;27&quot;]</li></ul><p class="note">Measured: 21.9 s, $0.0201</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/E1.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/E1.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-E2">
+  <header><span class="badge">E2</span><h3>Ask the same puzzle 10 times at max effort</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">runs 27 10 max</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">max effort: correct 10/10, mean 23534 output tokens, mean 78.0 s</pre><ul class="nums"><li><span>effort</span> max</li><li><span>expected</span> 27</li><li><span>correct</span> 10</li><li><span>runs</span> 10</li><li><span>mean_output_tokens</span> 23534</li><li><span>mean_seconds</span> 78</li><li><span>min_tokens</span> 17674</li><li><span>max_tokens</span> 33323</li><li><span>answers</span> [&quot;27&quot;,&quot;27&quot;,&quot;27&quot;,&quot;27&quot;,&quot;27&quot;,&quot;27&quot;,&quot;27&quot;,&quot;27&quot;,&quot;27&quot;,&quot;27&quot;]</li></ul><p class="note">Measured: 111.3 s, $0.1181</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/E2.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/E2.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-E3">
+  <header><span class="badge">E3</span><h3>Compare low and max on a harder puzzle</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">runs 805 3 low max</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">low correct 1/3 (mean 14309 tokens, 56.6 s); max correct 3/3 (mean 77387 tokens, 257.1 s)</pre><ul class="nums"><li><span>expected</span> 805</li><li><span>low</span> {&quot;correct&quot;:1,&quot;runs&quot;:3,&quot;mean_output_tokens&quot;:14309,&quot;mean_seconds&quot;:56.6,&quot;min_tokens&quot;:3016,&quot;max_tokens&quot;:36658,&quot;answers&quot;:[&quot;804&quot;,&quot;804&quot;,&quot;805&quot;]}</li><li><span>max</span> {&quot;correct&quot;:3,&quot;runs&quot;:3,&quot;mean_output_tokens&quot;:77387,&quot;mean_seconds&quot;:257.1,&quot;min_tokens&quot;:68801,&quot;max_tokens&quot;:87022,&quot;answers&quot;:[&quot;805&quot;,&quot;805&quot;,&quot;805&quot;]}</li></ul><p class="note">Measured: 277.1 s, $0.1381</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/E3.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/E3.mp4"></video></div></div>
+</article></div></section><section class="group" id="hallucination"><h2>Hallucination</h2><div class="cards">
+<article class="card" id="cmd-H1">
+  <header><span class="badge">H1</span><h3>Ask for the latest version of express</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">for i in 1 2 3; do cc &quot;Reply with ONLY the latest version number of the npm package express. No other words.&quot; | jq -r .result; done</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model answered 5.1.0 in all 3 runs, with no doubt.</pre><ul class="nums"><li><span>model</span> haiku</li><li><span>runs</span> 3</li><li><span>answers</span> [&quot;5.1.0&quot;,&quot;5.1.0&quot;,&quot;5.1.0&quot;]</li><li><span>tokens_per_run_example</span> [177,119,129]</li><li><span>seconds_per_run_example</span> [4.3,2.8,2.2]</li><li><span>note</span> tokens, seconds and cost measured in a separate run of the same command</li></ul><p class="note">Measured: 9.3 s, $0.0002</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/H1.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/H1.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-H2">
+  <header><span class="badge">H2</span><h3>Check the version with npm</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">npm view express version</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The real latest version of express on 2026-10-16 is 5.3.0.</pre><ul class="nums"><li><span>npm_latest</span> 5.3.0</li><li><span>date</span> 2026-10-16</li><li><span>model_answer</span> 5.1.0</li></ul><p class="note">Measured: 2 s, $0</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/H2.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/H2.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-H3">
+  <header><span class="badge">H3</span><h3>Ask about a package that does not exist</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">cc &quot;What config options does the npm package fastjson-validator-kit support? If you are not sure, say I don't know.&quot; | jq -r .result</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model said &quot;I don't know&quot; and gave no made-up options.</pre><ul class="nums"><li><span>model</span> haiku</li><li><span>package</span> fastjson-validator-kit</li><li><span>invented_options</span> 0</li><li><span>said_dont_know</span> true</li><li><span>tokens_example</span> 205</li><li><span>seconds_example</span> 2.6</li><li><span>note</span> tokens, seconds and cost measured in a separate run of the same command</li></ul><p class="note">Measured: 2.6 s, $0.0001</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/H3.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/H3.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-H4">
+  <header><span class="badge">H4</span><h3>Check the made-up package with npm</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">npm view fastjson-validator-kit version 2&gt;&amp;1 | head -3</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">npm returns E404: the package does not exist.</pre><ul class="nums"><li><span>package</span> fastjson-validator-kit</li><li><span>http_status</span> 404</li><li><span>date</span> 2026-10-16</li></ul><p class="note">Measured: 1.4 s, $0</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/H4.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/H4.mp4"></video></div></div>
+</article></div></section><section class="group" id="prompt"><h2>Parts of a prompt</h2><div class="cards">
+<article class="card" id="cmd-P1">
+  <header><span class="badge">P1</span><h3>Send the naive prompt</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">cc &quot;write a BD phone number validator&quot;</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model answered in Python, not JavaScript: 30 lines with code fence, comments and a test block. 517 visible tokens.</pre><ul class="nums"><li><span>answer_lines</span> 30</li><li><span>code_lines</span> 24</li><li><span>output_tokens</span> 693</li><li><span>thinking_tokens</span> 176</li><li><span>answer_tokens</span> 517</li><li><span>language</span> python</li></ul><p class="note">Measured: 5.1 s, $0.00036</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/P1.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/P1.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-P2">
+  <header><span class="badge">P2</span><h3>Send the structured prompt</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">cc &quot;$(cat prompt/structured.prompt.txt)&quot;</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model returned one JavaScript function isValidBDPhone: 4 lines of code, 6 lines with fence. 95 visible tokens.</pre><ul class="nums"><li><span>answer_lines</span> 6</li><li><span>code_lines</span> 4</li><li><span>output_tokens</span> 357</li><li><span>thinking_tokens</span> 262</li><li><span>answer_tokens</span> 95</li><li><span>language</span> javascript</li></ul><p class="note">Measured: 3.4 s, $0.00019</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/P2.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/P2.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-P3">
+  <header><span class="badge">P3</span><h3>Test both validators on 6 numbers</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">node prompt/test.mjs</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Both pass the 6 outline numbers. Naive is Python (run with python3), structured is JavaScript.</pre><ul class="nums"><li><span>naive_passed</span> 6</li><li><span>structured_passed</span> 6</li><li><span>total</span> 6</li></ul><p class="note">Measured: 0.5 s, $0</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/P3.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/P3.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-P4">
+  <header><span class="badge">P4</span><h3>Test both validators on 3 edge numbers</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">node prompt/edge.mjs</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">On the 3 edge numbers, structured returns false 3/3 as the spec says. Naive returns true for 017-1234-5678 and ' 01712345678'.</pre><ul class="nums"><li><span>naive_matches_spec</span> 1</li><li><span>structured_matches_spec</span> 3</li><li><span>total</span> 3</li><li><span>naive</span> {&quot;1712345678&quot;:false,&quot;017-1234-5678&quot;:true,&quot; 01712345678&quot;:true}</li><li><span>structured</span> {&quot;1712345678&quot;:false,&quot;017-1234-5678&quot;:false,&quot; 01712345678&quot;:false}</li></ul><p class="note">Measured: 0.5 s, $0</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/P4.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/P4.mp4"></video></div></div>
+</article></div></section><section class="group" id="structured"><h2>Structured output</h2><div class="cards">
+<article class="card" id="cmd-S1">
+  <header><span class="badge">S1</span><h3>Ask for JSON without a schema</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">cc &quot;Extract event, date, venue and fee as JSON from: $(cat structured/notice.txt)&quot; | jq -r .result | node structured/plain.mjs</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model wraps the JSON in a ```json fence. JSON.parse throws: Unexpected token '`'. The date field holds extra text and the fee is a nested object.</pre><ul class="nums"><li><span>parse_ok</span> false</li><li><span>output_tokens</span> 521</li><li><span>thinking_tokens</span> 380</li><li><span>fee_type_in_answer</span> object</li><li><span>date_has_extra_text</span> true</li><li><span>time_field</span> false</li></ul><p class="note">Measured: 4 s, $0.00027</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/S1.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/S1.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-S2">
+  <header><span class="badge">S2</span><h3>Ask for JSON with a schema</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">jq -c '.properties | map_values(.type)' structured/schema.json ; cc &quot;Extract ...&quot; --json-schema &quot;$(cat structured/schema.json)&quot; | jq .structured_output</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">The model returns exactly 4 fields: event, date 2026-10-24, venue, fee 500 as a number.</pre><ul class="nums"><li><span>fields</span> 4</li><li><span>date</span> 2026-10-24</li><li><span>fee</span> 500</li><li><span>output_tokens</span> 276</li><li><span>thinking_tokens</span> 129</li></ul><p class="note">Measured: 2.5 s, $0.00015</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/S2.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/S2.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-S3">
+  <header><span class="badge">S3</span><h3>Load the result in Node</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">cc &quot;Extract ...&quot; --json-schema &quot;$(cat structured/schema.json)&quot; | node structured/parse.mjs</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">typeof fee is number. fee + 100 is 600. new Date(date) is Saturday, 24 October 2026.</pre><ul class="nums"><li><span>typeof_fee</span> number</li><li><span>fee_plus_100</span> 600</li><li><span>date_parsed</span> Saturday, 24 October 2026</li></ul><p class="note">Measured: 5.6 s, $0.0002</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/S3.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/S3.mp4"></video></div></div>
+</article></div></section><section class="group" id="toolcall"><h2>Tool call</h2><div class="cards">
+<article class="card" id="cmd-L1">
+  <header><span class="badge">L1</span><h3>Run one tool call</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">node loop.mjs --once</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Model replied with action list_dir for ./notes. Our code ran it (49 chars, 4 file names) and sent the result back once. The model then asked for read_file on ./notes/trip.md.</pre><ul class="nums"><li><span>model_calls</span> 2</li><li><span>tool_calls_run</span> 1</li><li><span>input_tokens_call_1</span> 1583</li><li><span>input_tokens_call_2</span> 1630</li><li><span>transcript_chars_call_1</span> 62</li><li><span>transcript_chars_call_2</span> 157</li><li><span>list_dir_result_chars</span> 49</li><li><span>files_in_notes</span> 4</li></ul><p class="note">Measured: 9.9 s, $0.0004</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/L1.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/L1.mp4"></video></div></div>
+</article></div></section><section class="group" id="agentloop"><h2>Agent loop</h2><div class="cards">
+<article class="card" id="cmd-L2">
+  <header><span class="badge">L2</span><h3>Run the agent loop on 4 notes</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">MAX_STEPS=8 node loop.mjs</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Answer at step 6 of 8: gradient-descent.md is the longest note. Steps 1-5 were tool calls (list_dir, then read_file on trip, schedule, gradient-descent, budget). Step 6 was final_answer.</pre><ul class="nums"><li><span>steps</span> 6</li><li><span>max_steps</span> 8</li><li><span>tool_calls</span> 5</li><li><span>input_tokens_per_step</span> [1583,1630,1807,1871,2205,2298]</li><li><span>transcript_chars_per_step</span> [62,157,543,668,1641,1814]</li><li><span>tool_result_chars</span> {&quot;list_dir ./notes&quot;:49,&quot;trip.md&quot;:331,&quot;schedule.md&quot;:66,&quot;gradient-descent.md&quot;:906,&quot;budget.md&quot;:116}</li><li><span>longest_file</span> gradient-descent.md</li></ul><p class="note">Measured: 32.6 s, $0.0021</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/L2.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/L2.mp4"></video></div></div>
+</article>
+<article class="card" id="cmd-L3">
+  <header><span class="badge">L3</span><h3>Hit the step limit</h3></header>
+  <div class="field"><h4>Command</h4><pre class="code">MAX_STEPS=4 node loop.mjs</pre></div>
+  <div class="field"><h4>Real result</h4><pre class="code result">Stopped at the step limit of 4 with no answer. The model read trip, schedule and gradient-descent but not budget.md. The program printed the GUARDRAIL message and exited with code 1.</pre><ul class="nums"><li><span>steps</span> 4</li><li><span>max_steps</span> 4</li><li><span>tool_calls</span> 4</li><li><span>files_read</span> 3</li><li><span>files_unread</span> 1</li><li><span>input_tokens_per_step</span> [1583,1630,1807,1871]</li><li><span>transcript_chars_per_step</span> [62,157,543,668]</li><li><span>answer_given</span> false</li></ul><p class="note">Measured: 22.1 s, $0.0009</p></div>
+  <div class="videos"><div class="vbox"><h4>Terminal video</h4><video controls preload="metadata" src="video/term/L3.mp4"></video></div><div class="vbox"><h4>Animation video</h4><video controls preload="metadata" src="video/anim/L3.mp4"></video></div></div>
+</article></div></section>
+</main>
+</body>
+</html>

@@ -1,0 +1,11 @@
+ROLE: You are a senior JavaScript engineer.
+TASK: Write a function that checks if a string is a valid Bangladeshi mobile number.
+CONTEXT: A valid number is 01, then one operator digit from 3 to 9, then 8 digits. The leading 0 may be replaced with the prefix +880 or 880.
+EXAMPLES:
+  "+8801512345678" -> true
+  "0161234567" -> false (too short)
+CONSTRAINTS:
+- Accept only these formats: 01XXXXXXXXX, 8801XXXXXXXXX, +8801XXXXXXXXX.
+- Reject any other input. Return a boolean. Never throw.
+- Use no library.
+OUTPUT FORMAT: Only one JavaScript function named isValidBDPhone(s). No other text.

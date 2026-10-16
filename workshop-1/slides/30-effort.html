@@ -1,0 +1,288 @@
+<style>
+  .over { position: absolute; inset: 0; z-index: 3; background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; gap: 12px; }
+  .over.is-dim { opacity: 0; visibility: hidden; transition: opacity .6s ease, visibility 0s .6s; }
+  .over .puz { margin: 0; font: 600 28px/1.3 var(--font-sans); text-align: center; color: var(--ink); }
+  .over .check { width: 100%; box-sizing: border-box; margin: 0; }
+</style>
+<section class="slide" id="effort-1" data-topic="Effort levels" data-minutes="1.5" data-steps="4">
+  <h2>Sampling picks the next token by chance</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A prompt, The sky is, goes to a chart of next token chances. A dice picks one token. Run 1 gives blue. Run 2 gives grey.">
+<g data-step="1" data-from="">
+<rect class="node c1" x="10" y="150" width="250" height="110" rx="20"/><text class="lbl-2 mid" x="135" y="196">Prompt</text><text class="lbl mono mid" x="135" y="236">The sky is</text>
+</g>
+<path class="edge" d="M264 205 H326" marker-end="url(#arrow)"/>
+<text class="lbl" x="330" y="62">Chance of the next token</text>
+<g data-step="1 2 3" data-from="">
+<path class="edge" d="M470 86 V372"/><text class="lbl mono end" x="456" y="129">blue</text><rect class="node c1" x="470" y="96" width="300" height="48" rx="10"/><text class="lbl mono end" x="456" y="201">clear</text><rect class="node c1" x="470" y="168" width="190" height="48" rx="10"/><text class="lbl mono end" x="456" y="273">grey</text><rect class="node c1" x="470" y="240" width="110" height="48" rx="10"/><text class="lbl mono end" x="456" y="345">green</text><rect class="node c1" x="470" y="312" width="36" height="48" rx="10"/>
+</g>
+<rect class="node ring" x="326" y="90" width="486" height="60" rx="18" data-step="2"/>
+<rect class="node ring" x="326" y="234" width="486" height="60" rx="18" data-step="3"/>
+<text class="lbl-3" x="330" y="440">Illustration. Bar length is not a measured value.</text>
+<path class="edge" d="M818 122 H842" marker-end="url(#arrow)" data-step="2 3"/>
+<g data-step="2 3" data-from="">
+<rect class="node plain" x="850" y="36" width="112" height="112" rx="22"/><circle class="skel" cx="880" cy="66" r="10"/><circle class="skel" cx="932" cy="66" r="10"/><circle class="skel" cx="906" cy="92" r="10"/><circle class="skel" cx="880" cy="118" r="10"/><circle class="skel" cx="932" cy="118" r="10"/><text class="lbl" x="980" y="84">Sampling</text><text class="lbl-2" x="980" y="116">rolls a dice</text>
+</g>
+<path class="edge" d="M906 152 V206" marker-end="url(#arrow)" data-step="2 3"/>
+<g data-step="2 4" data-from="2">
+<rect class="node c2" x="850" y="212" width="340" height="62" rx="14"/><text class="lbl-2" x="868" y="252">Run</text><text class="lbl mono" x="940" y="252">The sky is <tspan class="hl">blue</tspan></text>
+</g>
+<g data-step="3 4" data-from="3">
+<rect class="node c2" x="850" y="292" width="340" height="62" rx="14"/><text class="lbl-2" x="868" y="332">Run</text><text class="lbl mono" x="940" y="332">The sky is <tspan class="hl">grey</tspan></text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>The model gives each possible next token a chance.</li>
+    <li>Sampling rolls a dice. A likely token wins more often.</li>
+    <li>A second run rolls the dice again. It can pick another token.</li>
+    <li>The same prompt gives different answers. This is normal.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] context window-এর পর আরেকটা প্রশ্ন: model পরের token কীভাবে বাছে? শুরুতে sampling নামটা শুনেছিলে, এবার ভেতরটা দেখি। আগে একটা জিনিস বুঝে নিই। model যখন উত্তর লেখে, সে একটা একটা করে token বানায়। প্রতিটা সম্ভাব্য পরের token-এর একটা সুযোগ থাকে। এখানে The sky is লেখার পর blue-র সুযোগ সবচেয়ে বেশি, green-এর সবচেয়ে কম। দাগগুলো শুধু ছবি, আসল সংখ্যা নয়। [STEP 2] এবার sampling। model একটা লুডুর ছক্কা ফেলে। যার সুযোগ বেশি, সে বেশিবার জেতে। কিন্তু অন্যরাও জিততে পারে। এবার blue উঠল। [STEP 3] ধরো একই prompt আবার চালালে। ছক্কা আবার পড়ে, এবার grey উঠল। [STEP 4] তাই একই প্রশ্নে ভিন্ন উত্তর আসে। এটা bug না। এটাই স্বাভাবিক। [ASK] তোমরা কি কখনও একই প্রশ্ন দুবার করে ভিন্ন উত্তর পেয়েছ? [PAUSE 5s] এই কারণটা পরের দুই slide-এ আমাদের কাজে লাগবে।</aside>
+</section>
+
+<section class="slide" id="effort-2" data-topic="Effort levels" data-minutes="2" data-steps="5">
+  <h2>Higher effort writes more rough work before the answer</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Two lanes with the same question. Low effort writes a small page of rough work before the answer. Max effort writes a large page of rough work, then checks and fixes it.">
+<text class="lbl hl" x="10" y="44">Low effort</text>
+<g data-step="1" data-from="">
+<rect class="node c1" x="10" y="73" width="190" height="104" rx="18"/><text class="lbl mid" x="105" y="119">Same</text><text class="lbl mid" x="105" y="149">question</text>
+</g>
+<g data-step="2 4" data-from="2">
+<path class="edge" d="M204 125 H266" marker-end="url(#arrow)"/><text class="lbl-2" x="270" y="75">Rough work</text><rect class="node plain" x="270" y="85" width="240" height="80" rx="12"/><rect class="skel" x="290" y="105" width="170" height="12" rx="6"/><rect class="skel" x="290" y="131" width="110" height="12" rx="6"/><path class="edge" d="M514 125 H996" marker-end="url(#arrow)"/><rect class="node c2" x="1000" y="81" width="190" height="88" rx="18"/><text class="lbl mid" x="1095" y="131">Answer</text>
+</g>
+<text class="lbl hl" x="10" y="262">Max effort</text>
+<g data-step="1" data-from="">
+<rect class="node c1" x="10" y="313" width="190" height="104" rx="18"/><text class="lbl mid" x="105" y="359">Same</text><text class="lbl mid" x="105" y="389">question</text>
+</g>
+<g data-step="3 4 5" data-from="3">
+<path class="edge" d="M204 365 H266" marker-end="url(#arrow)"/><text class="lbl-2" x="270" y="282">Rough work</text><rect class="node plain" x="270" y="290" width="700" height="170" rx="12"/><rect class="skel" x="290" y="314" width="380" height="14" rx="7"/><rect class="skel" x="290" y="344" width="330" height="14" rx="7"/><rect class="skel" x="290" y="374" width="420" height="14" rx="7"/><rect class="skel" x="290" y="404" width="300" height="14" rx="7"/><rect class="skel" x="290" y="434" width="360" height="14" rx="7"/><path class="edge" d="M974 375 H996" marker-end="url(#arrow)"/><rect class="node c2" x="1000" y="331" width="190" height="88" rx="18"/><text class="lbl mid" x="1095" y="381">Answer</text>
+</g>
+<g class="until" data-step="4" data-from="4">
+<text class="lbl hl mid" x="600" y="242">Rough work is output tokens. You wait and you pay.</text>
+</g>
+<g class="until" data-step="5" data-from="5">
+<rect class="node c3" x="770" y="398" width="180" height="44" rx="12"/><text class="lbl mid" x="860" y="428">Check and fix</text><path class="edge" d="M766 420 H716" marker-end="url(#arrow)"/>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>Ask the same question in two lanes.</li>
+    <li>Low effort: the model writes a little rough work.</li>
+    <li>Max effort: the model writes a lot of rough work.</li>
+    <li>Rough work is output tokens. You wait for it and you pay for it.</li>
+    <li>More rough work lets the model check and fix its steps.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] Claude-এ একটা setting আছে, নাম effort। এটা model-কে বলে, উত্তর লেখার আগে কতটা ভাববে। Claude Code-এ --effort low বা --effort max দিয়ে এটা বদলানো যায়। এবার ধরো দুটো পরীক্ষার হল। দুই জায়গায় একই প্রশ্ন দেওয়া হলো। একটা হলো low effort, অন্যটা max effort। [STEP 2] low effort-এ model তুলনায় কম rough work করে। খাতার এক কোণায় কয়েক লাইন লিখেই উত্তর দেয়। [STEP 3] max effort-এ সে পুরো পাতা ভরে rough work করে। প্রতিটা ধাপ লেখে, মেলায়, তারপর উত্তর দেয়। দেখো, পাতাটা কত বড়। [STEP 4] এই rough work-টাও কিন্তু token। model এগুলো output হিসেবে লেখে। তাই তুমি এগুলোর জন্য অপেক্ষা করো, আর এগুলোর জন্য দামও দাও। উত্তর শুধু দুই অঙ্কের হলেও পেছনে হাজার হাজার token খরচ হতে পারে। [STEP 5] বেশি rough work মানে ভুল ধরার সুযোগ বেশি। model নিজের ধাপ আবার দেখে, ভুল পেলে ঠিক করে। ঠিক যেমন পরীক্ষার শেষে আমরা খাতা আবার পড়ে দেখি। [ASK] তোমার কী মনে হয়, max effort কি সব সময় বেশি ঠিক উত্তর দেয়? [PAUSE 5s] চলো, পরের slide-এ মেপে দেখি।</aside>
+</section>
+
+<section class="slide" id="effort-3" data-topic="Effort levels" data-minutes="2.5" data-steps="5">
+  <h2>Test one puzzle at low and at max effort</h2>
+  <div class="stage">
+    <div class="over" data-step="2"><div class="term" data-cast="E1" data-play-step="2"></div></div>
+    <div class="over" data-step="4"><div class="term" data-cast="E2" data-play-step="4"></div></div>
+    <div class="over" data-step="1">
+      <p class="puz">How many integers from 1 to 5000 are divisible by 13 and have digit sum 14?<br>The right answer is 27.</p>
+      <div class="check" data-step="1"><p>Run the puzzle 10 times at low effort. How many runs are right?</p><ol><li>10 of 10</li><li>8 or 9 of 10</li><li>7 or fewer</li></ol></div>
+    </div>
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Ten dots for low effort show 9 right answers and one wrong answer, 26. Ten dots for max effort show 10 right answers. Each row lists the average output tokens and seconds.">
+<rect class="node plain" x="10" y="10" width="1180" height="96" rx="18"/>
+<text class="lbl mid" x="600" y="52">How many integers from 1 to 5000 are divisible by 13 and have digit sum 14?</text>
+<text class="lbl-2 mid" x="600" y="88">The right answer is 27. Each effort runs the puzzle 10 times.</text>
+<text class="lbl" x="20" y="247">Low effort</text>
+<text class="lbl" x="20" y="397">Max effort</text>
+<g data-step="3 5" data-from="3">
+<circle class="node c2 ok" cx="250" cy="235" r="27"/><text class="lbl mono mid" x="250" y="242">27</text><circle class="node c2 ok" cx="312" cy="235" r="27"/><text class="lbl mono mid" x="312" y="242">27</text><circle class="node c2 ok" cx="374" cy="235" r="27"/><text class="lbl mono mid" x="374" y="242">27</text><circle class="node c4 bad" cx="436" cy="235" r="27"/><text class="lbl mono mid" x="436" y="242">26</text><circle class="node c2 ok" cx="498" cy="235" r="27"/><text class="lbl mono mid" x="498" y="242">27</text><circle class="node c2 ok" cx="560" cy="235" r="27"/><text class="lbl mono mid" x="560" y="242">27</text><circle class="node c2 ok" cx="622" cy="235" r="27"/><text class="lbl mono mid" x="622" y="242">27</text><circle class="node c2 ok" cx="684" cy="235" r="27"/><text class="lbl mono mid" x="684" y="242">27</text><circle class="node c2 ok" cx="746" cy="235" r="27"/><text class="lbl mono mid" x="746" y="242">27</text><circle class="node c2 ok" cx="808" cy="235" r="27"/><text class="lbl mono mid" x="808" y="242">27</text><text class="big hl end" x="920" y="247" data-count="9" data-count-step="3">0</text><text class="lbl" x="934" y="247">of 10 right</text><text class="lbl-2" x="250" y="296">Average 4,009 output tokens and 16.7 s per run</text>
+</g>
+<circle class="node ring" cx="436" cy="235" r="36" data-step="3"/>
+<g class="until" data-step="5" data-from="5">
+<circle class="node c2 ok" cx="250" cy="385" r="27"/><text class="lbl mono mid" x="250" y="392">27</text><circle class="node c2 ok" cx="312" cy="385" r="27"/><text class="lbl mono mid" x="312" y="392">27</text><circle class="node c2 ok" cx="374" cy="385" r="27"/><text class="lbl mono mid" x="374" y="392">27</text><circle class="node c2 ok" cx="436" cy="385" r="27"/><text class="lbl mono mid" x="436" y="392">27</text><circle class="node c2 ok" cx="498" cy="385" r="27"/><text class="lbl mono mid" x="498" y="392">27</text><circle class="node c2 ok" cx="560" cy="385" r="27"/><text class="lbl mono mid" x="560" y="392">27</text><circle class="node c2 ok" cx="622" cy="385" r="27"/><text class="lbl mono mid" x="622" y="392">27</text><circle class="node c2 ok" cx="684" cy="385" r="27"/><text class="lbl mono mid" x="684" y="392">27</text><circle class="node c2 ok" cx="746" cy="385" r="27"/><text class="lbl mono mid" x="746" y="392">27</text><circle class="node c2 ok" cx="808" cy="385" r="27"/><text class="lbl mono mid" x="808" y="392">27</text><text class="big hl end" x="920" y="397" data-count="10" data-count-step="5">0</text><text class="lbl" x="934" y="397">of 10 right</text><text class="lbl-2" x="250" y="446">Average 23,534 output tokens and 78.0 s per run</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>Predict how many of the 10 low-effort runs are right.</li>
+    <li>Run the puzzle 10 times at low effort.</li>
+    <li>Low effort: 9 of 10 runs are right. One run answers 26.</li>
+    <li>Run the same puzzle 10 times at max effort.</li>
+    <li>Max effort: 10 of 10 runs are right. It uses more tokens and time.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] এখানে একটা puzzle আছে। এক থেকে পাঁচ হাজারের মধ্যে কতগুলো সংখ্যা তেরো দিয়ে ভাগ যায়, আর যাদের অঙ্কের যোগফল চৌদ্দ? ঠিক উত্তর 27। আমি এই একই puzzle দশবার চালাব, low effort-এ। [ASK] অনুমান করো। দশটার মধ্যে কয়টা run ঠিক হবে? A, দশটাই। B, আট বা নয়টা। C, সাত বা তার কম। হাত তোলো। [PAUSE 10s] [STEP 2] [DEMO E1] [DO: E1 cast নিজে চলবে] দশটা run একসাথে চলছে, তাই যে আগে শেষ করে সে আগে table-এ আসে। দেখো answer, tokens আর seconds-এর কলাম। [PAUSE 5s] [STEP 3] ফল: দশটার মধ্যে 9টা ঠিক। একটা run বলেছে 26। গড়ে 4,009 output token, মানে প্রায় চার হাজার, আর ষোলো সেকেন্ডের একটু বেশি। মানে low effort-ও এই puzzle-এ বেশ ভালো। আর ওই এক ভুলটাই সেই sampling-এর ছক্কা। [STEP 4] [DEMO E2] [DO: E2 cast নিজে চলবে] এবার একই puzzle, max effort-এ, দশবার। এই run-গুলো ধীর। আসলে প্রায় দুই মিনিট লেগেছিল। recording-এ চুপচাপ অংশ ছোট করা আছে। [PAUSE 5s] [STEP 5] ফল: দশটাই ঠিক। কিন্তু গড়ে 23,534 token, মানে প্রায় তেইশ হাজার পাঁচশো, আর 78 সেকেন্ড। low-এর প্রায় ছয় গুণ token, আর প্রায় পাঁচ গুণ সময়। ঠিক উত্তর বেড়েছে মাত্র একটা। [ASK] এই puzzle-এ কি max effort দরকার ছিল? [PAUSE 5s] সৎ উত্তর হলো, না। কঠিন puzzle-এ কী হয়, সেটা পরের slide-এ দেখব।</aside>
+</section>
+
+<section class="slide" id="effort-4" data-topic="Effort levels" data-minutes="1.5" data-steps="5">
+  <h2>Max effort is slower and costs more tokens</h2>
+  <div class="stage">
+    <div class="over" data-step="2"><div class="term" data-cast="E3" data-play-step="2"></div></div>
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A table with a low row and a max row. Low answers 804, 804 and 805. Max answers 805 three times. Max uses more output tokens and more seconds per run.">
+<rect class="node plain" x="10" y="10" width="1180" height="100" rx="18"/><text class="lbl mid" x="600" y="54">Harder puzzle: integers from 1 to 100000, divisible by 7, digit sum 20.</text><text class="lbl-2 mid" x="600" y="92">The right answer is 805. Each effort runs the puzzle 3 times.</text>
+<text class="lbl-2" x="210" y="158">Answers</text>
+<text class="lbl-2" x="470" y="158">Output tokens per run (average)</text>
+<text class="lbl-2" x="860" y="158">Seconds per run (average)</text>
+<text class="lbl" x="20" y="258">Low</text><text class="lbl" x="20" y="408">Max</text>
+<g data-step="3 4 5" data-from="3">
+<circle class="node c4 bad" cx="240" cy="250" r="28"/><text class="lbl mono mid" x="240" y="257">804</text><circle class="node c4 bad" cx="310" cy="250" r="28"/><text class="lbl mono mid" x="310" y="257">804</text><circle class="node c2 ok" cx="380" cy="250" r="28"/><text class="lbl mono mid" x="380" y="257">805</text><circle class="node c2 ok" cx="240" cy="400" r="28"/><text class="lbl mono mid" x="240" y="407">805</text><circle class="node c2 ok" cx="310" cy="400" r="28"/><text class="lbl mono mid" x="310" y="407">805</text><circle class="node c2 ok" cx="380" cy="400" r="28"/><text class="lbl mono mid" x="380" y="407">805</text>
+</g>
+<rect class="node ring" x="204" y="214" width="142" height="72" rx="18" data-step="3"/>
+<g class="until" data-step="4 5" data-from="4">
+<rect class="node c1" x="470" y="228" width="43" height="44" rx="8"/><text class="lbl mono" x="525" y="258" data-count="14309" data-count-fmt="comma" data-count-step="4">0</text><rect class="node c5" x="470" y="378" width="230" height="44" rx="8"/><text class="lbl mono" x="712" y="408" data-count="77387" data-count-fmt="comma" data-count-step="4">0</text>
+</g>
+<g class="until" data-step="5" data-from="5">
+<rect class="node c1" x="860" y="228" width="37" height="44" rx="8"/><text class="lbl mono" x="909" y="258">56.6 s</text><rect class="node c5" x="860" y="378" width="170" height="44" rx="8"/><text class="lbl mono" x="1042" y="408">257.1 s</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>The harder puzzle has a much larger range.</li>
+    <li>Run the puzzle 3 times at low effort and 3 times at max effort. The video is a time-lapse.</li>
+    <li>Max effort is right 3 of 3 times. Low effort is right 1 of 3 times.</li>
+    <li>Max effort uses more output tokens per run.</li>
+    <li>Max effort takes more seconds per run.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] এবার কঠিন puzzle। এক থেকে এক লাখ, সাত দিয়ে ভাগ যায়, অঙ্কের যোগফল কুড়ি। ঠিক উত্তর 805। [STEP 2] [DEMO E3] [DO: E3 cast নিজে চলবে] low আর max, দুটোই তিনবার করে চলবে। আসল সময় প্রায় পাঁচ মিনিট, তাই recording-টা ছোট করা। শেষের table-টা দেখো। [PAUSE 5s] [STEP 3] low তিনবারের মধ্যে একবার ঠিক। দুইবার বলল 804, মানে এক ভুল। max তিনবারই 805। [STEP 4] কিন্তু max গড়ে 77,387 token নিয়েছে, মানে প্রায় সাতাত্তর হাজার। low নিয়েছে 14,309, মানে প্রায় চৌদ্দ হাজার। মজার কথা: low-এর দুইটা ভুল run ভেবেছিল মাত্র 3,016 আর 3,255 token। কিন্তু ঠিক run-টা ভেবেছিল 36,658 token। মানে কম ভাবলে ভুলের সম্ভাবনা বাড়ে। [STEP 5] সময়ও দেখো। max গড়ে 257 সেকেন্ড, low 57 সেকেন্ড। শেষ কথা: কঠিন কাজে max effort ঠিক উত্তরের সম্ভাবনা বাড়ায়। কিন্তু দাম দিতে হয় সময় আর token-এ।</aside>
+</section>
+
+<section class="slide" id="effort-5" data-topic="Effort levels" data-minutes="1" data-steps="5">
+  <h2>Raise effort first, then the model</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A grid with Haiku, Sonnet and Opus as rows and low effort and max effort as columns. Easy tasks go to Haiku with low effort. Hard tasks start with Haiku at max effort. If the answer is still wrong, use Sonnet, then Opus.">
+<g data-step="1" data-from="">
+<rect class="node c1" x="10" y="112" width="290" height="112" rx="18"/><text class="lbl lg mid" x="155" y="164">Haiku</text><text class="lbl-2 mid" x="155" y="200">Small and fast</text><rect class="node c2" x="10" y="242" width="290" height="112" rx="18"/><text class="lbl lg mid" x="155" y="294">Sonnet</text><text class="lbl-2 mid" x="155" y="330">Balanced</text><rect class="node c3" x="10" y="372" width="290" height="112" rx="18"/><text class="lbl lg mid" x="155" y="424">Opus</text><text class="lbl-2 mid" x="155" y="460">Strongest</text>
+</g>
+<rect class="node plain" x="320" y="112" width="420" height="112" rx="18"/><rect class="node plain" x="770" y="112" width="420" height="112" rx="18"/><rect class="node plain" x="320" y="242" width="420" height="112" rx="18"/><rect class="node plain" x="770" y="242" width="420" height="112" rx="18"/><rect class="node plain" x="320" y="372" width="420" height="112" rx="18"/><rect class="node plain" x="770" y="372" width="420" height="112" rx="18"/>
+<g data-step="2" data-from="">
+<text class="lbl mid" x="530" y="34">Low effort</text><text class="lbl mid" x="980" y="34">Max effort</text><path class="edge" d="M320 54 H1190" marker-end="url(#arrow)"/>
+</g>
+<g class="until" data-step="2" data-from="2">
+<text class="lbl-2 mid" x="755" y="92">More time, tokens and cost</text>
+</g>
+<rect class="node ring" x="314" y="106" width="432" height="124" rx="18" data-step="3"/>
+<g class="until" data-step="3 4 5" data-from="3">
+<text class="lbl mid hl" x="530" y="166">Easy task</text><text class="lbl-2 mid" x="530" y="200">Rename a variable</text>
+</g>
+<rect class="node ring" x="764" y="106" width="432" height="124" rx="18" data-step="4"/>
+<g class="until" data-step="4 5" data-from="4">
+<text class="lbl mid hl" x="980" y="166">Hard task</text><text class="lbl-2 mid" x="980" y="200">Raise the effort first</text>
+</g>
+<rect class="node ring" x="764" y="236" width="432" height="124" rx="18" data-step="5"/>
+<rect class="node ring" x="764" y="366" width="432" height="124" rx="18" data-step="5"/>
+<g class="until" data-step="5" data-from="5">
+<text class="lbl mid hl" x="980" y="296">Still wrong?</text><text class="lbl-2 mid" x="980" y="330">Use Sonnet</text>
+<text class="lbl mid hl" x="980" y="426">Still wrong?</text><text class="lbl-2 mid" x="980" y="460">Use Opus</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>Pick the model: Haiku, Sonnet or Opus.</li>
+    <li>Pick the effort: low or max. More effort costs more time and tokens.</li>
+    <li>Easy task: use Haiku with low effort.</li>
+    <li>Hard task: raise the effort first. In the E3 test, Haiku at max effort is right 3 of 3 times.</li>
+    <li>If the answer is still wrong, use a larger model. Check the answer.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] এবার model বাছাই। Haiku ছোট আর দ্রুত, Sonnet মাঝামাঝি, Opus সবচেয়ে শক্তিশালী। [STEP 2] আর effort আছে low থেকে max। ডান দিকে, মানে low থেকে max-এ গেলে সময়, token আর খরচ বাড়ে। model-এর বেলায় নিচের দিকে গেলে ক্ষমতা আর দাম দুটোই বাড়ে। [CLICK] [DO: দামের পাতাটা browser-এ খুলে দেখাও] slide-এ দাম লিখিনি, কারণ দাম বদলায়। [STEP 3] সহজ কাজে Haiku আর low। যেমন একটা variable-এর নাম বদলানো। [STEP 4] কঠিন কাজে আগে effort বাড়াও। যেমন লুকোনো bug খোঁজা। আমাদের মাপে Haiku max effort-এও তিনবারই ঠিক ছিল। [STEP 5] তারপরও ভুল হলে বড় model-এ যাও, মানে Sonnet, তারপর Opus। আর উত্তর সবসময় যাচাই করো। [PAUSE 3s]</aside>
+</section>
+
+<section class="slide anim-only" id="anim-E1" data-cmd="E1" data-steps="5">
+  <h2>Low effort is right 9 times in 10</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The command runs one puzzle 10 times at low effort. The model writes rough work and answers with one number. The row of dots shows 9 right answers out of 10.">
+<g data-step="1" data-from="">
+<rect class="node plain" x="10" y="10" width="1180" height="70" rx="16"/><text class="lbl lg mono" x="34" y="56">$ runs 27 10 low</text>
+</g>
+<g data-step="2" data-from="">
+<rect class="node plain" x="10" y="110" width="300" height="180" rx="18"/><text class="lbl lg mid" x="160" y="179">Same puzzle</text><text class="lbl-2 mid" x="160" y="215">10 runs at once</text><text class="lbl-2 mid" x="160" y="247">Right answer: 27</text>
+</g>
+<path class="edge" d="M314 200 H376" marker-end="url(#arrow)" data-step="2 3"/>
+<g data-step="3" data-from="">
+<rect class="node c1" x="380" y="110" width="500" height="180" rx="18"/><text class="lbl" x="405" y="146">Model: Haiku, low effort</text><rect class="node plain" x="405" y="180" width="200" height="80" rx="12"/><rect class="skel" x="425" y="200" width="150" height="12" rx="6"/><rect class="skel" x="425" y="228" width="100" height="12" rx="6"/><text class="lbl-2" x="625" y="226">Rough work</text>
+</g>
+<path class="edge" d="M884 200 H946" marker-end="url(#arrow)" data-step="3"/>
+<g data-step="3" data-from="">
+<rect class="node plain" x="950" y="110" width="240" height="180" rx="18"/><text class="lbl lg mid" x="1070" y="179">Answers</text><text class="lbl-2 mid" x="1070" y="215">One number</text><text class="lbl-2 mid" x="1070" y="247">for each run</text>
+</g>
+<circle class="node ring" cx="342" cy="380" r="36" data-step="4"/>
+<g class="until" data-step="4 5" data-from="4">
+<circle class="node c2 ok" cx="150" cy="380" r="28"/><text class="lbl mono mid" x="150" y="387">27</text><circle class="node c2 ok" cx="214" cy="380" r="28"/><text class="lbl mono mid" x="214" y="387">27</text><circle class="node c2 ok" cx="278" cy="380" r="28"/><text class="lbl mono mid" x="278" y="387">27</text><circle class="node c4 bad" cx="342" cy="380" r="28"/><text class="lbl mono mid" x="342" y="387">26</text><circle class="node c2 ok" cx="406" cy="380" r="28"/><text class="lbl mono mid" x="406" y="387">27</text><circle class="node c2 ok" cx="470" cy="380" r="28"/><text class="lbl mono mid" x="470" y="387">27</text><circle class="node c2 ok" cx="534" cy="380" r="28"/><text class="lbl mono mid" x="534" y="387">27</text><circle class="node c2 ok" cx="598" cy="380" r="28"/><text class="lbl mono mid" x="598" y="387">27</text><circle class="node c2 ok" cx="662" cy="380" r="28"/><text class="lbl mono mid" x="662" y="387">27</text><circle class="node c2 ok" cx="726" cy="380" r="28"/><text class="lbl mono mid" x="726" y="387">27</text><text class="big hl end" x="860" y="394" data-count="9" data-count-step="4">0</text><text class="lbl" x="874" y="394">of 10 right</text>
+</g>
+<g class="until" data-step="5" data-from="5">
+<text class="lbl-2 mid" x="600" y="464">Average 4,009 output tokens and 16.7 s per run</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>Type the command. It runs the same puzzle 10 times at low effort.</li>
+    <li>The 10 runs start at the same time.</li>
+    <li>The model writes a little rough work. Then it answers with one number.</li>
+    <li>Result: 9 of 10 runs are right. One run answers 26.</li>
+    <li>Each run uses an average of 4,009 output tokens and takes 16.7 s.</li>
+  </ol>
+</section>
+
+<section class="slide anim-only" id="anim-E2" data-cmd="E2" data-steps="5">
+  <h2>Max effort is right 10 times in 10</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The command runs one puzzle 10 times at max effort. The model writes rough work and answers with one number. The row of dots shows 10 right answers out of 10.">
+<g data-step="1" data-from="">
+<rect class="node plain" x="10" y="10" width="1180" height="70" rx="16"/><text class="lbl lg mono" x="34" y="56">$ runs 27 10 max</text>
+</g>
+<g data-step="2" data-from="">
+<rect class="node plain" x="10" y="110" width="300" height="180" rx="18"/><text class="lbl lg mid" x="160" y="179">Same puzzle</text><text class="lbl-2 mid" x="160" y="215">10 runs at once</text><text class="lbl-2 mid" x="160" y="247">Right answer: 27</text>
+</g>
+<path class="edge" d="M314 200 H376" marker-end="url(#arrow)" data-step="2 3"/>
+<g data-step="3" data-from="">
+<rect class="node c1" x="380" y="110" width="500" height="180" rx="18"/><text class="lbl" x="405" y="146">Model: Haiku, max effort</text><rect class="node plain" x="405" y="170" width="450" height="106" rx="12"/><rect class="skel" x="425" y="184" width="380" height="10" rx="5"/><rect class="skel" x="425" y="206" width="330" height="10" rx="5"/><rect class="skel" x="425" y="228" width="400" height="10" rx="5"/><rect class="skel" x="425" y="250" width="280" height="10" rx="5"/>
+</g>
+<path class="edge" d="M884 200 H946" marker-end="url(#arrow)" data-step="3"/>
+<g data-step="3" data-from="">
+<rect class="node plain" x="950" y="110" width="240" height="180" rx="18"/><text class="lbl lg mid" x="1070" y="179">Answers</text><text class="lbl-2 mid" x="1070" y="215">One number</text><text class="lbl-2 mid" x="1070" y="247">for each run</text>
+</g>
+
+<g class="until" data-step="4 5" data-from="4">
+<circle class="node c2 ok" cx="150" cy="380" r="28"/><text class="lbl mono mid" x="150" y="387">27</text><circle class="node c2 ok" cx="214" cy="380" r="28"/><text class="lbl mono mid" x="214" y="387">27</text><circle class="node c2 ok" cx="278" cy="380" r="28"/><text class="lbl mono mid" x="278" y="387">27</text><circle class="node c2 ok" cx="342" cy="380" r="28"/><text class="lbl mono mid" x="342" y="387">27</text><circle class="node c2 ok" cx="406" cy="380" r="28"/><text class="lbl mono mid" x="406" y="387">27</text><circle class="node c2 ok" cx="470" cy="380" r="28"/><text class="lbl mono mid" x="470" y="387">27</text><circle class="node c2 ok" cx="534" cy="380" r="28"/><text class="lbl mono mid" x="534" y="387">27</text><circle class="node c2 ok" cx="598" cy="380" r="28"/><text class="lbl mono mid" x="598" y="387">27</text><circle class="node c2 ok" cx="662" cy="380" r="28"/><text class="lbl mono mid" x="662" y="387">27</text><circle class="node c2 ok" cx="726" cy="380" r="28"/><text class="lbl mono mid" x="726" y="387">27</text><text class="big hl end" x="860" y="394" data-count="10" data-count-step="4">0</text><text class="lbl" x="874" y="394">of 10 right</text>
+</g>
+<g class="until" data-step="5" data-from="5">
+<text class="lbl-2 mid" x="600" y="464">Average 23,534 output tokens and 78.0 s per run</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>Type the command. It runs the same puzzle 10 times at max effort.</li>
+    <li>The 10 runs start at the same time.</li>
+    <li>The model writes a lot of rough work. Then it answers with one number.</li>
+    <li>Result: 10 of 10 runs are right.</li>
+    <li>Each run uses an average of 23,534 output tokens and takes 78.0 s.</li>
+  </ol>
+</section>
+
+<section class="slide anim-only" id="anim-E3" data-cmd="E3" data-steps="5">
+  <h2>Max is right 3 of 3. Low is right 1 of 3.</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A table with a low row and a max row. Low answers 804, 804 and 805. Max answers 805 three times. Max uses more output tokens and more seconds per run.">
+<g data-step="1 2" data-from="">
+<rect class="node plain" x="10" y="10" width="1180" height="100" rx="18"/><text class="lbl lg mono" x="34" y="54">$ runs 805 3 low max</text><text class="lbl-2" x="34" y="92">Puzzle: integers from 1 to 100000, divisible by 7, digit sum 20. Right answer: 805.</text>
+</g>
+<text class="lbl-2" x="210" y="158">Answers</text>
+<text class="lbl-2" x="470" y="158">Output tokens per run (average)</text>
+<text class="lbl-2" x="860" y="158">Seconds per run (average)</text>
+<text class="lbl" x="20" y="258">Low</text><text class="lbl" x="20" y="408">Max</text>
+<g data-step="3 4 5" data-from="3">
+<circle class="node c4 bad" cx="240" cy="250" r="28"/><text class="lbl mono mid" x="240" y="257">804</text><circle class="node c4 bad" cx="310" cy="250" r="28"/><text class="lbl mono mid" x="310" y="257">804</text><circle class="node c2 ok" cx="380" cy="250" r="28"/><text class="lbl mono mid" x="380" y="257">805</text><circle class="node c2 ok" cx="240" cy="400" r="28"/><text class="lbl mono mid" x="240" y="407">805</text><circle class="node c2 ok" cx="310" cy="400" r="28"/><text class="lbl mono mid" x="310" y="407">805</text><circle class="node c2 ok" cx="380" cy="400" r="28"/><text class="lbl mono mid" x="380" y="407">805</text>
+</g>
+<rect class="node ring" x="204" y="214" width="142" height="72" rx="18" data-step="3"/>
+<g class="until" data-step="4 5" data-from="4">
+<rect class="node c1" x="470" y="228" width="43" height="44" rx="8"/><text class="lbl mono" x="525" y="258" data-count="14309" data-count-fmt="comma" data-count-step="4">0</text><rect class="node c5" x="470" y="378" width="230" height="44" rx="8"/><text class="lbl mono" x="712" y="408" data-count="77387" data-count-fmt="comma" data-count-step="4">0</text>
+</g>
+<g class="until" data-step="5" data-from="5">
+<rect class="node c1" x="860" y="228" width="37" height="44" rx="8"/><text class="lbl mono" x="909" y="258">56.6 s</text><rect class="node c5" x="860" y="378" width="170" height="44" rx="8"/><text class="lbl mono" x="1042" y="408">257.1 s</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>Type the command. It runs the harder puzzle with low and max effort.</li>
+    <li>Each effort runs the puzzle 3 times. The right answer is 805.</li>
+    <li>Low answers 804, 804 and 805. Max answers 805 three times.</li>
+    <li>Max uses an average of 77,387 output tokens per run. Low uses 14,309.</li>
+    <li>Max takes 257.1 s per run. Low takes 56.6 s.</li>
+  </ol>
+</section>

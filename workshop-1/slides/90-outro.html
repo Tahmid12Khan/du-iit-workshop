@@ -1,0 +1,140 @@
+<section class="slide" id="outro-1" data-topic="Wrap-up" data-minutes="2" data-steps="5">
+  <h2>One loop uses all eight ideas</h2>
+  <div class="stage">
+    <svg viewBox="0 -24 1200 500" class="diagram" role="img" aria-label="The agent loop with four parts in a row: context, plan, act and check, with an arrow from check back to context. The eight topics sit above the part where each one acts.">
+      <g data-step="1 2">
+        <rect class="node c1" x="40" y="200" width="220" height="100" rx="18"/>
+        <text class="lbl lg mid" x="150" y="214" dy="30">Context</text>
+        <text class="lbl-2 mid" x="150" y="214" dy="62">What the model sees</text>
+      </g>
+      <g data-step="2">
+        <rect class="node c1" x="40" y="14" width="220" height="46" rx="12"/>
+        <text class="lbl mid" x="150" y="45">Tokens</text>
+        <rect class="node c1" x="40" y="68" width="220" height="46" rx="12"/>
+        <text class="lbl mid" x="150" y="99">Context window</text>
+        <rect class="node c1" x="40" y="122" width="220" height="46" rx="12"/>
+        <text class="lbl mid" x="150" y="153">Parts of a prompt</text>
+        <path class="edge" d="M150 168 V198"/>
+      </g>
+      <g data-step="1 3">
+        <rect class="node c2" x="340" y="200" width="220" height="100" rx="18"/>
+        <text class="lbl lg mid" x="450" y="214" dy="30">Plan</text>
+        <text class="lbl-2 mid" x="450" y="214" dy="62">What to do next</text>
+      </g>
+      <g data-step="3">
+        <rect class="node c2" x="340" y="68" width="220" height="46" rx="12"/>
+        <text class="lbl mid" x="450" y="99">Effort levels</text>
+        <rect class="node c2" x="340" y="122" width="220" height="46" rx="12"/>
+        <text class="lbl mid" x="450" y="153">Structured output</text>
+        <path class="edge" d="M450 168 V198"/>
+      </g>
+      <g data-step="1 4">
+        <rect class="node c3" x="640" y="200" width="220" height="100" rx="18"/>
+        <text class="lbl lg mid" x="750" y="214" dy="30">Act</text>
+        <text class="lbl-2 mid" x="750" y="214" dy="62">Our code does it</text>
+      </g>
+      <g data-step="4">
+        <rect class="node c3" x="640" y="122" width="220" height="46" rx="12"/>
+        <text class="lbl mid" x="750" y="153">Tool call</text>
+        <path class="edge" d="M750 168 V198"/>
+      </g>
+      <g data-step="1 5">
+        <rect class="node c4" x="940" y="200" width="220" height="100" rx="18"/>
+        <text class="lbl lg mid" x="1050" y="214" dy="30">Check</text>
+        <text class="lbl-2 mid" x="1050" y="214" dy="62">Did it work?</text>
+      </g>
+      <g data-step="5">
+        <rect class="node c4" x="940" y="122" width="220" height="46" rx="12"/>
+        <text class="lbl mid" x="1050" y="153">Hallucination</text>
+        <path class="edge" d="M1050 168 V198"/>
+      </g>
+      <path class="edge" d="M264 250 H336" marker-end="url(#arrow)" data-step="1"/>
+      <path class="edge" d="M564 250 H636" marker-end="url(#arrow)" data-step="1"/>
+      <path class="edge" d="M864 250 H936" marker-end="url(#arrow)" data-step="1"/>
+      <g data-step="1 5">
+        <path class="edge" d="M1050 304 V362 H726"/>
+        <path class="edge" d="M474 362 H150 V306" marker-end="url(#arrow)"/>
+        <rect class="node c5" x="480" y="336" width="240" height="52" rx="14"/>
+        <text class="lbl mid" x="600" y="370">Agent loop</text>
+        <text class="lbl-3 mid" x="600" y="418">Repeat until the task is done</text>
+      </g>
+    </svg>
+  </div>
+  <ol class="captions">
+    <li>The agent loop has four parts: context, plan, act and check.</li>
+    <li>Context: tokens fill the context window. The prompt shapes it.</li>
+    <li>Plan: effort sets how much rough work the model writes. Structured output gives our code a valid action.</li>
+    <li>Act: a tool call asks our code to do the work.</li>
+    <li>Check: the loop repeats or stops. The model can be wrong, so verify with a tool.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] শুরুতে তুমি Hello লিখে ভেবেছিলে, box-এর ভেতরে কী ঘটে? এখন box খোলা। ভেতরে আছে token, context window আর একটা loop। এবার সব জোড়া লাগাই। এই চারটা ধাপ, context, plan, act আর check, মিলে হলো agent loop। আজ আমরা এটাই টুকরো টুকরো করে দেখলাম। ওপরের চিপগুলো হলো আজকের আটটা idea। [STEP 2] Context হলো model-এর পরীক্ষার desk। সেখানে token-গুলো জমে, context window-এর একটা সীমা আছে, আর prompt ঠিক করে দেয় desk-এ কী কী রাখা হবে। [STEP 3] Plan-এ model ভাবে। effort ঠিক করে সে কতক্ষণ ভাববে। আর structured output মানে সে JSON-এ বলে কী করতে চায়, যাতে আমাদের code সেটা পড়তে পারে। [STEP 4] Act হলো আমাদের code-এর কাজ। model নিজে কিছু চালায় না। tool call দিয়ে সে শুধু অনুরোধ করে। তাই code-এর ওপর আমাদের পুরো নিয়ন্ত্রণ থাকে। [STEP 5] Check-এ ঠিক হয় loop আবার ঘুরবে, নাকি থামবে। model ভুল বলতে পারে, এটাকেই বলে hallucination, তাই বাস্তব system-এ এই ধাপে আমরা tool দিয়ে উত্তর মিলিয়ে নিই। [ASK] আটটা idea-র মধ্যে কোনটা তোমার কাছে সবচেয়ে নতুন ছিল? [PAUSE 5s]</aside>
+</section>
+
+<section class="slide" id="outro-2" data-topic="Wrap-up" data-minutes="2" data-steps="4">
+  <h2>You write one agent at home</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A worksheet with eight tasks leads to one task card with a cost cap. The loop starter file leads to your own agent. A link at the bottom goes to the claude-basics site.">
+      <g data-step="1">
+        <rect class="node plain" x="20" y="28" width="420" height="446" rx="16"/>
+        <text class="lbl lg" x="44" y="76">Worksheet</text>
+        <circle class="node c1" cx="62" cy="124" r="16"/>
+        <text class="lbl-2 mid" x="62" y="131">1</text>
+        <text class="lbl-2" x="92" y="131">Tokens</text>
+        <circle class="node c1" cx="62" cy="166" r="16"/>
+        <text class="lbl-2 mid" x="62" y="173">2</text>
+        <text class="lbl-2" x="92" y="173">Context window</text>
+        <circle class="node c1" cx="62" cy="208" r="16"/>
+        <text class="lbl-2 mid" x="62" y="215">3</text>
+        <text class="lbl-2" x="92" y="215">Effort levels</text>
+        <circle class="node c1" cx="62" cy="250" r="16"/>
+        <text class="lbl-2 mid" x="62" y="257">4</text>
+        <text class="lbl-2" x="92" y="257">Hallucination</text>
+        <circle class="node c1" cx="62" cy="292" r="16"/>
+        <text class="lbl-2 mid" x="62" y="299">5</text>
+        <text class="lbl-2" x="92" y="299">Parts of a prompt</text>
+        <circle class="node c1" cx="62" cy="334" r="16"/>
+        <text class="lbl-2 mid" x="62" y="341">6</text>
+        <text class="lbl-2" x="92" y="341">Structured output</text>
+        <circle class="node c1" cx="62" cy="376" r="16"/>
+        <text class="lbl-2 mid" x="62" y="383">7</text>
+        <text class="lbl-2" x="92" y="383">Tool call</text>
+        <circle class="node c1" cx="62" cy="418" r="16"/>
+        <text class="lbl-2 mid" x="62" y="425">8</text>
+        <text class="lbl-2" x="92" y="425">Agent loop</text>
+      </g>
+      <path class="edge" d="M446 250 H474" marker-end="url(#arrow)" data-step="2"/>
+      <g data-step="2">
+        <rect class="node c2" x="480" y="60" width="330" height="262" rx="18"/>
+        <text class="lbl lg" x="508" y="112">One task</text>
+        <text class="lbl" x="508" y="170">1&#160;&#160;Run the command.</text>
+        <text class="lbl" x="508" y="220">2&#160;&#160;Read the result.</text>
+        <text class="lbl" x="508" y="270">3&#160;&#160;Write what you notice.</text>
+        <rect class="node c3" x="480" y="338" width="330" height="86" rx="14"/>
+        <text class="lbl-3" x="500" y="368">Cost cap on every command</text>
+        <text class="lbl mono" x="500" y="406">--max-budget-usd 0.10</text>
+      </g>
+      <path class="edge" d="M816 150 H838 V105 H856" marker-end="url(#arrow)" data-step="3"/>
+      <g data-step="3">
+        <rect class="node c4" x="860" y="40" width="320" height="130" rx="18"/>
+        <text class="lbl mono" x="884" y="96">loop.starter.mjs</text>
+        <text class="lbl-2" x="884" y="136">Tasks 7 and 8</text>
+        <path class="edge" d="M1020 174 V236" marker-end="url(#arrow)"/>
+        <rect class="node c5" x="860" y="240" width="320" height="130" rx="18"/>
+        <text class="lbl lg" x="884" y="296">Your agent</text>
+        <text class="lbl-2" x="884" y="336">Runs the loop at home.</text>
+      </g>
+      <a href="https://tahmid12khan.github.io/claude-basics/" target="_blank" rel="noopener" data-step="4" data-from="4">
+        <rect class="node c5" x="480" y="438" width="700" height="56" rx="14"/>
+        <text class="lbl" x="500" y="474">Learn more</text>
+        <text class="lbl-2 mono" x="640" y="474">tahmid12khan.github.io/claude-basics</text>
+      </a>
+    </svg>
+  </div>
+  <ol class="captions">
+    <li>The worksheet has eight tasks. Each topic has one task.</li>
+    <li>Run one command. Write what you notice. Each command has a cost cap.</li>
+    <li>In the last tasks, finish loop.starter.mjs and run your own agent.</li>
+    <li>To learn agentic engineering basics and practices, read tahmid12khan.github.io/claude-basics.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] আজ যা দেখলে, বাসায় নিজে হাতে করবে। একটা worksheet আছে। আটটা task, প্রতিটা topic-এর জন্য একটা করে। প্রতিটা task-এর সঙ্গে লেখা আছে কী লক্ষ করতে হবে, মানে what to notice। [STEP 2] প্রতিটা task-এ একটা command চালাবে, result পড়বে, আর খাতায় লিখবে কী চোখে পড়ল। প্রতিটা command-এ খরচের একটা সীমা বসানো আছে, তাই ভয় পাওয়ার কিছু নেই। দরকার হলে এক command বারবার চালিয়ে দেখো, ফল একই হয় কি না। [STEP 3] শেষের task-গুলো সবচেয়ে মজার। তোমাদের হাতে থাকবে loop.starter.mjs। ওটা সম্পূর্ণ করলে তোমার নিজের agent চলবে। আজ আমি যেটা চালিয়ে দেখালাম, সেটাই তুমি নিজে লিখবে। আজ তুমি black box-এর ভেতরটা দেখেছ। বাসায় নিজের হাতে সেটা বানাও। আটকে গেলে আগে notes ফোল্ডারের চারটা ফাইল দিয়ে চেষ্টা করো। [STEP 4] agentic engineering-এর basics আর ভালো practice-গুলো শিখতে চাইলে tahmid12khan.github.io/claude-basics সাইটটা দেখো। link-টা এই slide-এর নিচে আছে। [ASK] কারো কোনো প্রশ্ন আছে? [PAUSE 10s] ধন্যবাদ সবাইকে, আর worksheet-এ দেখা হবে!</aside>
+</section>

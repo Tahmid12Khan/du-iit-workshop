@@ -1,0 +1,18 @@
+{
+  "L1": {
+    "command": "node loop.mjs --once",
+    "result": "Model replied with action list_dir for ./notes. Our code ran it (49 chars, 4 file names) and sent the result back once. The model then asked for read_file on ./notes/trip.md.",
+    "numbers": {
+      "model_calls": 2,
+      "tool_calls_run": 1,
+      "input_tokens_call_1": 1583,
+      "input_tokens_call_2": 1630,
+      "transcript_chars_call_1": 62,
+      "transcript_chars_call_2": 157,
+      "list_dir_result_chars": 49,
+      "files_in_notes": 4
+    },
+    "seconds": 9.9,
+    "cost_usd": 0.0004
+  }
+}

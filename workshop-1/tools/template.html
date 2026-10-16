@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workshop 1: Foundations of LLMs and Agentic Systems</title>
+<link rel="stylesheet" href="vendor/fonts.css">
+<link rel="stylesheet" href="vendor/tokens.css">
+<link rel="stylesheet" href="vendor/player/asciinema-player.css">
+<link rel="stylesheet" href="vendor/deck.css">
+<script src="vendor/theme.js"></script>
+<script src="vendor/deck.js"></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto"><path class="arrowhead" d="M0 0L10 5L0 10z"/></marker></defs></svg>
+<div id="app">
+  <div id="fit">
+    <div id="stage">
+      <div class="topbar" id="topbar">
+        <div class="topic" id="topic"></div>
+        <div class="progress" id="progress" role="group" aria-label="Topics"></div>
+        <div class="counter" id="counter"></div>
+        <button class="tbtn" id="btn-notes" type="button" aria-pressed="false" title="Speaker notes (N)">Notes</button>
+        <button class="tbtn" id="btn-pres" type="button" title="Presenter window (P)">Presenter</button>
+        <span data-theme-toggle></span>
+      </div>
+      <div id="slides">
+<!--W1:SLIDES-->
+      </div>
+      <div class="footer" aria-hidden="true">IIT, DU</div>
+      <div class="capbar" id="capbar">
+        <div class="cap" id="cap" aria-live="polite" aria-atomic="true"></div>
+        <div class="ctl">
+          <div class="steplabel" id="steplabel"></div>
+          <div class="btns"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="dock"></div>
+</div>
+<aside id="notes" aria-label="Speaker notes">
+  <div class="nhead"><span>Speaker notes</span><button type="button">Close</button></div>
+  <div class="nbody" lang="bn"></div>
+</aside>
+<div id="presenter"></div>
+<script src="vendor/player/asciinema-player.min.js"></script>
+<!--W1:CASTS-->
+</body>
+</html>

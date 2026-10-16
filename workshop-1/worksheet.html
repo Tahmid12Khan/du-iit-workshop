@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workshop 1 worksheet</title>
+<link rel="stylesheet" href="vendor/fonts.css">
+<link rel="stylesheet" href="vendor/tokens.css">
+<link rel="stylesheet" href="vendor/pages.css">
+<script src="vendor/theme.js"></script>
+</head>
+<body>
+<header class="site">
+  <nav aria-label="Pages"><a href="index.html">Deck</a><a href="videos.html">Videos</a><a href="worksheet.html" aria-current="page">Worksheet</a></nav>
+  <span data-theme-toggle></span>
+</header>
+<main>
+  <h1>Worksheet: Foundations of LLMs and Agentic Systems</h1>
+  <p class="lead">Do these eight tasks at home, one for each topic of the session. Each task has one result to find.</p>
+
+  <section class="rule" aria-labelledby="budget-h">
+    <h4 id="budget-h">Cost rule</h4>
+    <p>Every command in this worksheet has <code>--max-budget-usd 0.10</code>. The flag stops a call that costs more than 10 US cents.</p>
+    <p>The helpers <code>cc</code> and <code>tokens</code> in <code>demo/cc.sh</code> already set this flag. When you call <code>claude</code> yourself, add the flag.</p>
+  </section>
+
+  <section class="setup" aria-labelledby="setup-h">
+    <h4 id="setup-h">Before you start</h4>
+    <ol>
+      <li>Install Claude Code and log in. Run <code>claude --version</code> to check.</li>
+      <li>Use macOS, Linux, WSL or Git Bash. Install Node.js 20 or newer, <code>jq</code> and <code>python3</code>.</li>
+      <li>Open a terminal in the <code>workshop-1</code> folder.</li>
+      <li>Load the helpers. <code>cc</code> calls the model without the Claude Code overhead. <code>tokens</code> counts the input tokens of a text.</li>
+    </ol>
+    <pre class="code"><code>cd workshop-1
+source demo/cc.sh</code></pre>
+    <p class="note">Run the second command again in each new terminal window. Each task also has a demo script in <code>demo/</code>. Run it to see the presenter version.</p>
+  </section>
+
+  <!-- 1 -->
+  <section class="task" id="task-1">
+    <header><span class="num">1</span><h2>Tokens</h2><span class="time">Demo scripts: demo/T1.sh to demo/T5.sh</span></header>
+    <p><strong>Goal.</strong> Count the tokens of four texts. Find which text costs the most.</p>
+    <ol>
+      <li>Look at the raw usage fields for one word.</li>
+      <li>Count the baseline. The baseline is the cost of a single dot.</li>
+      <li>Count each text. The net count is the total count minus the baseline.</li>
+    </ol>
+    <pre class="code"><code>cc "Hello" --max-budget-usd 0.10 | jq '.usage | {input_tokens, cache_creation_input_tokens, cache_read_input_tokens}'
+tokens "."
+tokens "Hello"
+tokens '{"greeting":"Hello"}'
+tokens 'const sum = (a, b) => a + b;'
+tokens 'Software engineers build reliable systems by testing early and often.'</code></pre>
+    <p><strong>Bonus.</strong> Count one line of Python and one line of JavaScript that do the same job. Compare the two counts.</p>
+    <div class="notice">
+      <h4>What to notice</h4>
+      <ul>
+        <li>The usage has three input fields. The helper adds them.</li>
+        <li>The same word costs more tokens inside JSON.</li>
+        <li>Code costs a different number of tokens per word than English text.</li>
+      </ul>
+    </div>
+    <p><strong>Write down.</strong> Net tokens for each text, from the smallest to the largest:</p>
+    <div class="line"></div><div class="line"></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="task" id="task-2">
+    <header><span class="num">2</span><h2>Context window</h2><span class="time">Demo scripts: demo/C1.sh to demo/C5.sh</span></header>
+    <p><strong>Goal.</strong> Watch the context window fill, then shrink after <code>/compact</code>. Find what the summary lost.</p>
+    <ol>
+      <li>Make a work folder and copy the large file.</li>
+      <li>Give the model one detail. Then make it read the large file.</li>
+      <li>Look at the context. Compact it. Look at the context again.</li>
+      <li>Ask for the detail from the start.</li>
+    </ol>
+    <pre class="code"><code>W=$PWD
+mkdir -p /tmp/ws1-ctx &amp;&amp; cp demo/context/big.txt /tmp/ws1-ctx/ &amp;&amp; cd /tmp/ws1-ctx
+
+claude -p "Remember: our dev server port is 8081. Reply with OK." \
+  --model haiku --output-format json --max-budget-usd 0.10 | jq -r .session_id &gt; session.tmp
+mv session.tmp session.id
+claude -p "Read the whole file big.txt and tell me what it is about in one sentence." \
+  --model haiku --allowedTools Read --resume "$(cat session.id)" \
+  --output-format json --max-budget-usd 0.10 | jq -r .session_id &gt; session.tmp
+mv session.tmp session.id
+
+claude -p "/context" --model haiku --resume "$(cat session.id)" --max-budget-usd 0.10
+claude -p "/compact" --model haiku --resume "$(cat session.id)" \
+  --output-format json --max-budget-usd 0.10 | jq -r .session_id &gt; session2.id
+claude -p "/context" --model haiku --resume "$(cat session2.id)" --max-budget-usd 0.10
+
+claude -p "What exact port number did I give you at the start?" \
+  --model haiku --resume "$(cat session2.id)" --max-budget-usd 0.10
+cd "$W"</code></pre>
+    <div class="notice">
+      <h4>What to notice</h4>
+      <ul>
+        <li>The messages part of the context grows when the model reads the file.</li>
+        <li>After <code>/compact</code>, the messages part is much smaller.</li>
+        <li>The summary keeps the main idea. Check if it kept the exact detail.</li>
+      </ul>
+    </div>
+    <p><strong>Write down.</strong> Did the model remember the port number after the compaction? What does this tell you about summaries?</p>
+    <div class="line"></div><div class="line"></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="task" id="task-3">
+    <header><span class="num">3</span><h2>Effort levels</h2><span class="time">Demo scripts: demo/E1.sh to demo/E3.sh</span></header>
+    <p><strong>Goal.</strong> Ask one puzzle three times at low effort and three times at max effort. Compare the answers, the tokens and the time.</p>
+    <p>The correct answer is 27.</p>
+    <pre class="code"><code>PUZZLE="How many integers from 1 to 5000 inclusive are divisible by 13 and have digits that add up to exactly 14? Reply with only the number."
+
+for i in 1 2 3; do
+  cc "$PUZZLE" --effort low --max-budget-usd 0.10 \
+    | jq -r '[.result, .usage.output_tokens, (.duration_ms/1000)] | @tsv'
+done
+for i in 1 2 3; do
+  cc "$PUZZLE" --effort max --max-budget-usd 0.10 \
+    | jq -r '[.result, .usage.output_tokens, (.duration_ms/1000)] | @tsv'
+done</code></pre>
+    <p>Each line shows: answer, output tokens, seconds.</p>
+    <p><strong>Bonus.</strong> Use the harder puzzle in <code>demo/E3.sh</code> (the correct answer is 805).</p>
+    <div class="notice">
+      <h4>What to notice</h4>
+      <ul>
+        <li>Max effort writes more output tokens. Most of them are thinking.</li>
+        <li>More tokens usually means more seconds and more cost.</li>
+        <li>The answers at low effort can differ from run to run.</li>
+      </ul>
+    </div>
+    <p><strong>Write down.</strong> The six answers, and which effort level you trust more:</p>
+    <div class="line"></div><div class="line"></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="task" id="task-4">
+    <header><span class="num">4</span><h2>Hallucination</h2><span class="time">Demo scripts: demo/H1.sh to demo/H4.sh</span></header>
+    <p><strong>Goal.</strong> Check two model answers against the npm registry. Find which answer is wrong and why.</p>
+    <pre class="code"><code>for i in 1 2 3; do
+  cc "Reply with ONLY the latest version number of the npm package express. No other words." \
+    --max-budget-usd 0.10 | jq -r .result
+done
+npm view express version
+
+cc "What config options does the npm package fastjson-validator-kit support? If you are not sure, say I don't know." \
+  --max-budget-usd 0.10 | jq -r .result
+npm view fastjson-validator-kit version</code></pre>
+    <p><strong>Bonus.</strong> Ask the second question again without the sentence "If you are not sure, say I don't know." Compare the two answers.</p>
+    <div class="notice">
+      <h4>What to notice</h4>
+      <ul>
+        <li>The model knows only the data from its training time. Its version number can be old.</li>
+        <li>The model can give an old answer with no sign of doubt.</li>
+        <li>The registry is the source of truth. The model is not.</li>
+        <li>A model can say "I don't know" for a package that does not exist. Always check with <code>npm view</code>.</li>
+      </ul>
+    </div>
+    <p><strong>Write down.</strong> The version from the model, the version from npm, and the result for the made-up package:</p>
+    <div class="line"></div><div class="line"></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="task" id="task-5">
+    <header><span class="num">5</span><h2>Parts of a prompt</h2><span class="time">Demo scripts: demo/P1.sh to demo/P4.sh</span></header>
+    <p><strong>Goal.</strong> Compare a one-line prompt with a prompt that has six parts. Test both validators.</p>
+    <ol>
+      <li>Read <code>demo/prompt/structured.prompt.txt</code>. Find the six parts.</li>
+      <li>Copy it. Write your own version for a different task, if you like.</li>
+      <li>Run both prompts. Save the code from each answer.</li>
+      <li>Test both validators on six numbers and on three edge numbers.</li>
+    </ol>
+    <pre class="code"><code>cat demo/prompt/structured.prompt.txt
+
+cc "write a BD phone number validator" --max-budget-usd 0.10 &gt; demo/prompt/naive.json
+cc "$(cat demo/prompt/structured.prompt.txt)" --max-budget-usd 0.10 &gt; demo/prompt/structured.json
+
+node demo/prompt/extract.mjs demo/prompt/naive.json demo/prompt/naive.js
+node demo/prompt/extract.mjs demo/prompt/structured.json demo/prompt/structured.js
+
+node demo/prompt/test.mjs
+node demo/prompt/edge.mjs</code></pre>
+    <p class="note">These commands replace <code>naive.js</code> and <code>structured.js</code> in <code>demo/prompt</code>.</p>
+    <div class="notice">
+      <h4>What to notice</h4>
+      <ul>
+        <li>The one-line prompt does not state the language. The answer can be long and in any language.</li>
+        <li>The structured prompt gives one short function.</li>
+        <li>Six normal numbers may not separate the two prompts. The edge numbers can.</li>
+      </ul>
+    </div>
+    <p><strong>Write down.</strong> The six parts of the structured prompt, and which test numbers separated the two validators:</p>
+    <div class="line"></div><div class="line"></div>
+  </section>
+
+  <!-- 6 -->
+  <section class="task" id="task-6">
+    <header><span class="num">6</span><h2>Structured output</h2><span class="time">Demo scripts: demo/S1.sh to demo/S3.sh</span></header>
+    <p><strong>Goal.</strong> Get JSON that code can use with no cleanup. Compare a prompt only with a prompt and a schema.</p>
+    <pre class="code"><code>cat demo/structured/notice.txt
+cat demo/structured/schema.json
+
+cc "Extract event, date, venue and fee as JSON from: $(cat demo/structured/notice.txt)" \
+  --max-budget-usd 0.10 | jq -r .result | node demo/structured/plain.mjs
+
+cc "Extract the event, date, venue and fee from: $(cat demo/structured/notice.txt)" \
+  --json-schema "$(cat demo/structured/schema.json)" \
+  --max-budget-usd 0.10 | node demo/structured/parse.mjs</code></pre>
+    <p>Run each command three times. The model can answer in a different way each time.</p>
+    <p><strong>Bonus.</strong> Change <code>fee</code> to a string in the schema. Run the second command again.</p>
+    <div class="notice">
+      <h4>What to notice</h4>
+      <ul>
+        <li>Without a schema, the answer can have extra text or a code fence. <code>JSON.parse</code> then fails.</li>
+        <li>With a schema, the answer has the fields and types that the schema names.</li>
+        <li>The type of <code>fee</code> follows the schema. A number lets you add to it.</li>
+      </ul>
+    </div>
+    <p><strong>Write down.</strong> How many of three runs parsed with no schema? What is <code>typeof fee</code> with the schema?</p>
+    <div class="line"></div><div class="line"></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="task" id="task-7">
+    <header><span class="num">7</span><h2>Tool calls</h2><span class="time">Demo script: demo/L1.sh</span></header>
+    <p><strong>Goal.</strong> Write the code that carries out one tool call. The model asks. Your code acts.</p>
+    <ol>
+      <li>Copy the starter file. Open <code>my-loop.mjs</code>.</li>
+      <li>Add <code>'--max-budget-usd', '0.10'</code> to the arguments of the <code>claude</code> call in <code>askModel</code>.</li>
+      <li>Do TODO 1. Write <code>list_dir</code> and <code>read_file</code> in the object <code>tools</code>.</li>
+      <li>Under the TODO 2 comment, add a test. Call <code>askModel</code> once, run the tool that the model asks for, and print the result. End the test with <code>process.exit(0)</code>. Task 8 replaces the test.</li>
+    </ol>
+    <pre class="code"><code>cd demo
+cp loop.starter.mjs my-loop.mjs
+node my-loop.mjs</code></pre>
+    <p>Compare your output with <code>bash L1.sh</code>.</p>
+    <div class="notice">
+      <h4>What to notice</h4>
+      <ul>
+        <li>The model returns only <code>{action, args}</code>. It does not read the folder itself.</li>
+        <li>Your code runs the tool. Your code decides what the tool is allowed to do.</li>
+        <li>The model sees the result only if you send it back.</li>
+      </ul>
+    </div>
+    <p><strong>Write down.</strong> The action and args that the model returned for the first call:</p>
+    <div class="line"></div>
+  </section>
+
+  <!-- 8 -->
+  <section class="task" id="task-8">
+    <header><span class="num">8</span><h2>Agent loop</h2><span class="time">Demo scripts: demo/L2.sh and demo/L3.sh</span></header>
+    <p><strong>Goal.</strong> Put your tool call in a loop. The loop answers: which file in <code>./notes</code> is longest, and what is it about?</p>
+    <ol>
+      <li>Open <code>my-loop.mjs</code> from task 7. Do TODO 2.</li>
+      <li>In each step, print the four parts: context, plan, act, check.</li>
+      <li>Stop when the model returns <code>final_answer</code>. Stop at <code>MAX_STEPS</code> if it does not.</li>
+      <li>Run the loop with a step limit of 8. Run it again with a step limit of 4.</li>
+    </ol>
+    <pre class="code"><code>cd demo
+MAX_STEPS=8 node my-loop.mjs
+MAX_STEPS=4 node my-loop.mjs</code></pre>
+    <p>Compare your output with <code>bash L2.sh</code> and <code>bash L3.sh</code>.</p>
+    <p><strong>Bonus.</strong> Add a fifth note to <code>demo/notes</code>. Run the loop again.</p>
+    <div class="notice">
+      <h4>What to notice</h4>
+      <ul>
+        <li>The transcript grows in each step. The model sees more tokens in each call.</li>
+        <li>With a step limit of 4, the loop stops with no answer. The step limit is a guardrail.</li>
+        <li>The model chooses the order of the steps. You do not.</li>
+      </ul>
+    </div>
+    <p><strong>Write down.</strong> At which step did the model answer? What did it read before that?</p>
+    <div class="line"></div><div class="line"></div>
+  </section>
+
+  <section class="setup" aria-labelledby="done-h">
+    <h4 id="done-h">When you finish</h4>
+    <ul>
+      <li><span class="tick"></span>All eight tasks have a written result.</li>
+      <li><span class="tick"></span>Your loop answers the question about the notes.</li>
+      <li><span class="tick"></span>Bring one question about any task to the next session.</li>
+    </ul>
+  </section>
+</main>
+<script>
+(function () {
+  document.querySelectorAll('pre.code').forEach(function (pre) {
+    var wrap = document.createElement('div');
+    wrap.className = 'codewrap';
+    pre.parentNode.insertBefore(wrap, pre);
+    wrap.appendChild(pre);
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'copy';
+    b.textContent = 'Copy';
+    b.setAttribute('aria-label', 'Copy the commands');
+    b.addEventListener('click', function () {
+      var text = pre.textContent;
+      var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () {});
+    });
+    wrap.appendChild(b);
+  });
+})();
+</script>
+</body>
+</html>

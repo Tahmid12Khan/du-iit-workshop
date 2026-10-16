@@ -1,0 +1,562 @@
+<style>
+.slide [data-only] { transition: opacity .6s ease, visibility 0s linear .6s; }
+.slide [data-only]:not(.on) { opacity: 0; visibility: hidden; pointer-events: none; }
+.slide [data-only].on { transition: opacity .6s ease, visibility 0s; }
+.slide .layer { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; gap: 10px; padding: 10px; background: var(--surface); }
+.slide .layer .term-wrap { height: auto; flex: 1; min-height: 0; }
+.slide .layer .cmdbox { margin: 0; flex: none; }
+.slide .layer .cmdbox pre.cmd { font-size: 20px; }
+.slide .snap.is-future { transform: translateX(60px); }
+.slide .check[data-only] { position: absolute; left: 12px; right: 12px; top: 10px; margin: 0; z-index: 2; }
+.slide .check.five li { font-size: 22px; gap: 8px; padding: 8px 10px; }
+.slide .check.five li::before { width: 34px; height: 34px; font-size: 20px; }
+.slide .reveal.low { position: absolute; left: 12px; right: 12px; bottom: 10px; margin: 0; z-index: 2; font-size: 26px; }
+svg .node.c6 { fill: var(--accent-soft); }
+svg .chiplbl { font-size: 20px; font-weight: 600; }
+svg .cmdtxt { font-size: 19px; }
+svg .edge.okc { stroke: var(--ok); stroke-width: 7; }
+svg text.fence { fill: var(--bad); }
+@media (prefers-reduced-motion: reduce) { .slide [data-only], .slide .snap { transition: none !important; } }
+</style>
+<script>window.W1Only = window.W1Only || function (id) { Deck.onStep(id, function (step, el) { el.querySelectorAll('[data-only]').forEach(function (n) { n.classList.toggle('on', n.getAttribute('data-only').split(' ').indexOf(String(step)) >= 0); }); }); };</script>
+<section class="slide" id="prompt-1" data-topic="Parts of a prompt" data-minutes="2" data-steps="6">
+  <h2>A good prompt has six parts</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A gray prompt box with six rows. A cook gets a short order, then the parts role, context, examples, constraints and format snap into the box.">
+      <rect class="node" x="310" y="8" width="880" height="484" rx="24"/>
+      <text class="lbl" x="336" y="46">Prompt</text>
+      <rect class="node dashed" x="326" y="64" width="848" height="60" rx="14"/>
+      <rect class="node plain" x="326" y="64" width="848" height="60" rx="14" data-from="2"/>
+      <g class="snap" data-from="2">
+        <rect class="node c1" x="326" y="64" width="210" height="60" rx="14"/>
+        <text class="lbl" x="346" y="103">Role</text>
+        <text class="lbl-2" x="556" y="103">You are the cook.</text>
+      </g>
+      <rect class="node ring" x="321" y="59" width="858" height="70" rx="16" data-step="2"/>
+      <rect class="node dashed" x="326" y="134" width="848" height="60" rx="14"/>
+      <rect class="node plain" x="326" y="134" width="848" height="60" rx="14"/>
+      <g>
+        <rect class="node c2" x="326" y="134" width="210" height="60" rx="14"/>
+        <text class="lbl" x="346" y="173">Task</text>
+        <text class="lbl-2" x="556" y="173">Cook rice and dal.</text>
+      </g>
+      <rect class="node ring" x="321" y="129" width="858" height="70" rx="16" data-step="1"/>
+      <rect class="node dashed" x="326" y="204" width="848" height="60" rx="14"/>
+      <rect class="node plain" x="326" y="204" width="848" height="60" rx="14" data-from="3"/>
+      <g class="snap" data-from="3">
+        <rect class="node c3" x="326" y="204" width="210" height="60" rx="14"/>
+        <text class="lbl" x="346" y="243">Context</text>
+        <text class="lbl-2" x="556" y="243">Students eat at noon.</text>
+      </g>
+      <rect class="node ring" x="321" y="199" width="858" height="70" rx="16" data-step="3"/>
+      <rect class="node dashed" x="326" y="274" width="848" height="60" rx="14"/>
+      <rect class="node plain" x="326" y="274" width="848" height="60" rx="14" data-from="4"/>
+      <g class="snap" data-from="4">
+        <rect class="node c4" x="326" y="274" width="210" height="60" rx="14"/>
+        <text class="lbl" x="346" y="313">Examples</text>
+        <text class="lbl-2" x="556" y="313">Make it like yesterday’s plate.</text>
+      </g>
+      <rect class="node ring" x="321" y="269" width="858" height="70" rx="16" data-step="4"/>
+      <rect class="node dashed" x="326" y="344" width="848" height="60" rx="14"/>
+      <rect class="node plain" x="326" y="344" width="848" height="60" rx="14" data-from="5"/>
+      <g class="snap" data-from="5">
+        <rect class="node c5" x="326" y="344" width="210" height="60" rx="14"/>
+        <text class="lbl" x="346" y="383">Constraints</text>
+        <text class="lbl-2" x="556" y="383">No chili. Keep the cost low.</text>
+      </g>
+      <rect class="node ring" x="321" y="339" width="858" height="70" rx="16" data-step="5"/>
+      <rect class="node dashed" x="326" y="414" width="848" height="60" rx="14"/>
+      <rect class="node plain" x="326" y="414" width="848" height="60" rx="14" data-from="6"/>
+      <g class="snap" data-from="6">
+        <rect class="node c6" x="326" y="414" width="210" height="60" rx="14"/>
+        <text class="lbl" x="346" y="453">Format</text>
+        <text class="lbl-2" x="556" y="453">Serve it in a bowl.</text>
+      </g>
+      <rect class="node ring" x="321" y="409" width="858" height="70" rx="16" data-step="6"/>
+      <path class="edge" d="M304 380 H220" marker-end="url(#arrow)"/>
+      <rect class="node plain" x="118" y="232" width="64" height="30" rx="12"/>
+      <circle class="node plain" cx="150" cy="296" r="36"/>
+      <path class="node plain" d="M92 440 Q92 350 150 346 Q208 350 208 440 Z"/>
+      <text class="lbl-2 mid" x="150" y="478">Cook</text>
+      <g data-only="1">
+        <rect class="node c3" x="10" y="60" width="270" height="100" rx="20"/>
+        <text class="lbl mid" x="145" y="122">Cook rice and dal.</text>
+        <path class="edge" d="M150 166 V192"/>
+        <text class="huge mid hl" x="244" y="310">?</text>
+      </g>
+      <g class="until" data-from="6">
+        <rect class="node c2" x="10" y="40" width="270" height="130" rx="20"/>
+        <text class="lbl mid" x="145" y="82">Rice and dal.</text>
+        <text class="lbl mid" x="145" y="114">No chili.</text>
+        <text class="lbl mid" x="145" y="146">Serve it in a bowl.</text>
+        <path class="edge" d="M150 176 V198"/>
+        <path class="edge okc" d="M222 300 l18 20 l34 -42"/>
+      </g>
+    </svg>
+
+  </div>
+  <ol class="captions">
+    <li>A short order has one part. The cook must guess.</li>
+    <li>Add a role. The role tells the model who to be.</li>
+    <li>Add context. Context tells the model about the situation.</li>
+    <li>Add examples. Examples show the model the answer you want.</li>
+    <li>Add constraints. Constraints list what the model must not do.</li>
+    <li>Add a format. The format tells the model how to write the answer.</li>
+  </ol>
+  <script>W1Only('prompt-1');</script>
+  <aside class="notes" lang="bn">[STEP 1] model ভুল বলতে পারে, এটা দেখলাম। এবার প্রশ্ন, ভালো prompt লিখলে কি ভুল কমে? ধরো তুমি মেসের বাবুর্চিকে বললে, "ভাত আর ডাল রাঁধো।" বাবুর্চি কীভাবে রাঁধবে? ঝাল দেবে কি না, কীসে দেবে, কতটা বানাবে? সে অনুমান করবে। model-ও ঠিক এমন। সে তোমার মাথার ভেতরটা দেখতে পায় না, শুধু তোমার লেখাটুকু পায়। শুধু task দিলে সে অনুমান করে। এই task-টাই প্রথম অংশ। [ASK] তোমরা কেউ কি এমন ছোট prompt লিখে ভুল উত্তর পেয়েছ? [PAUSE 3s] [STEP 2] এবার দ্বিতীয় অংশ, role। বাবুর্চিকে বলো, "তুমি আমাদের মেসের বাবুর্চি।" model-কে বলো, "তুমি একজন senior engineer।" এতে সে কোন ভঙ্গিতে উত্তর দেবে, ঠিক হয়ে যায়। [STEP 3] তৃতীয় অংশ, context। ছাত্ররা দুপুরে খাবে, এটা জানলে বাবুর্চি পরিমাণ ঠিক করে। model-কেও পরিস্থিতিটা জানাতে হয়। [STEP 4] চতুর্থ অংশ, examples। "গতকালের মতো বানাও" বললে সে একটা নমুনা পায়। নমুনা থাকলে ভুল কমে। [STEP 5] পঞ্চম অংশ, constraints। "ঝাল দিয়ো না, খরচ কম রাখো।" এগুলো হলো সীমা। [STEP 6] ষষ্ঠ অংশ, format। "বাটিতে দাও।" model-কে বলো, "শুধু একটা function দাও।" ছয় অংশ মিলে একটা ভালো prompt হয়। এখন দেখি এটা কাজে কেমন চলে।</aside>
+</section>
+
+<section class="slide" id="prompt-2" data-topic="Parts of a prompt" data-minutes="2.5" data-steps="6">
+  <h2>The structured prompt gives a short, exact answer</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Two lanes. Top lane: a one-line prompt goes to the model and returns a Python answer of 30 lines. Bottom lane: a six-part prompt goes to the model and returns a JavaScript function of 6 lines.">
+      <g data-step="1 3">
+        <rect class="node" x="10" y="20" width="360" height="200" rx="20"/>
+        <text class="lbl" x="28" y="56">Naive prompt</text>
+        <text class="lbl mono" x="28" y="118">write a BD phone number</text>
+        <text class="lbl mono" x="28" y="150">validator</text>
+        <text class="lbl-3" x="28" y="200">1 part: the task</text>
+      </g>
+      <g data-step="3">
+        <path class="edge" d="M376 120 H414" marker-end="url(#arrow)"/>
+        <rect class="node inv" x="420" y="80" width="130" height="80" rx="18"/>
+        <text class="lbl lg mid inv-text" x="485" y="130">Model</text>
+        <path class="edge" d="M556 120 H604" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="3 6" data-from="3">
+        <rect class="node plain" x="610" y="20" width="580" height="200" rx="20"/>
+        <text class="lbl-3" x="632" y="46">Answer</text>
+        <text class="lbl lg" x="632" y="80">Python</text>
+        <text class="lbl-2" x="632" y="110">The model chose the language.</text>
+        <text class="lbl-3" x="632" y="142">Output 693 tokens, minus 176 thinking_tokens</text>
+        <text class="big hl" x="632" y="192" data-count="30" data-count-step="3">0</text>
+        <text class="lbl-2" x="700" y="192">lines</text>
+        <text class="big hl" x="790" y="192" data-count="517" data-count-step="3">0</text>
+        <text class="lbl-2" x="884" y="192">answer tokens</text>
+      </g>
+      <g data-step="4 6">
+        <rect class="node" x="10" y="272" width="360" height="200" rx="20"/>
+        <text class="lbl" x="28" y="308">Structured prompt</text>
+        <rect class="node c1" x="28" y="324" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="40" y="351">Role</text>
+        <rect class="node c2" x="200" y="324" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="212" y="351">Task</text>
+        <rect class="node c3" x="28" y="372" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="40" y="399">Context</text>
+        <rect class="node c4" x="200" y="372" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="212" y="399">Examples</text>
+        <rect class="node c5" x="28" y="420" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="40" y="447">Constraints</text>
+        <rect class="node c6" x="200" y="420" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="212" y="447">Format</text>
+      </g>
+      <g data-step="6">
+        <path class="edge" d="M376 372 H414" marker-end="url(#arrow)"/>
+        <rect class="node inv" x="420" y="332" width="130" height="80" rx="18"/>
+        <text class="lbl lg mid inv-text" x="485" y="382">Model</text>
+        <path class="edge" d="M556 372 H604" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="6" data-from="6">
+        <rect class="node plain" x="610" y="272" width="580" height="200" rx="20"/>
+        <text class="lbl-3" x="632" y="298">Answer</text>
+        <text class="lbl lg" x="632" y="332">JavaScript</text>
+        <text class="lbl-2" x="632" y="362">One function. No extra text.</text>
+        <text class="lbl-3" x="632" y="394">Output 357 tokens, minus 262 thinking_tokens</text>
+        <text class="big hl" x="632" y="444" data-count="6" data-count-step="6">0</text>
+        <text class="lbl-2" x="700" y="444">lines</text>
+        <text class="big hl" x="790" y="444" data-count="95" data-count-step="6">0</text>
+        <text class="lbl-2" x="884" y="444">answer tokens</text>
+      </g>
+    </svg>
+    <div class="layer" data-only="2"><div class="term" data-cast="P1" data-play-step="2" data-rows="18" data-speed="1.5"></div></div>
+    <div class="layer" data-only="5"><div class="term" data-cast="P2" data-play-step="5" data-rows="18" data-speed="1.5"></div></div>
+  </div>
+  <ol class="captions">
+    <li>The naive prompt has one line. It has one part.</li>
+    <li>Play P1. The model writes an answer.</li>
+    <li>The model chose Python. The answer has 30 lines.</li>
+    <li>The structured prompt has six parts.</li>
+    <li>Play P2. The model writes an answer.</li>
+    <li>The answer is one JavaScript function. It has 6 lines.</li>
+  </ol>
+  <script>W1Only('prompt-2');</script>
+  <aside class="notes" lang="bn">[STEP 1] এবার আসল ফল দেখি। প্রথমে ছোট prompt: "write a BD phone number validator"। এক লাইন, শুধু task। আমরা সবাই প্রতিদিন প্রায় এভাবেই লিখি। [STEP 2] [DEMO P1] [DO: P1 cast নিজে চলবে] [PAUSE 5s] দেখো, model একটা পুরো উত্তর লিখছে। সঙ্গে ব্যাখ্যা, comment আর test। আমরা কিন্তু কোনো ভাষার নাম বলিনি। [STEP 3] ফল: model Python বেছে নিয়েছে। উত্তর 30 লাইনের। output ছিল 693 token, তার ভেতরে thinking_tokens 176। বাকি 517 token আসল উত্তর। এটা model-এর দোষ না। আমরা বলিনি, তাই সে অনুমান করেছে। অথচ আমাদের লাগত শুধু একটা JavaScript function। চলো দেখি, prompt বদলালে কী বদলায়। [STEP 4] এবার structured prompt। ছয় অংশ: role, task, context, দুইটা example, constraints আর output format। প্রতিটা অংশ আলাদা লাইনে। [STEP 5] [DEMO P2] [DO: P2 cast নিজে চলবে। prompt পর্দায় এলে শেষ লাইনটা পড়ে শোনাও।] [PAUSE 5s] শেষ লাইনে লেখা: শুধু একটা JavaScript function, আর কোনো লেখা নয়। model ঠিক তাই দিয়েছে। [STEP 6] ফল: JavaScript, মাত্র 6 লাইন। output 357 token, তার ভেতরে thinking_tokens 262। বাকি 95 token আসল উত্তর। বাড়তি কথা নেই। আগেরটা 30 লাইন, এটা 6 লাইন। এই সংখ্যাগুলো এই recording থেকে নেওয়া, আমি বানাইনি। কিন্তু ছোট হলেই কি ঠিক? সেটা পরের slide-এ test করে দেখব।</aside>
+</section>
+
+<section class="slide" id="prompt-3" data-topic="Parts of a prompt" data-minutes="2.5" data-steps="5">
+  <h2>Normal numbers pass. Edge numbers break the naive prompt</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Room check about the five prompt parts, then a score of 6 of 6 for both validators on normal numbers, then a table of three edge numbers where the naive validator accepts two numbers that the spec rejects.">
+      <g data-only="1">
+        <rect class="node dashed" x="20" y="250" width="170" height="80" rx="14"/>
+        <text class="lbl-2 mid" x="105" y="298">Role</text>
+        <text class="lbl-3 mid" x="105" y="372">not used</text>
+        <rect class="node c2" x="218" y="250" width="170" height="80" rx="14"/>
+        <text class="lbl mid" x="303" y="298">Task</text>
+        <text class="lbl-2 mid" x="303" y="372">in the prompt</text>
+        <rect class="node dashed" x="416" y="250" width="170" height="80" rx="14"/>
+        <text class="lbl-2 mid" x="501" y="298">Context</text>
+        <text class="lbl-3 mid" x="501" y="372">not used</text>
+        <rect class="node dashed" x="614" y="250" width="170" height="80" rx="14"/>
+        <text class="lbl-2 mid" x="699" y="298">Examples</text>
+        <text class="lbl-3 mid" x="699" y="372">not used</text>
+        <rect class="node dashed" x="812" y="250" width="170" height="80" rx="14"/>
+        <text class="lbl-2 mid" x="897" y="298">Constraints</text>
+        <text class="lbl-3 mid" x="897" y="372">not used</text>
+        <rect class="node dashed" x="1010" y="250" width="170" height="80" rx="14"/>
+        <text class="lbl-2 mid" x="1095" y="298">Format</text>
+        <text class="lbl-3 mid" x="1095" y="372">not used</text>
+        <text class="lbl-2 mid" x="600" y="440">The naive prompt has only the task.</text>
+      </g>
+      <g data-only="3">
+        <g>
+          <rect class="node plain" x="20" y="30" width="560" height="390" rx="24"/>
+          <text class="lbl lg" x="50" y="90">Naive prompt</text>
+          <text class="lbl-2" x="50" y="128">Python function</text>
+          <text class="huge hl" x="50" y="280" data-count="6" data-count-step="3">0</text>
+          <text class="huge" x="120" y="280">/ 6</text>
+          <text class="lbl-2" x="50" y="340">normal numbers pass</text>
+        </g>
+        <g>
+          <rect class="node plain" x="620" y="30" width="560" height="390" rx="24"/>
+          <text class="lbl lg" x="650" y="90">Structured prompt</text>
+          <text class="lbl-2" x="650" y="128">JavaScript function</text>
+          <text class="huge hl" x="650" y="280" data-count="6" data-count-step="3">0</text>
+          <text class="huge" x="720" y="280">/ 6</text>
+          <text class="lbl-2" x="650" y="340">normal numbers pass</text>
+        </g>
+        <text class="lbl-2 mid" x="600" y="464">The 6 numbers: 3 valid and 3 invalid.</text>
+      </g>
+      <g data-only="5">
+        <g data-from="5">
+          <text class="lbl-2" x="32" y="50">Input</text>
+          <text class="lbl-2" x="382" y="50">Spec</text>
+          <text class="lbl-2" x="562" y="50">Naive</text>
+          <text class="lbl-2" x="882" y="50">Structured</text>
+        </g>
+        <g data-from="5">
+          <rect class="node plain" x="20" y="66" width="340" height="84" rx="12"/>
+          <text class="mono lbl" x="36" y="116">"017-1234-5678"</text>
+          <rect class="node plain" x="370" y="66" width="170" height="84" rx="12"/>
+          <text class="mono lbl" x="386" y="116">false</text>
+        </g>
+        <g data-from="5">
+          <rect class="node bad" x="550" y="66" width="310" height="84" rx="12"/>
+          <text class="mono lbl" x="566" y="116">true</text>
+          <text class="lbl-2 bad" x="670" y="116">breaks spec</text>
+        </g>
+        <g data-from="5">
+          <rect class="node ok" x="870" y="66" width="310" height="84" rx="12"/>
+          <text class="mono lbl" x="886" y="116">false</text>
+          <text class="lbl-2 ok" x="990" y="116">matches spec</text>
+        </g>
+        <g data-from="5">
+          <rect class="node plain" x="20" y="158" width="340" height="84" rx="12"/>
+          <text class="mono lbl" x="36" y="208">"1712345678"</text>
+          <rect class="node plain" x="370" y="158" width="170" height="84" rx="12"/>
+          <text class="mono lbl" x="386" y="208">false</text>
+        </g>
+        <g data-from="5">
+          <rect class="node ok" x="550" y="158" width="310" height="84" rx="12"/>
+          <text class="mono lbl" x="566" y="208">false</text>
+          <text class="lbl-2 ok" x="670" y="208">matches spec</text>
+        </g>
+        <g data-from="5">
+          <rect class="node ok" x="870" y="158" width="310" height="84" rx="12"/>
+          <text class="mono lbl" x="886" y="208">false</text>
+          <text class="lbl-2 ok" x="990" y="208">matches spec</text>
+        </g>
+        <g data-from="5">
+          <rect class="node plain" x="20" y="250" width="340" height="84" rx="12"/>
+          <text class="mono lbl" x="36" y="300">" 01712345678"</text>
+          <rect class="node plain" x="370" y="250" width="170" height="84" rx="12"/>
+          <text class="mono lbl" x="386" y="300">false</text>
+        </g>
+        <g data-from="5">
+          <rect class="node bad" x="550" y="250" width="310" height="84" rx="12"/>
+          <text class="mono lbl" x="566" y="300">true</text>
+          <text class="lbl-2 bad" x="670" y="300">breaks spec</text>
+        </g>
+        <g data-from="5">
+          <rect class="node ok" x="870" y="250" width="310" height="84" rx="12"/>
+          <text class="mono lbl" x="886" y="300">false</text>
+          <text class="lbl-2 ok" x="990" y="300">matches spec</text>
+        </g>
+        <g data-from="5">
+          <rect class="node plain" x="20" y="342" width="520" height="70" rx="12"/>
+          <text class="lbl" x="36" y="385">Numbers that match the spec</text>
+          <rect class="node plain" x="550" y="342" width="310" height="70" rx="12"/>
+          <text class="big hl" x="566" y="392" data-count="1" data-count-step="5">0</text>
+          <text class="lbl-2" x="620" y="385">of 3</text>
+          <rect class="node plain" x="870" y="342" width="310" height="70" rx="12"/>
+          <text class="big hl" x="886" y="392" data-count="3" data-count-step="5">0</text>
+          <text class="lbl-2" x="940" y="385">of 3</text>
+        </g>
+      </g>
+    </svg>
+    <div class="check five" data-step="1" data-only="1"><p>The naive prompt has only a task. Which part makes the naive validator accept 017-1234-5678?</p><ol><li>Role</li><li>Context</li><li>Examples</li><li>Constraints</li><li>Format</li></ol></div>
+    <div class="layer" data-only="2"><div class="term" data-cast="P3" data-play-step="2"></div></div>
+    <div class="layer" data-only="4"><div class="term" data-cast="P4" data-play-step="4"></div></div>
+    <div class="reveal low until" data-from="5">Answer D: Constraints. One line rejects 017-1234-5678.</div>
+  </div>
+  <ol class="captions">
+    <li>Answer the room check. Which part makes the naive validator accept 017-1234-5678?</li>
+    <li>Play P3. The test runs 6 normal numbers.</li>
+    <li>Both validators pass 6 of 6 normal numbers.</li>
+    <li>Play P4. The test runs 3 edge numbers.</li>
+    <li>The naive validator accepts 2 of 3 edge numbers. The spec rejects all 3.</li>
+  </ol>
+  <script>W1Only('prompt-3');</script>
+  <aside class="notes" lang="bn">[STEP 1] [ASK] naive prompt-এ শুধু task আছে। role, context, examples, constraints আর format নেই। বলো, কোন অংশ না থাকায় naive validator 017-1234-5678 নম্বরটা মেনে নেবে? A, B, C, D, নাকি E? [PAUSE 10s] হাত তোলো। কেউ কেউ নিশ্চয়ই অন্য অংশ বলেছ, ভালো। উত্তর এখনই বলছি না। আগে test চালাই। [STEP 2] [DEMO P3] [DO: P3 cast নিজে চলবে] এখানে ছয়টা সাধারণ number: তিনটা valid, তিনটা invalid। [PAUSE 5s] naive code হলো Python, তাই সেটা python3 দিয়ে চলছে। [STEP 3] ফল: দুইটাই 6 এর মধ্যে 6 পাশ! সাধারণ number-এ কোনো তফাত নেই। শুধু এই test করলে আমরা কিছুই ধরতে পারতাম না। [STEP 4] [DEMO P4] [DO: P4 cast নিজে চলবে] এবার তিনটা edge number: মাঝখানে dash দেওয়া number, প্রথমে শূন্য নেই এমন number, আর শুরুতে space-ওয়ালা number। [PAUSE 5s] [STEP 5] ফল: naive দুইটা number-কে true বলেছে, dash-ওয়ালাটা আর space-ওয়ালাটা। আমাদের spec-এ তিনটাই false। structured তিনটাতেই false বলেছে। উত্তর D, constraints। prompt-এ লিখেছিলাম, "শুধু এই তিন format নাও।" এই এক লাইনই বাকিটা আটকেছে। মনে রেখো, এটা সব অংশ আলাদা করে খুলে করা পরীক্ষা না, এটা একটা উদাহরণ। আর model-এর উত্তর প্রতিবার একরকম হয় না, তাই এই recording-ই আমাদের প্রমাণ।</aside>
+</section>
+
+<section class="slide anim-only" id="anim-P1" data-cmd="P1" data-steps="5">
+  <h2>A one-line prompt gets a Python answer</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="P1: A one-line prompt gets a Python answer">
+      <rect class="node inv" x="0" y="4" width="1200" height="56" rx="14"/>
+      <text class="mono cmdtxt inv-text" x="20" y="40">cc "write a BD phone number validator" &gt; prompt/naive.json</text>
+      <g data-step="2 5" data-from="2">
+        <rect class="node" x="10" y="106" width="360" height="200" rx="20"/>
+        <text class="lbl" x="28" y="142">Naive prompt</text>
+        <text class="lbl mono" x="28" y="204">write a BD phone number</text>
+        <text class="lbl mono" x="28" y="236">validator</text>
+        <text class="lbl-3" x="28" y="286">1 part: the task</text>
+      </g>
+      <g data-step="3 5" data-from="3">
+        <path class="edge" d="M376 206 H414" marker-end="url(#arrow)"/>
+        <rect class="node inv" x="420" y="166" width="130" height="80" rx="18"/>
+        <text class="lbl lg mid inv-text" x="485" y="216">Model</text>
+        <path class="edge" d="M556 206 H604" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="4 5" data-from="4">
+        <rect class="node plain" x="610" y="106" width="580" height="200" rx="20"/>
+        <text class="lbl-3" x="632" y="130">Answer</text>
+        <text class="lbl lg" x="632" y="164">Python</text>
+        <text class="lbl-2" x="632" y="194">The model chose the language.</text>
+        <text class="lbl-3" x="632" y="226">Output 693 tokens, minus 176 thinking_tokens</text>
+        <text class="big hl" x="632" y="278" data-count="30" data-count-step="4">0</text>
+        <text class="lbl-2" x="700" y="278">lines</text>
+        <text class="big hl" x="790" y="278" data-count="517" data-count-step="4">0</text>
+        <text class="lbl-2" x="884" y="278">answer tokens</text>
+        <text class="big hl" x="1036" y="278">5.1</text>
+        <text class="lbl-2" x="1112" y="278">sec</text>
+      </g>
+      <g data-from="5">
+        <rect class="node c3" x="200" y="372" width="800" height="100" rx="22"/>
+        <text class="lbl lg mid" x="600" y="432">A prompt with only a task gives a guess.</text>
+      </g>
+    </svg>
+
+  </div>
+  <ol class="captions">
+    <li>Run the command with a one-line prompt.</li>
+    <li>The prompt has one part: the task.</li>
+    <li>The model must guess the language.</li>
+    <li>The answer is Python. It has 30 lines and 517 answer tokens.</li>
+    <li>A prompt with only a task gives a guess.</li>
+  </ol>
+</section>
+
+<section class="slide anim-only" id="anim-P2" data-cmd="P2" data-steps="5">
+  <h2>A six-part prompt gets a short answer</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="P2: A six-part prompt gets a short answer">
+      <rect class="node inv" x="0" y="4" width="1200" height="56" rx="14"/>
+      <text class="mono cmdtxt inv-text" x="20" y="40">cc "$(cat prompt/structured.prompt.txt)" &gt; prompt/structured.json</text>
+      <g data-step="2 5" data-from="2">
+        <rect class="node" x="10" y="106" width="360" height="200" rx="20"/>
+        <text class="lbl" x="28" y="142">Structured prompt</text>
+        <rect class="node c1" x="28" y="158" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="40" y="185">Role</text>
+        <rect class="node c2" x="200" y="158" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="212" y="185">Task</text>
+        <rect class="node c3" x="28" y="206" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="40" y="233">Context</text>
+        <rect class="node c4" x="200" y="206" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="212" y="233">Examples</text>
+        <rect class="node c5" x="28" y="254" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="40" y="281">Constraints</text>
+        <rect class="node c6" x="200" y="254" width="160" height="40" rx="10"/>
+        <text class="chiplbl" x="212" y="281">Format</text>
+      </g>
+      <g data-step="3 5" data-from="3">
+        <path class="edge" d="M376 206 H414" marker-end="url(#arrow)"/>
+        <rect class="node inv" x="420" y="166" width="130" height="80" rx="18"/>
+        <text class="lbl lg mid inv-text" x="485" y="216">Model</text>
+        <path class="edge" d="M556 206 H604" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="4 5" data-from="4">
+        <rect class="node plain" x="610" y="106" width="580" height="200" rx="20"/>
+        <text class="lbl-3" x="632" y="130">Answer</text>
+        <text class="lbl lg" x="632" y="164">JavaScript</text>
+        <text class="lbl-2" x="632" y="194">One function. No extra text.</text>
+        <text class="lbl-3" x="632" y="226">Output 357 tokens, minus 262 thinking_tokens</text>
+        <text class="big hl" x="632" y="278" data-count="6" data-count-step="4">0</text>
+        <text class="lbl-2" x="700" y="278">lines</text>
+        <text class="big hl" x="790" y="278" data-count="95" data-count-step="4">0</text>
+        <text class="lbl-2" x="884" y="278">answer tokens</text>
+        <text class="big hl" x="1036" y="278">3.4</text>
+        <text class="lbl-2" x="1112" y="278">sec</text>
+      </g>
+      <g data-from="5">
+        <rect class="node c3" x="200" y="372" width="800" height="100" rx="22"/>
+        <text class="lbl lg mid" x="600" y="432">Six parts give a short, exact answer.</text>
+      </g>
+    </svg>
+
+  </div>
+  <ol class="captions">
+    <li>Run the command with the six-part prompt.</li>
+    <li>The prompt has role, task, context, examples, constraints and format.</li>
+    <li>The model follows all six parts.</li>
+    <li>The answer is one JavaScript function with 6 lines and 95 answer tokens.</li>
+    <li>Six parts give a short and exact answer.</li>
+  </ol>
+</section>
+
+<section class="slide anim-only" id="anim-P3" data-cmd="P3" data-steps="5">
+  <h2>Both validators pass 6 of 6 normal numbers</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A list of six numbers goes to two validators. Each validator scores 6 of 6.">
+      <rect class="node inv" x="0" y="4" width="1200" height="56" rx="14"/>
+      <text class="mono cmdtxt inv-text" x="20" y="40">node prompt/test.mjs</text>
+      <g data-step="2 5" data-from="2">
+        <rect class="node plain" x="10" y="80" width="330" height="346" rx="20"/>
+        <text class="lbl" x="30" y="114">6 numbers</text>
+        <text class="mono lbl" x="30" y="158">01712345678</text>
+        <text class="mono lbl" x="30" y="200">+8801812345678</text>
+        <text class="mono lbl" x="30" y="242">8801912345678</text>
+        <text class="mono lbl" x="30" y="284">0171234567</text>
+        <text class="mono lbl" x="30" y="326">01212345678</text>
+        <text class="mono lbl" x="30" y="368">+88017123456789</text>
+      </g>
+      <g data-step="3 5" data-from="3">
+        <g>
+          <rect class="node c3" x="430" y="104" width="300" height="120" rx="20"/>
+          <text class="lbl lg" x="452" y="156">Naive</text>
+          <text class="lbl-2" x="452" y="194">Python function</text>
+        </g>
+        <g>
+          <rect class="node c2" x="430" y="264" width="300" height="120" rx="20"/>
+          <text class="lbl lg" x="452" y="316">Structured</text>
+          <text class="lbl-2" x="452" y="354">JavaScript function</text>
+        </g>
+        <path class="edge" d="M344 250 H424" marker-end="url(#arrow)"/>
+        <path class="edge" d="M740 164 H830" marker-end="url(#arrow)"/>
+        <path class="edge" d="M740 324 H830" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="4 5" data-from="4">
+        <g>
+          <rect class="node plain" x="840" y="104" width="350" height="120" rx="20"/>
+          <text class="huge hl" x="862" y="186" data-count="6" data-count-step="4">0</text>
+          <text class="huge" x="934" y="186">/ 6</text>
+        </g>
+        <g>
+          <rect class="node plain" x="840" y="264" width="350" height="120" rx="20"/>
+          <text class="huge hl" x="862" y="346" data-count="6" data-count-step="4">0</text>
+          <text class="huge" x="934" y="346">/ 6</text>
+        </g>
+      </g>
+      <g data-from="5">
+        <rect class="node c3" x="200" y="438" width="800" height="56" rx="16"/>
+        <text class="lbl lg mid" x="600" y="475">Normal numbers do not show a difference.</text>
+      </g>
+    </svg>
+
+  </div>
+  <ol class="captions">
+    <li>Run the test on 6 normal numbers.</li>
+    <li>The test uses 3 valid and 3 invalid numbers.</li>
+    <li>Both validators check each number.</li>
+    <li>Both validators pass 6 of 6.</li>
+    <li>Normal numbers do not show a difference.</li>
+  </ol>
+</section>
+
+<section class="slide anim-only" id="anim-P4" data-cmd="P4" data-steps="5">
+  <h2>The naive validator accepts 2 of 3 edge numbers</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A table of three edge numbers. The spec says false for all. The naive validator says true for two. The structured validator says false for all three.">
+      <rect class="node inv" x="0" y="4" width="1200" height="56" rx="14"/>
+      <text class="mono cmdtxt inv-text" x="20" y="40">node prompt/edge.mjs</text>
+      <g data-from="2">
+        <text class="lbl-2" x="32" y="110">Input</text>
+        <text class="lbl-2" x="382" y="110">Spec</text>
+        <text class="lbl-2" x="562" y="110">Naive</text>
+        <text class="lbl-2" x="882" y="110">Structured</text>
+      </g>
+      <g data-from="2">
+        <rect class="node plain" x="20" y="126" width="340" height="64" rx="12"/>
+        <text class="mono lbl" x="36" y="166">"017-1234-5678"</text>
+        <rect class="node plain" x="370" y="126" width="170" height="64" rx="12"/>
+        <text class="mono lbl" x="386" y="166">false</text>
+      </g>
+      <g data-from="3">
+        <rect class="node bad" x="550" y="126" width="310" height="64" rx="12"/>
+        <text class="mono lbl" x="566" y="166">true</text>
+        <text class="lbl-2 bad" x="670" y="166">breaks spec</text>
+      </g>
+      <g data-from="4">
+        <rect class="node ok" x="870" y="126" width="310" height="64" rx="12"/>
+        <text class="mono lbl" x="886" y="166">false</text>
+        <text class="lbl-2 ok" x="990" y="166">matches spec</text>
+      </g>
+      <g data-from="2">
+        <rect class="node plain" x="20" y="198" width="340" height="64" rx="12"/>
+        <text class="mono lbl" x="36" y="238">"1712345678"</text>
+        <rect class="node plain" x="370" y="198" width="170" height="64" rx="12"/>
+        <text class="mono lbl" x="386" y="238">false</text>
+      </g>
+      <g data-from="3">
+        <rect class="node ok" x="550" y="198" width="310" height="64" rx="12"/>
+        <text class="mono lbl" x="566" y="238">false</text>
+        <text class="lbl-2 ok" x="670" y="238">matches spec</text>
+      </g>
+      <g data-from="4">
+        <rect class="node ok" x="870" y="198" width="310" height="64" rx="12"/>
+        <text class="mono lbl" x="886" y="238">false</text>
+        <text class="lbl-2 ok" x="990" y="238">matches spec</text>
+      </g>
+      <g data-from="2">
+        <rect class="node plain" x="20" y="270" width="340" height="64" rx="12"/>
+        <text class="mono lbl" x="36" y="310">" 01712345678"</text>
+        <rect class="node plain" x="370" y="270" width="170" height="64" rx="12"/>
+        <text class="mono lbl" x="386" y="310">false</text>
+      </g>
+      <g data-from="3">
+        <rect class="node bad" x="550" y="270" width="310" height="64" rx="12"/>
+        <text class="mono lbl" x="566" y="310">true</text>
+        <text class="lbl-2 bad" x="670" y="310">breaks spec</text>
+      </g>
+      <g data-from="4">
+        <rect class="node ok" x="870" y="270" width="310" height="64" rx="12"/>
+        <text class="mono lbl" x="886" y="310">false</text>
+        <text class="lbl-2 ok" x="990" y="310">matches spec</text>
+      </g>
+      <g data-from="4">
+        <rect class="node plain" x="20" y="342" width="520" height="56" rx="12"/>
+        <text class="lbl" x="36" y="378">Numbers that match the spec</text>
+        <rect class="node plain" x="550" y="342" width="310" height="56" rx="12"/>
+        <text class="big hl" x="566" y="385" data-count="1" data-count-step="4">0</text>
+        <text class="lbl-2" x="620" y="378">of 3</text>
+        <rect class="node plain" x="870" y="342" width="310" height="56" rx="12"/>
+        <text class="big hl" x="886" y="385" data-count="3" data-count-step="4">0</text>
+        <text class="lbl-2" x="940" y="378">of 3</text>
+      </g>
+      <g data-from="5">
+        <rect class="node c3" x="150" y="440" width="900" height="52" rx="16"/>
+        <text class="lbl lg mid" x="600" y="475">The constraint line gives the exact rule.</text>
+      </g>
+    </svg>
+
+  </div>
+  <ol class="captions">
+    <li>Run the test on 3 edge numbers.</li>
+    <li>The spec says all 3 numbers are false.</li>
+    <li>The naive validator says true for 2 numbers.</li>
+    <li>The structured validator says false for all 3.</li>
+    <li>The constraint line gives the exact rule.</li>
+  </ol>
+</section>

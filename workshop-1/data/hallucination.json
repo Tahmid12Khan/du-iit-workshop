@@ -1,0 +1,65 @@
+{
+  "H1": {
+    "command": "for i in 1 2 3; do cc \"Reply with ONLY the latest version number of the npm package express. No other words.\" | jq -r .result; done",
+    "result": "The model answered 5.1.0 in all 3 runs, with no doubt.",
+    "numbers": {
+      "model": "haiku",
+      "runs": 3,
+      "answers": [
+        "5.1.0",
+        "5.1.0",
+        "5.1.0"
+      ],
+      "tokens_per_run_example": [
+        177,
+        119,
+        129
+      ],
+      "seconds_per_run_example": [
+        4.3,
+        2.8,
+        2.2
+      ],
+      "note": "tokens, seconds and cost measured in a separate run of the same command"
+    },
+    "seconds": 9.3,
+    "cost_usd": 0.0002
+  },
+  "H2": {
+    "command": "npm view express version",
+    "result": "The real latest version of express on 2026-10-16 is 5.3.0.",
+    "numbers": {
+      "npm_latest": "5.3.0",
+      "date": "2026-10-16",
+      "model_answer": "5.1.0"
+    },
+    "seconds": 2.0,
+    "cost_usd": 0
+  },
+  "H3": {
+    "command": "cc \"What config options does the npm package fastjson-validator-kit support? If you are not sure, say I don't know.\" | jq -r .result",
+    "result": "The model said \"I don't know\" and gave no made-up options.",
+    "numbers": {
+      "model": "haiku",
+      "package": "fastjson-validator-kit",
+      "invented_options": 0,
+      "said_dont_know": true,
+      "tokens_example": 205,
+      "seconds_example": 2.6,
+      "note": "tokens, seconds and cost measured in a separate run of the same command"
+    },
+    "seconds": 2.6,
+    "cost_usd": 0.0001
+  },
+  "H4": {
+    "command": "npm view fastjson-validator-kit version 2>&1 | head -3",
+    "result": "npm returns E404: the package does not exist.",
+    "numbers": {
+      "package": "fastjson-validator-kit",
+      "http_status": 404,
+      "date": "2026-10-16"
+    },
+    "seconds": 1.4,
+    "cost_usd": 0
+  }
+}

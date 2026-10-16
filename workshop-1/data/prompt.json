@@ -1,0 +1,30 @@
+{
+  "P1": {
+    "command": "cc \"write a BD phone number validator\"",
+    "result": "The model answered in Python, not JavaScript: 30 lines with code fence, comments and a test block. 517 visible tokens.",
+    "numbers": {"answer_lines": 30, "code_lines": 24, "output_tokens": 693, "thinking_tokens": 176, "answer_tokens": 517, "language": "python"},
+    "seconds": 5.1,
+    "cost_usd": 0.00036
+  },
+  "P2": {
+    "command": "cc \"$(cat prompt/structured.prompt.txt)\"",
+    "result": "The model returned one JavaScript function isValidBDPhone: 4 lines of code, 6 lines with fence. 95 visible tokens.",
+    "numbers": {"answer_lines": 6, "code_lines": 4, "output_tokens": 357, "thinking_tokens": 262, "answer_tokens": 95, "language": "javascript"},
+    "seconds": 3.4,
+    "cost_usd": 0.00019
+  },
+  "P3": {
+    "command": "node prompt/test.mjs",
+    "result": "Both pass the 6 outline numbers. Naive is Python (run with python3), structured is JavaScript.",
+    "numbers": {"naive_passed": 6, "structured_passed": 6, "total": 6},
+    "seconds": 0.5,
+    "cost_usd": 0
+  },
+  "P4": {
+    "command": "node prompt/edge.mjs",
+    "result": "On the 3 edge numbers, structured returns false 3/3 as the spec says. Naive returns true for 017-1234-5678 and ' 01712345678'.",
+    "numbers": {"naive_matches_spec": 1, "structured_matches_spec": 3, "total": 3, "naive": {"017-1234-5678": true, "1712345678": false, " 01712345678": true}, "structured": {"017-1234-5678": false, "1712345678": false, " 01712345678": false}},
+    "seconds": 0.5,
+    "cost_usd": 0
+  }
+}

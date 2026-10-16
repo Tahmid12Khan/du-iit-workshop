@@ -1,0 +1,419 @@
+<section class="slide" id="tokens-1" data-topic="Tokens" data-minutes="1.5" data-steps="4">
+  <h2>A model predicts the next token</h2>
+  <div class="stage">
+<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The text The cat sat on the goes into a model. The model gives a bar to each possible next token. Sampling picks mat. The token joins the text and the model predicts again.">
+<g data-step="1 4">
+<rect class="node c1" x="20" y="20" width="100" height="60" rx="14"/><text class="lbl lg mono mid" x="70" y="61">The</text>
+<rect class="node c1" x="128" y="20" width="100" height="60" rx="14"/><text class="lbl lg mono mid" x="178" y="61">cat</text>
+<rect class="node c1" x="236" y="20" width="100" height="60" rx="14"/><text class="lbl lg mono mid" x="286" y="61">sat</text>
+<rect class="node c1" x="344" y="20" width="84" height="60" rx="14"/><text class="lbl lg mono mid" x="386" y="61">on</text>
+<rect class="node c1" x="436" y="20" width="100" height="60" rx="14"/><text class="lbl lg mono mid" x="486" y="61">the</text>
+<rect class="node dashed" x="544" y="20" width="84" height="60" rx="14"/><text class="lbl lg mono mid" x="586" y="61">?</text>
+<g class="until" data-from="4">
+<rect class="node c2" x="544" y="20" width="110" height="60" rx="14"/><text class="lbl lg mono mid" x="599" y="61">mat</text><rect class="node dashed" x="662" y="20" width="84" height="60" rx="14"/><text class="lbl lg mono mid" x="704" y="61">?</text>
+</g>
+</g>
+<path class="edge" d="M155 86 V140" marker-end="url(#arrow)" data-step="2"/>
+<g data-step="2">
+<rect class="node inv" x="30" y="146" width="250" height="300" rx="24"/><text class="lbl lg mid inv-text" x="155" y="270">Model</text><text class="lbl-2 mid inv-text" x="155" y="324">Scores every</text><text class="lbl-2 mid inv-text" x="155" y="354">next token</text>
+</g>
+<rect class="node ring" x="24" y="140" width="262" height="312" rx="28" data-step="2"/>
+<path class="edge" d="M290 296 H346" marker-end="url(#arrow)" data-step="2"/>
+<g data-step="2 3">
+<rect class="node plain" x="352" y="110" width="500" height="360" rx="20"/><text class="lbl" x="376" y="148">Next token</text><text class="lbl-3 end" x="836" y="148">Illustration</text><text class="lbl mono" x="376" y="201">mat</text><rect class="node c1" x="490" y="176" width="250" height="34" rx="8"/>
+<text class="lbl mono" x="376" y="259">floor</text><rect class="node c1" x="490" y="234" width="150" height="34" rx="8"/>
+<text class="lbl mono" x="376" y="317">sofa</text><rect class="node c1" x="490" y="292" width="100" height="34" rx="8"/>
+<text class="lbl mono" x="376" y="375">roof</text><rect class="node c1" x="490" y="350" width="60" height="34" rx="8"/>
+<text class="lbl mono" x="376" y="433">moon</text><rect class="node c1" x="490" y="408" width="30" height="34" rx="8"/>
+</g>
+<g data-step="3">
+<rect class="node ring" x="364" y="168" width="474" height="50" rx="12"/><text class="lbl hl end" x="826" y="202">picked</text>
+</g>
+<path class="edge" d="M856 192 H884" marker-end="url(#arrow)" data-step="3"/>
+<g data-step="3">
+<rect class="node c3" x="890" y="110" width="290" height="120" rx="18"/><text class="lbl lg mid" x="1035" y="160">Sampling</text><text class="lbl-2 mid" x="1035" y="198">picks one token</text>
+</g>
+<path class="edge" d="M599 106 V86" marker-end="url(#arrow)" data-step="4"/>
+<path class="edge" d="M856 390 H884" marker-end="url(#arrow)" data-step="4"/>
+<g data-step="4">
+<rect class="node c4" x="890" y="330" width="290" height="130" rx="18"/><text class="lbl lg mid" x="1035" y="376">Repeat</text><text class="lbl-2 mid" x="1035" y="414">Add the token.</text><text class="lbl-2 mid" x="1035" y="442">Predict again.</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>The model reads the text so far: The cat sat on the.</li>
+    <li>The model gives a score to each possible next token.</li>
+    <li>Sampling picks one token from the scores. Here it picks mat.</li>
+    <li>The model adds the token to the text and predicts again. It repeats.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] এবার আমরা model-এর ভেতরে উঁকি দিই। model আসলে একটাই কাজ করে। এ পর্যন্ত লেখা text দেখে সে পরের token অনুমান করে। ধরো text হলো "The cat sat on the"। [STEP 2] model প্রতিটা সম্ভাব্য token-কে একটা score দেয়। বারের দৈর্ঘ্য যত বড়, সম্ভাবনা তত বেশি। মনে রেখো, এই বার একটা illustration, মাপা সংখ্যা নয়। [STEP 3] তারপর sampling এই বার থেকে একটা token বেছে নেয়। এখানে সে "mat" বেছেছে। [STEP 4] সেই token text-এর সাথে জোড়া লাগে। model আবার পরের token অনুমান করে। এভাবে পুরো উত্তর একটা একটা করে token-এ তৈরি হয়। [ASK] model কি পুরো বাক্য একবারে ভাবে? [PAUSE 3s] না। সে একটা একটা করে এগোয়।</aside>
+</section>
+
+<section class="slide" id="tokens-2" data-topic="Tokens" data-minutes="2" data-steps="4">
+  <h2>Text becomes tokens before the model sees it</h2>
+  <div class="stage">
+<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The text Tokenizers split rare words goes into a tokenizer. The tokenizer splits it into five token chips. Each chip has a token ID number. The model reads only the numbers.">
+<g data-step="1">
+<rect class="node plain" x="250" y="20" width="700" height="80" rx="18"/><text class="lbl lg mono mid" x="600" y="71">Tokenizers split rare words</text>
+</g>
+<path class="edge" d="M600 104 V140" marker-end="url(#arrow)" data-step="2"/>
+<g data-step="2">
+<rect class="node inv" x="440" y="146" width="320" height="64" rx="16"/><text class="lbl lg mid inv-text" x="600" y="188">Tokenizer</text>
+</g>
+<rect class="node ring" x="434" y="140" width="332" height="76" rx="20" data-step="2"/>
+<path class="edge" d="M600 214 V256" marker-end="url(#arrow)" data-step="2"/>
+<g data-step="2 3">
+<rect class="node c1" x="276" y="262" width="120" height="64" rx="14"/><text class="lbl lg mono mid" x="336" y="304">Token</text>
+<rect class="node c1" x="408" y="262" width="120" height="64" rx="14"/><text class="lbl lg mono mid" x="468" y="304">izers</text>
+<rect class="node c1" x="540" y="262" width="120" height="64" rx="14"/><text class="lbl lg mono mid" x="600" y="304">split</text>
+<rect class="node c1" x="672" y="262" width="120" height="64" rx="14"/><text class="lbl lg mono mid" x="732" y="304">rare</text>
+<rect class="node c1" x="804" y="262" width="120" height="64" rx="14"/><text class="lbl lg mono mid" x="864" y="304">words</text>
+</g>
+<g data-step="3">
+<path class="edge" d="M336 330 V368" marker-end="url(#arrow)"/>
+<path class="edge" d="M468 330 V368" marker-end="url(#arrow)"/>
+<path class="edge" d="M600 330 V368" marker-end="url(#arrow)"/>
+<path class="edge" d="M732 330 V368" marker-end="url(#arrow)"/>
+<path class="edge" d="M864 330 V368" marker-end="url(#arrow)"/>
+</g>
+<g data-step="3 4">
+<rect class="node plain" x="276" y="374" width="120" height="60" rx="14"/><text class="lbl lg mono mid" x="336" y="414">31954</text>
+<rect class="node plain" x="408" y="374" width="120" height="60" rx="14"/><text class="lbl lg mono mid" x="468" y="414">6091</text>
+<rect class="node plain" x="540" y="374" width="120" height="60" rx="14"/><text class="lbl lg mono mid" x="600" y="414">8420</text>
+<rect class="node plain" x="672" y="374" width="120" height="60" rx="14"/><text class="lbl lg mono mid" x="732" y="414">17255</text>
+<rect class="node plain" x="804" y="374" width="120" height="60" rx="14"/><text class="lbl lg mono mid" x="864" y="414">2302</text>
+</g>
+<path class="edge" d="M928 404 H980" marker-end="url(#arrow)" data-step="4"/>
+<g data-step="4">
+<rect class="node inv" x="986" y="366" width="194" height="76" rx="16"/><text class="lbl lg mid inv-text" x="1083" y="413">Model</text>
+</g>
+<rect class="node ring" x="980" y="360" width="206" height="88" rx="20" data-step="4"/>
+<text class="lbl-3 mid" x="600" y="482">Illustration. The split and the IDs differ in each model.</text>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>You send text to the model.</li>
+    <li>The tokenizer splits the text into tokens.</li>
+    <li>Each token has a number. The number is the token ID.</li>
+    <li>The model reads only the token IDs. It does not read letters.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] তুমি model-কে text পাঠাও, যেমন "Tokenizers split rare words"। কিন্তু model অক্ষর বা শব্দ হিসেবে পড়ে না। [STEP 2] আগে একটা tokenizer এই text-কে ছোট ছোট টুকরোয় ভাঙে। প্রতিটা টুকরোর নাম token। দেখো, একটা শব্দও দুই টুকরো হতে পারে। কারণ model-এর একটা নির্দিষ্ট শব্দভান্ডার আছে। যা ভান্ডারে নেই, সেটা ছোট টুকরোয় ভেঙে লেখা হয়। চেনা আর সহজ শব্দ প্রায়ই একটাই token হয়। [ASK] তোমার কী মনে হয়, একটা শব্দ কি সবসময় একটা token? [PAUSE 3s] না, সবসময় না। [STEP 3] প্রতিটা token-এর একটা নম্বর আছে। এর নাম token ID। অনেকটা লাইব্রেরির বইয়ের নম্বরের মতো। [STEP 4] model শুধু এই নম্বরগুলো দেখে। অক্ষর দেখে না। এই slide-টা একটা illustration। আসল ভাগ আর আসল ID প্রতিটা model-এ আলাদা। এক model-এর tokenizer দিয়ে আরেক model-এর token গোনা যায় না। তাই পরের slide-এ আমরা আসল token সংখ্যা গুনে দেখব। বাসায় worksheet-এ একই বাক্য বাংলায় লিখে গুনে দেখো, সংখ্যাটা কেমন আসে।</aside>
+</section>
+
+<style>
+#tokens-3 .stage{position:relative}
+#tokens-3 .ov{position:absolute;inset:0;z-index:5;background:var(--surface);opacity:0;pointer-events:none;transition:opacity .4s ease}
+#tokens-3 .ov.on{opacity:1;pointer-events:auto}
+#tokens-3 .tslot{position:absolute;inset:12px;background:var(--surface)}
+@media (prefers-reduced-motion:reduce){#tokens-3 .ov{transition:none}}
+#tokens-3 .stage{flex-direction:column;align-items:stretch;justify-content:flex-start}
+#tokens-3 .check{margin:8px 8px 0;padding:10px 16px 12px}
+#tokens-3 .check::before{margin-bottom:6px}
+#tokens-3 .check p{margin:0 0 8px;font-size:26px}
+#tokens-3 .check ol{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}
+#tokens-3 .check li{font-size:24px;padding:5px 12px;font-variant-ligatures:none}
+#tokens-3 .check li::before{width:36px;height:36px;font-size:22px}
+#tokens-3 > .stage > svg.diagram{flex:1;min-height:0;width:100%;height:auto}
+#tokens-3 .reveal{margin:0 8px 8px;padding:8px 20px;font-size:26px;text-align:center}
+</style>
+<section class="slide" id="tokens-3" data-topic="Tokens" data-minutes="3" data-steps="6">
+  <h2>Every extra word and symbol adds tokens</h2>
+  <div class="stage">
+    <div class="check" data-step="1 6"><p>Which input costs the most tokens?</p><ol>
+      <li>Hello</li><li>{"greeting":"Hello"}</li><li>const sum = (a, b) =&gt; a + b;</li><li>An English sentence, 10 words</li></ol></div>
+    <svg viewBox="0 0 1200 224" class="diagram" role="img" aria-label="Four empty bars for the inputs A to D. In the last step the bars show the net token counts 2, 11, 13 and 17.">
+<text class="lbl lg" x="26" y="39">A</text><rect class="node plain" x="70" y="8" width="1000" height="40" rx="10"/><g class="until" data-from="6">
+<rect class="node c2" x="70" y="8" width="94" height="40" rx="10"/><text class="big hl" x="180" y="42" data-count="2" data-count-step="6">0</text>
+</g>
+<text class="lbl lg" x="26" y="93">B</text><rect class="node plain" x="70" y="62" width="1000" height="40" rx="10"/><g class="until" data-from="6">
+<rect class="node c2" x="70" y="62" width="517" height="40" rx="10"/><text class="big hl" x="603" y="96" data-count="11" data-count-step="6">0</text>
+</g>
+<text class="lbl lg" x="26" y="147">C</text><rect class="node plain" x="70" y="116" width="1000" height="40" rx="10"/><g class="until" data-from="6">
+<rect class="node c2" x="70" y="116" width="611" height="40" rx="10"/><text class="big hl" x="697" y="150" data-count="13" data-count-step="6">0</text>
+</g>
+<text class="lbl lg" x="26" y="201">D</text><rect class="node plain" x="70" y="170" width="1000" height="40" rx="10"/><g class="until" data-from="6">
+<rect class="node c2" x="70" y="170" width="799" height="40" rx="10"/><text class="big hl" x="885" y="204" data-count="17" data-count-step="6">0</text>
+</g>
+</svg>
+    <div class="reveal" data-from="6">Net tokens = total tokens minus 857</div>
+    <div class="ov">
+      <div class="tslot"><div class="term" data-cast="T1" data-play-step="2"></div></div>
+      <div class="tslot until" data-from="3"><div class="term" data-cast="T2" data-play-step="3"></div></div>
+      <div class="tslot until" data-from="4"><div class="term" data-cast="T3" data-play-step="4"></div></div>
+      <div class="tslot until" data-from="5"><div class="term" data-cast="T4" data-play-step="5"></div></div>
+    </div>
+  </div>
+  <ol class="captions">
+    <li>Which input costs the most tokens? Pick A, B, C or D.</li>
+    <li>Play T1. Hello costs 859 tokens in total. 857 of them are a fixed baseline.</li>
+    <li>Play T2. The same word in JSON costs 868 tokens in total.</li>
+    <li>Play T3. One line of code costs 870 tokens in total.</li>
+    <li>Play T4. A dot costs 857 tokens. The sentence costs 874.</li>
+    <li>Subtract 857. Hello adds 2 tokens. The sentence adds 17.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] এবার একটা ছোট খেলা। চারটা input আছে। A হলো শুধু Hello। B হলো Hello, কিন্তু JSON-এ মোড়া। C হলো এক লাইন code। D হলো দশ শব্দের একটা ইংরেজি বাক্য। [ASK] তোমার মতে কোনটা সবচেয়ে বেশি token খরচ করবে? A, B, C বা D, হাত তোলো। [PAUSE 10s] ভালো। এবার সত্যিকারের গোনা দেখি। শুরুতে 859 দেখে অবাক হয়ো না। একটু পরেই বুঝবে কেন। [STEP 2] [DEMO T1] [DO: T1 cast এই step-এ নিজে চলবে] উপরে raw usage field দেখো। input_tokens 2, cache_creation 0, cache_read 857। তিনটা যোগ করলে 859। নিচে tokens helper একই যোগফল দেয়। এই 857 হলো প্রতিটা call-এর fixed অংশ। আমরা এটাকে বলব baseline। [STEP 3] [DEMO T2] [DO: T2 cast নিজে চলবে] একই শব্দ, কিন্তু JSON-এ। এবার 868। সংখ্যাগুলো মনে রাখো। [STEP 4] [DEMO T3] [DO: T3 cast নিজে চলবে] এক লাইন code, 870। [STEP 5] [DEMO T4] [DO: T4 cast নিজে চলবে। এখানে ধীরে বলো।] প্রথমে শুধু একটা বিন্দু পাঠাই। তাতেও 857। কারণ প্রতিটা call-এ কিছু fixed token যায়। সেটাই আমাদের baseline। তারপর ইংরেজি বাক্য, মোট 874। [STEP 6] এবার baseline 857 বাদ দিই। Hello মাত্র 2। JSON 11। code 13। বাক্য 17। [ASK] কে ঠিক বলেছিলে? [PAUSE 5s] বাক্যটা সবচেয়ে বেশি, কারণ সেখানে শব্দ বেশি। কিন্তু একটা জিনিস দেখো। একই Hello-র JSON রূপ প্রায় সাড়ে পাঁচ গুণ। কারণ { } আর কোটের চিহ্নগুলোও token। বাড়তি শব্দ আর বাড়তি চিহ্ন, দুটোই খরচ বাড়ায়। মনে রেখো, এই সংখ্যাগুলো আমরা এই model-এ মেপেছি। অন্য model-এ সংখ্যা আলাদা হতে পারে।</aside>
+  <script>Deck.onStep('tokens-3',function(s,el){var o=el.querySelector('.ov');if(o)o.classList.toggle('on',[2,3,4,5].indexOf(s)>=0);});</script>
+</section>
+
+<style>
+#tokens-4 .stage{position:relative}
+#tokens-4 .ov{position:absolute;inset:0;z-index:5;background:var(--surface);opacity:0;pointer-events:none;transition:opacity .4s ease}
+#tokens-4 .ov.on{opacity:1;pointer-events:auto}
+#tokens-4 .tslot{position:absolute;inset:12px;background:var(--surface)}
+@media (prefers-reduced-motion:reduce){#tokens-4 .ov{transition:none}}
+</style>
+<section class="slide" id="tokens-4" data-topic="Tokens" data-minutes="2" data-steps="5">
+  <h2>Claude Code adds many tokens to a short prompt</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Two bars. The cc helper sends 859 tokens for the word Hello. Default Claude Code sends 17,987 tokens for the same word, which is 21 times more.">
+<g data-step="1 5">
+<text class="lbl lg" x="20" y="100">cc</text><rect class="node c1" x="210" y="56" width="42" height="66" rx="10"/><text class="big hl" x="270" y="106" data-count="859" data-count-step="1" data-count-fmt="comma">0</text><text class="lbl-2" x="210" y="160">cc = claude -p with no tools, no skills, no settings</text>
+</g>
+<g class="until" data-step="3 4 5" data-from="3">
+<text class="lbl" x="20" y="268">Claude Code</text><rect class="node c3" x="210" y="214" width="880" height="80" rx="10"/><text class="big" x="232" y="270" data-count="17987" data-count-step="3" data-count-fmt="comma">0</text>
+</g>
+<text class="lbl-2" x="210" y="334" data-step="4">Claude Code adds to each call:</text>
+<g data-step="4">
+<rect class="node c1" x="210" y="352" width="270" height="96" rx="14"/><text class="lbl lg mid" x="345" y="412">System prompt</text><rect class="node c2" x="500" y="352" width="270" height="96" rx="14"/><text class="lbl lg mid" x="635" y="412">Tool list</text><rect class="node c4" x="790" y="352" width="270" height="96" rx="14"/><text class="lbl lg mid" x="925" y="412">Skills</text>
+</g>
+<g class="until" data-step="5" data-from="5">
+<text class="huge hl" x="640" y="108" data-count="21" data-count-step="5">0</text><text class="lbl lg" x="722" y="106">times more tokens</text>
+</g>
+</svg>
+    <div class="ov">
+      <div class="tslot"><div class="term" data-cast="T5" data-play-step="2"></div></div>
+    </div>
+  </div>
+  <ol class="captions">
+    <li>The cc helper sends the word Hello with 859 tokens. It has no tools or skills.</li>
+    <li>Play T5. Default Claude Code gets the same word.</li>
+    <li>Claude Code sends 17,987 tokens for the word Hello.</li>
+    <li>Claude Code adds its system prompt, its tools and its skills.</li>
+    <li>That is 21 times more tokens than cc.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] আগের helper cc দিয়ে Hello-র জন্য পেয়েছিলাম 859 token। cc হলো claude -p, কিন্তু tools, skills আর settings ছাড়া। তাই সে এত হালকা। [STEP 2] [DEMO T5] [DO: T5 cast নিজে চলবে। শেষে usage-এর যোগফল দেখাও।] এবার একই Hello, একই model, কিন্তু default Claude Code দিয়ে। আমি শুধু একটা শব্দ লিখেছি। [STEP 3] সংখ্যাটা 17,987, মানে প্রায় আঠারো হাজার। cc-র 859-এর পাশে এটা অনেক বড়। [STEP 4] এই বাড়তি token কোথা থেকে এল? Claude Code প্রতিটা call-এ নিজের system prompt, নিজের tools আর skills জুড়ে দেয়। তুমি এগুলো দেখো না, কিন্তু model পড়ে। যেন তুমি একটা ছোট চিঠি পাঠালে, আর খামের ভেতরে পুরো নিয়মের বইও ঢুকে গেল। cache থেকে পড়া token কম খরচ হয়। কিন্তু context window-এ জায়গা ঠিকই নেয়। [STEP 5] হিসাব করলে প্রায় 21 গুণ। [ASK] ছোট প্রশ্নের খরচ মাপতে আমরা কোন tool নেব? [PAUSE 3s] cc-র মতো হালকা helper।</aside>
+  <script>Deck.onStep('tokens-4',function(s,el){var o=el.querySelector('.ov');if(o)o.classList.toggle('on',[2].indexOf(s)>=0);});</script>
+</section>
+
+<section class="slide" id="tokens-5" data-topic="Tokens" data-minutes="1.5" data-steps="5">
+  <h2>Tokens set the cost</h2>
+  <div class="stage">
+<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The cost formula: tokens counted in millions, times the price per million tokens, equals the cost. A card says to open the live pricing page. A second card says to choose the smallest model that does the job.">
+<g data-step="1 3">
+<rect class="node c1" x="20" y="40" width="330" height="110" rx="18"/><text class="lbl lg mid" x="185" y="92">Tokens</text><text class="lbl-2 mid" x="185" y="126">counted in millions</text>
+</g>
+<text class="big mid" x="385" y="108" data-step="3">×</text>
+<g data-step="2 3">
+<rect class="node c3" x="420" y="40" width="410" height="110" rx="18"/><text class="lbl lg mid" x="625" y="92">Price per million tokens</text><text class="lbl-2 mid" x="625" y="126">set by the model</text>
+</g>
+<text class="big mid" x="865" y="108" data-step="3">=</text>
+<g data-step="3">
+<rect class="node c2" x="900" y="40" width="280" height="110" rx="18"/><text class="lbl lg mid" x="1040" y="108">Cost</text>
+</g>
+<g data-step="1">
+<rect class="node plain" x="20" y="172" width="160" height="56" rx="14"/><text class="lbl mid" x="100" y="208">Input</text><rect class="node plain" x="190" y="172" width="160" height="56" rx="14"/><text class="lbl mid" x="270" y="208">Output</text>
+</g>
+<text class="lbl-2" x="20" y="262" data-step="1">Input: what you send. Output: what the model writes.</text>
+<text class="lbl-2" x="420" y="196" data-step="2">Each model has its own price.</text>
+<text class="lbl-2" x="420" y="226" data-step="2">Input and output have different prices.</text>
+<g data-step="4">
+<rect class="node c3" x="20" y="280" width="560" height="206" rx="18"/><text class="lbl lg" x="44" y="326">LIVE: open the pricing page</text><text class="lbl-2" x="44" y="362">Prices change. Read the live page.</text><text class="lbl-3" x="44" y="402">Measured today with haiku:</text><text class="lbl-2 mono" x="44" y="434">Hello with cc: $0.000015</text><text class="lbl-2 mono" x="44" y="464">Hello with Claude Code: $0.0002</text>
+</g>
+<g data-step="5">
+<rect class="node c5" x="620" y="280" width="560" height="206" rx="18"/><text class="lbl lg" x="644" y="326">Choose the smallest model</text><text class="lbl-2" x="644" y="370">Small model: lower price, faster.</text><text class="lbl-2" x="644" y="404">Large model: higher price, stronger.</text><text class="lbl-2" x="644" y="452">Start small. Move up only if you must.</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>The model counts input tokens and output tokens.</li>
+    <li>Each model has a price for one million tokens.</li>
+    <li>Cost equals tokens in millions times the price per million.</li>
+    <li>Open the live pricing page. Read the price of one model.</li>
+    <li>Choose the smallest model that does the job.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] খরচের হিসাব শুরু হয় token দিয়ে। token দুই রকম। input token হলো যা তুমি পাঠাও। output token হলো যা model লেখে। [STEP 2] প্রতিটা model-এর নিজের দাম আছে, প্রতি দশ লক্ষ token-এর জন্য। input আর output-এর দামও আলাদা। [STEP 3] তাই খরচ হলো token কত মিলিয়ন, গুণ প্রতি মিলিয়নের দাম। একটা call-এ token কম, তাই খরচ খুব সামান্য। কিন্তু হাজার হাজার call হলে সেটা জমে যায়। [STEP 4] [CLICK] [DO: browser-এ Anthropic-এর pricing page খোলো। একটা model-এর input আর output দাম পড়ে শোনাও।] দাম live দেখাচ্ছি, কারণ দাম বদলায়, মুখস্থ করার দরকার নেই। এবার আমাদের মাপা উদাহরণ দেখো। cc দিয়ে Hello-র খরচ এক ডলারের এক লাখ ভাগের মাত্র দেড় ভাগ। Claude Code দিয়ে এক লাখ ভাগের বিশ ভাগ। [STEP 5] আরেকটা কথা। সবচেয়ে বড় model সবসময় দরকার নেই। ছোট model সস্তা আর দ্রুত। আগে ছোটটা দিয়ে চেষ্টা করো। না হলে বড়টায় যাও। আজকের demo-গুলো haiku দিয়ে চলেছে।</aside>
+</section>
+
+<section class="slide anim-only" id="anim-T1" data-cmd="T1" data-steps="5">
+  <h2>The word Hello adds 2 tokens</h2>
+  <div class="stage">
+<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The word Hello adds 2 tokens. Command, helper, model, usage result and net count.">
+<g data-step="1">
+<rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">$ tokens &quot;Hello&quot;</text>
+</g>
+<rect class="node ring" x="14" y="10" width="1172" height="82" rx="18" data-step="1"/>
+<path class="edge" d="M165 92 V146" marker-end="url(#arrow)" data-step="2"/>
+<g data-step="2">
+<rect class="node c1" x="20" y="152" width="290" height="190" rx="18"/><text class="lbl lg mid" x="165" y="204">cc helper</text><text class="lbl-2 mid" x="165" y="244">Sends the word Hello</text><text class="lbl-2 mid" x="165" y="274">with a short system</text><text class="lbl-2 mid" x="165" y="304">prompt and no tools.</text>
+</g>
+<path class="edge" d="M314 247 H356" marker-end="url(#arrow)" data-step="2 3"/>
+<g data-step="3">
+<rect class="node c2" x="360" y="152" width="290" height="190" rx="18"/><text class="lbl lg mid" x="505" y="204">Model</text><text class="lbl-2 mid" x="505" y="252">Reads the prompt.</text><text class="lbl-2 mid" x="505" y="282">Counts input tokens.</text>
+</g>
+<path class="edge" d="M654 247 H696" marker-end="url(#arrow)" data-step="3 4"/>
+<g data-step="4">
+<rect class="node plain" x="700" y="152" width="480" height="190" rx="18"/><text class="lbl lg" x="724" y="188">usage</text><g class="until" data-from="4">
+<text class="lbl mono" x="724" y="230">input_tokens</text><text class="lbl mono end hl" x="1156" y="230">2</text>
+<text class="lbl mono" x="724" y="260">cache_creation_input_tokens</text><text class="lbl mono end hl" x="1156" y="260">0</text>
+<text class="lbl mono" x="724" y="290">cache_read_input_tokens</text><text class="lbl mono end hl" x="1156" y="290">857</text>
+<text class="lbl mono" x="724" y="320">total</text><text class="lbl mono end hl" x="1156" y="320">859</text>
+</g>
+</g>
+<g class="until" data-step="5" data-from="5">
+<rect class="node plain" x="20" y="366" width="330" height="100" rx="16"/><text class="lbl-2" x="40" y="400">Total</text><text class="big" x="40" y="448">859</text><text class="big mid" x="385" y="436">−</text><rect class="node plain" x="420" y="366" width="330" height="100" rx="16"/><text class="lbl-2" x="440" y="400">Baseline</text><text class="big" x="440" y="448">857</text><text class="big mid" x="785" y="436">=</text><rect class="node c2" x="820" y="366" width="360" height="100" rx="16"/><text class="lbl-2" x="840" y="400">Net tokens</text><text class="big hl" x="840" y="448" data-count="2" data-count-step="5">0</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>Run tokens &quot;Hello&quot; in the shell.</li>
+    <li>The cc helper sends Hello with a short system prompt and no tools.</li>
+    <li>The model reads the prompt and counts the input tokens.</li>
+    <li>The usage field shows 2 + 0 + 857 = 859 input tokens.</li>
+    <li>The baseline is 857 tokens. The word Hello adds 2 tokens.</li>
+  </ol>
+</section>
+
+<section class="slide anim-only" id="anim-T2" data-cmd="T2" data-steps="5">
+  <h2>The same word as JSON adds 11 tokens</h2>
+  <div class="stage">
+<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The same word as JSON adds 11 tokens. Command, helper, model, usage result and net count.">
+<g data-step="1">
+<rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">$ tokens '{&quot;greeting&quot;:&quot;Hello&quot;}'</text>
+</g>
+<rect class="node ring" x="14" y="10" width="1172" height="82" rx="18" data-step="1"/>
+<path class="edge" d="M165 92 V146" marker-end="url(#arrow)" data-step="2"/>
+<g data-step="2">
+<rect class="node c1" x="20" y="152" width="290" height="190" rx="18"/><text class="lbl lg mid" x="165" y="204">cc helper</text><text class="lbl-2 mid" x="165" y="244">Sends the JSON text</text><text class="lbl-2 mid" x="165" y="274">with a short system</text><text class="lbl-2 mid" x="165" y="304">prompt and no tools.</text>
+</g>
+<path class="edge" d="M314 247 H356" marker-end="url(#arrow)" data-step="2 3"/>
+<g data-step="3">
+<rect class="node c2" x="360" y="152" width="290" height="190" rx="18"/><text class="lbl lg mid" x="505" y="204">Model</text><text class="lbl-2 mid" x="505" y="252">Reads the prompt.</text><text class="lbl-2 mid" x="505" y="282">Counts input tokens.</text>
+</g>
+<path class="edge" d="M654 247 H696" marker-end="url(#arrow)" data-step="3 4"/>
+<g data-step="4">
+<rect class="node plain" x="700" y="152" width="480" height="190" rx="18"/><text class="lbl lg" x="724" y="188">usage</text><g class="until" data-from="4">
+<text class="lbl-2" x="724" y="232">Total input tokens</text><text class="huge hl" x="724" y="304" data-count="868" data-count-step="4">0</text>
+</g>
+</g>
+<g class="until" data-step="5" data-from="5">
+<rect class="node plain" x="20" y="366" width="330" height="100" rx="16"/><text class="lbl-2" x="40" y="400">Total</text><text class="big" x="40" y="448">868</text><text class="big mid" x="385" y="436">−</text><rect class="node plain" x="420" y="366" width="330" height="100" rx="16"/><text class="lbl-2" x="440" y="400">Baseline</text><text class="big" x="440" y="448">857</text><text class="big mid" x="785" y="436">=</text><rect class="node c2" x="820" y="366" width="360" height="100" rx="16"/><text class="lbl-2" x="840" y="400">Net tokens</text><text class="big hl" x="840" y="448" data-count="11" data-count-step="5">0</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>Run tokens with the word Hello inside JSON.</li>
+    <li>The cc helper sends the JSON text, with its braces and quotes.</li>
+    <li>The model reads the prompt and counts the input tokens.</li>
+    <li>The usage field shows 868 input tokens in total.</li>
+    <li>Subtract the baseline of 857. The JSON adds 11 tokens. Hello alone adds 2.</li>
+  </ol>
+</section>
+
+<section class="slide anim-only" id="anim-T3" data-cmd="T3" data-steps="5">
+  <h2>One line of code adds 13 tokens</h2>
+  <div class="stage">
+<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="One line of code adds 13 tokens. Command, helper, model, usage result and net count.">
+<g data-step="1">
+<rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">$ tokens 'const sum = (a, b) =&gt; a + b;'</text>
+</g>
+<rect class="node ring" x="14" y="10" width="1172" height="82" rx="18" data-step="1"/>
+<path class="edge" d="M165 92 V146" marker-end="url(#arrow)" data-step="2"/>
+<g data-step="2">
+<rect class="node c1" x="20" y="152" width="290" height="190" rx="18"/><text class="lbl lg mid" x="165" y="204">cc helper</text><text class="lbl-2 mid" x="165" y="244">Sends the line of code</text><text class="lbl-2 mid" x="165" y="274">with a short system</text><text class="lbl-2 mid" x="165" y="304">prompt and no tools.</text>
+</g>
+<path class="edge" d="M314 247 H356" marker-end="url(#arrow)" data-step="2 3"/>
+<g data-step="3">
+<rect class="node c2" x="360" y="152" width="290" height="190" rx="18"/><text class="lbl lg mid" x="505" y="204">Model</text><text class="lbl-2 mid" x="505" y="252">Reads the prompt.</text><text class="lbl-2 mid" x="505" y="282">Counts input tokens.</text>
+</g>
+<path class="edge" d="M654 247 H696" marker-end="url(#arrow)" data-step="3 4"/>
+<g data-step="4">
+<rect class="node plain" x="700" y="152" width="480" height="190" rx="18"/><text class="lbl lg" x="724" y="188">usage</text><g class="until" data-from="4">
+<text class="lbl-2" x="724" y="232">Total input tokens</text><text class="huge hl" x="724" y="304" data-count="870" data-count-step="4">0</text>
+</g>
+</g>
+<g class="until" data-step="5" data-from="5">
+<rect class="node plain" x="20" y="366" width="330" height="100" rx="16"/><text class="lbl-2" x="40" y="400">Total</text><text class="big" x="40" y="448">870</text><text class="big mid" x="385" y="436">−</text><rect class="node plain" x="420" y="366" width="330" height="100" rx="16"/><text class="lbl-2" x="440" y="400">Baseline</text><text class="big" x="440" y="448">857</text><text class="big mid" x="785" y="436">=</text><rect class="node c2" x="820" y="366" width="360" height="100" rx="16"/><text class="lbl-2" x="840" y="400">Net tokens</text><text class="big hl" x="840" y="448" data-count="13" data-count-step="5">0</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>Run tokens with one line of code.</li>
+    <li>The cc helper sends the code, with its symbols and spaces.</li>
+    <li>The model reads the prompt and counts the input tokens.</li>
+    <li>The usage field shows 870 input tokens in total.</li>
+    <li>Subtract the baseline of 857. The line of code adds 13 tokens.</li>
+  </ol>
+</section>
+
+<section class="slide anim-only" id="anim-T4" data-cmd="T4" data-steps="5">
+  <h2>One English sentence adds 17 tokens</h2>
+  <div class="stage">
+<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="One English sentence adds 17 tokens. Command, helper, model, usage result and net count.">
+<g data-step="1">
+<rect class="node inv" x="20" y="16" width="1160" height="96" rx="14"/><text class="lbl mono inv-text" x="44" y="50">$ tokens 'Software engineers build reliable systems by</text>
+<text class="lbl mono inv-text" x="44" y="84">  testing early and often.'</text>
+</g>
+<rect class="node ring" x="14" y="10" width="1172" height="108" rx="18" data-step="1"/>
+<path class="edge" d="M165 118 V146" marker-end="url(#arrow)" data-step="2"/>
+<g data-step="2">
+<rect class="node c1" x="20" y="152" width="290" height="190" rx="18"/><text class="lbl lg mid" x="165" y="204">cc helper</text><text class="lbl-2 mid" x="165" y="244">Sends the sentence</text><text class="lbl-2 mid" x="165" y="274">with a short system</text><text class="lbl-2 mid" x="165" y="304">prompt and no tools.</text>
+</g>
+<path class="edge" d="M314 247 H356" marker-end="url(#arrow)" data-step="2 3"/>
+<g data-step="3">
+<rect class="node c2" x="360" y="152" width="290" height="190" rx="18"/><text class="lbl lg mid" x="505" y="204">Model</text><text class="lbl-2 mid" x="505" y="252">Reads the prompt.</text><text class="lbl-2 mid" x="505" y="282">Counts input tokens.</text>
+</g>
+<path class="edge" d="M654 247 H696" marker-end="url(#arrow)" data-step="3 4"/>
+<g data-step="4">
+<rect class="node plain" x="700" y="152" width="480" height="190" rx="18"/><text class="lbl lg" x="724" y="188">usage</text><g class="until" data-from="4">
+<text class="lbl mono" x="724" y="230">a dot (baseline)</text><text class="lbl mono end hl" x="1156" y="230">857</text>
+<text class="lbl mono" x="724" y="260">the sentence</text><text class="lbl mono end hl" x="1156" y="260">874</text>
+</g>
+</g>
+<g class="until" data-step="5" data-from="5">
+<rect class="node plain" x="20" y="366" width="330" height="100" rx="16"/><text class="lbl-2" x="40" y="400">Total</text><text class="big" x="40" y="448">874</text><text class="big mid" x="385" y="436">−</text><rect class="node plain" x="420" y="366" width="330" height="100" rx="16"/><text class="lbl-2" x="440" y="400">Baseline</text><text class="big" x="440" y="448">857</text><text class="big mid" x="785" y="436">=</text><rect class="node c2" x="820" y="366" width="360" height="100" rx="16"/><text class="lbl-2" x="840" y="400">Net tokens</text><text class="big hl" x="840" y="448" data-count="17" data-count-step="5">0</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>Run tokens with a dot, then with one English sentence.</li>
+    <li>The cc helper sends the dot first, then the sentence of 10 words.</li>
+    <li>The model reads each prompt and counts the input tokens.</li>
+    <li>The dot costs 857 tokens. The sentence costs 874 tokens in total.</li>
+    <li>Subtract the baseline of 857. The sentence adds 17 tokens.</li>
+  </ol>
+</section>
+
+<section class="slide anim-only" id="anim-T5" data-cmd="T5" data-steps="5">
+  <h2>Claude Code sends 17,987 tokens for one word</h2>
+  <div class="stage">
+<svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Command, Claude Code adds a system prompt, tools and skills, the model reads them, the usage shows 17,987 tokens, and cc sent only 859 for the same word.">
+<g data-step="1">
+<rect class="node inv" x="20" y="16" width="1160" height="70" rx="14"/><text class="lbl mono inv-text" x="44" y="59">$ claude -p &quot;Hello&quot; --output-format json | jq .usage</text>
+</g>
+<rect class="node ring" x="14" y="10" width="1172" height="82" rx="18" data-step="1"/>
+<g data-step="2">
+<rect class="node c4" x="20" y="132" width="300" height="48" rx="12"/><text class="lbl mid" x="170" y="164">Hello</text><rect class="node c1" x="20" y="188" width="300" height="48" rx="12"/><text class="lbl mid" x="170" y="220">System prompt</text><rect class="node c2" x="20" y="244" width="300" height="48" rx="12"/><text class="lbl mid" x="170" y="276">Tool list</text><rect class="node c3" x="20" y="300" width="300" height="48" rx="12"/><text class="lbl mid" x="170" y="332">Skills</text>
+</g>
+<path class="edge" d="M326 240 H396" marker-end="url(#arrow)" data-step="2 3"/>
+<g data-step="3">
+<rect class="node c2" x="400" y="150" width="250" height="190" rx="18"/><text class="lbl lg mid" x="525" y="210">Model</text><text class="lbl-2 mid" x="525" y="258">Reads all of it.</text>
+</g>
+<path class="edge" d="M656 245 H706" marker-end="url(#arrow)" data-step="3 4"/>
+<g data-step="4">
+<rect class="node plain" x="710" y="132" width="470" height="216" rx="18"/><text class="lbl lg" x="734" y="170">usage</text><g class="until" data-from="4">
+<text class="lbl mono" x="734" y="214">input_tokens</text><text class="lbl mono end" x="1156" y="214">2</text><text class="lbl-2 mono" x="734" y="246">cache_creation_input_tokens</text><text class="lbl mono end" x="1156" y="246">0</text><text class="lbl-2 mono" x="734" y="278">cache_read_input_tokens</text><text class="lbl mono end" x="1156" y="278">17,985</text><text class="lbl-2" x="734" y="322">Total</text><text class="big hl end" x="1156" y="326" data-count="17987" data-count-step="4" data-count-fmt="comma">0</text>
+</g>
+</g>
+<g class="until" data-step="5" data-from="5">
+<text class="lbl lg" x="20" y="408">cc</text><rect class="node c1" x="130" y="380" width="42" height="40" rx="8"/><text class="lbl" x="190" y="408">859</text><text class="lbl" x="20" y="462">Claude Code</text><rect class="node c3" x="190" y="436" width="880" height="40" rx="8"/><text class="lbl" x="1090" y="466">17,987</text><text class="big hl" x="480" y="408" data-count="21" data-count-step="5">0</text><text class="lbl lg" x="540" y="406">times more tokens</text>
+</g>
+</svg>
+  </div>
+  <ol class="captions">
+    <li>Run the word Hello in default Claude Code.</li>
+    <li>Claude Code adds its system prompt, its tool list and its skills.</li>
+    <li>The model reads all of it.</li>
+    <li>The usage field shows 17,987 input tokens in total.</li>
+    <li>The cc helper sent 859 tokens for the same word. Claude Code sends 21 times more.</li>
+  </ol>
+</section>

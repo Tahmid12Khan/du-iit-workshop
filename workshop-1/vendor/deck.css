@@ -1,0 +1,262 @@
+/* Workshop 1 deck engine. Design canvas: 1280x720, scaled to fit the window. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { overflow: hidden; font-size: 24px; line-height: 1.35; -webkit-font-smoothing: antialiased; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@property --n { syntax: '<integer>'; inherits: false; initial-value: 0; }
+
+/* ---------- Frame: letterboxed, scaled design canvas ---------- */
+#app { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--bg); }
+#fit { position: relative; width: calc(1280px * var(--s, 1)); height: calc(720px * var(--s, 1)); flex: none; overflow: hidden; }
+#stage {
+  position: absolute; left: 0; top: 0; width: 1280px; height: 720px;
+  transform: scale(var(--s, 1)); transform-origin: 0 0;
+  background: var(--bg); color: var(--ink); overflow: hidden;
+}
+/* IIT DU blue line across the top of the canvas. */
+#stage::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--accent); z-index: 1; }
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: absolute; left: 72px; right: 72px; top: 4px; height: 52px;
+  display: flex; align-items: center; gap: 16px; font-size: 18px; color: var(--ink-2);
+}
+.topbar .topic { flex: none; width: 210px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.progress { flex: 1; display: flex; gap: 3px; height: 10px; }
+.progress .seg { appearance: none; border: 0; padding: 0; margin: 0; background: var(--line); border-radius: 5px; position: relative; overflow: hidden; cursor: pointer; min-width: 4px; }
+.progress .seg .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--accent); }
+.progress .seg.is-current { outline: 2px solid var(--ink-3); outline-offset: 1px; }
+.progress .seg:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.topbar .counter { flex: none; min-width: 110px; text-align: right; font-variant-numeric: tabular-nums; }
+.topbar .tbtn {
+  appearance: none; flex: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2);
+  font: 600 16px/1 var(--font-sans); padding: 7px 12px; border-radius: 999px; cursor: pointer;
+}
+.topbar .tbtn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.topbar .tbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- Slides ---------- */
+#slides { position: absolute; left: 72px; right: 72px; top: 60px; bottom: 124px; }
+.slide { display: none; position: absolute; inset: 0; flex-direction: column; }
+.slide.is-current { display: flex; }
+.slide > h2 { flex: none; margin: 4px 0 14px; font-size: 36px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; color: var(--navy); }
+.slide .stage {
+  flex: 1; min-height: 0; position: relative; display: flex; align-items: center; justify-content: center;
+  background: var(--surface); border-radius: 14px; box-shadow: 0 0 0 1px var(--line); overflow: hidden;
+}
+.slide .stage.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; align-items: stretch; }
+.slide .captions, .slide .notes { display: none; }
+.slide .stage > svg.diagram { width: 100%; height: 100%; display: block; }
+.slide p, .slide li { font-size: 24px; }
+
+/* ---------- Step states ---------- */
+[data-step], [data-from] { transition: opacity .6s ease, transform .6s ease; }
+svg.diagram * { transition: fill .6s ease, stroke .6s ease, stroke-width .6s ease, opacity .6s ease; }
+[data-step].is-dim { opacity: .25; }
+[data-from].is-future, [data-step].is-future { opacity: .08; }
+/* Opt-in for overlays: an element that must not show through what lies under it before its step. */
+.until.is-future { opacity: 0; }
+.no-anim, .no-anim * { transition: none !important; }
+
+/* ---------- Diagram vocabulary (use these in slide SVG) ---------- */
+svg.diagram { font-family: var(--font-sans); font-size: 20px; fill: var(--ink); color: var(--ink); }
+svg.diagram text { fill: var(--ink); }
+svg .node { fill: var(--surface-2); stroke: var(--ink-3); stroke-width: 2.5; }
+svg .node.c1 { fill: var(--c1); } svg .node.c2 { fill: var(--c2); } svg .node.c3 { fill: var(--c3); }
+svg .node.c4 { fill: var(--c4); } svg .node.c5 { fill: var(--c5); }
+svg .node.plain { fill: var(--surface); }
+svg .node.ok { stroke: var(--ok); } svg .node.warn { stroke: var(--warn); } svg .node.bad { stroke: var(--bad); }
+svg .node.dashed { stroke-dasharray: 9 7; fill: none; }
+svg .node.ring { fill: none; stroke: none; }
+svg .ring.is-active { stroke: var(--accent); stroke-width: 5; }
+svg .edge { fill: none; stroke: var(--ink-3); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+svg .edge.dashed { stroke-dasharray: 9 8; }
+svg .arrowhead { fill: context-stroke; stroke: none; }
+svg .lbl { font-size: 22px; font-weight: 600; fill: var(--ink); }
+svg .lbl-2 { font-size: 20px; font-weight: 400; fill: var(--ink-2); }
+svg .lbl-3 { font-size: 18px; font-weight: 400; fill: var(--ink-3); }
+svg .big { font-size: 44px; font-weight: 700; }
+svg .huge { font-size: 64px; font-weight: 700; }
+svg text.mono, svg .mono { font-family: var(--font-mono); }
+svg .mid { text-anchor: middle; } svg .end { text-anchor: end; }
+svg text.hl, svg .hl { fill: var(--accent); }
+svg text.ok { fill: var(--ok); } svg text.warn { fill: var(--warn); } svg text.bad { fill: var(--bad); }
+svg .fill-accent { fill: var(--accent); }
+svg text.on-accent { fill: var(--accent-ink); }
+svg .is-active .node, svg .node.is-active { stroke: var(--accent); stroke-width: 4.5; }
+svg .is-active .node:not(.c1):not(.c2):not(.c3):not(.c4):not(.c5):not(.dashed):not(.inv):not(.ring),
+svg .node.is-active:not(.c1):not(.c2):not(.c3):not(.c4):not(.c5):not(.dashed):not(.inv):not(.ring) { fill: var(--accent-soft); }
+svg .is-active .edge, svg .edge.is-active { stroke: var(--accent); stroke-width: 4.5; }
+svg .is-active .lbl-accent, svg .lbl-accent.is-active { fill: var(--accent); }
+
+/* ---------- Caption bar and controls ---------- */
+.capbar {
+  position: absolute; left: 72px; right: 72px; bottom: 40px; height: 84px;
+  display: flex; align-items: center; gap: 24px;
+}
+
+/* ---------- Footer: IIT, DU on every slide ---------- */
+.footer {
+  position: absolute; left: 72px; right: 72px; bottom: 0; height: 40px;
+  display: flex; align-items: center; border-top: 1px solid var(--line);
+  font-size: 15px; font-weight: 600; letter-spacing: .08em; color: var(--ink-3);
+}
+.cap { flex: 1; min-width: 0; font-size: 26px; line-height: 1.25; font-weight: 600; color: var(--ink); max-height: 84px; overflow: hidden; }
+.cap.long { font-size: 24px; }
+.ctl { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.steplabel { white-space: nowrap; font-size: 20px; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.btns { display: flex; gap: 8px; }
+.btns button {
+  appearance: none; width: 48px; height: 40px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--ink); display: grid; place-items: center; cursor: pointer; padding: 0;
+}
+.btns button svg { width: 22px; height: 22px; fill: currentColor; stroke: none; }
+.btns button:hover { border-color: var(--accent); }
+.btns button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btns button:disabled { opacity: .4; cursor: default; }
+.btns .playbtn { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+/* ---------- Capture mode (video frames): chrome hidden, caption bar shown ---------- */
+body.capture .topbar, body.capture .btns, body.capture .term-links, body.capture .cmdbox .copy { display: none; }
+body.capture .ctl { justify-content: center; }
+body.capture #notes, body.capture #dock { display: none; }
+
+/* ---------- Components: room check, reveal ---------- */
+.check { background: var(--surface-2); border: 3px solid var(--ink-3); border-radius: 16px; padding: 14px 22px; margin: 8px; }
+.check::before { content: 'ROOM CHECK'; display: block; font: 700 16px/1 var(--font-sans); letter-spacing: .12em; color: var(--ink-2); margin-bottom: 8px; }
+.check p { margin: 0 0 8px; font-size: 28px; font-weight: 700; }
+.check ol { list-style: none; margin: 0; padding: 0; display: flex; gap: 14px; counter-reset: opt; }
+.check li { flex: 1; counter-increment: opt; display: flex; align-items: center; gap: 12px; background: var(--surface); border: 2px solid var(--line); border-radius: 12px; padding: 10px 14px; font-size: 26px; font-family: var(--font-mono); }
+.check li::before { content: counter(opt, upper-alpha); flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); font: 700 24px/1 var(--font-sans); }
+.check.is-active { border-color: var(--accent); background: var(--accent-soft); }
+.reveal { margin: 8px; padding: 12px 22px; border-radius: 12px; background: var(--accent-soft); border: 2px solid var(--accent); font-size: 28px; font-weight: 700; color: var(--ink); }
+
+/* ---------- Components: live command block ---------- */
+.cmdbox { position: relative; display: flex; align-items: center; gap: 12px; background: #0f141b; color: #e8edf5; border-radius: 12px; padding: 14px 16px; margin: 8px; }
+.cmdbox pre.cmd { margin: 0; flex: 1; min-width: 0; font: 400 24px/1.4 var(--font-mono); white-space: pre-wrap; word-break: break-word; color: #e8edf5; }
+.cmdbox pre.cmd::before { content: '$ '; color: #8aa0b8; }
+.cmdbox .live-tag { flex: none; font: 700 16px/1 var(--font-sans); letter-spacing: .1em; padding: 6px 10px; border-radius: 6px; background: var(--bad); color: #fff; }
+:root[data-theme="dark"] .cmdbox .live-tag { color: #1a0605; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cmdbox .live-tag { color: #1a0605; } }
+.cmdbox .copy { flex: none; appearance: none; border: 1px solid #44566d; background: #1a222d; color: #e8edf5; font: 600 16px/1 var(--font-sans); padding: 9px 14px; border-radius: 8px; cursor: pointer; }
+.cmdbox .copy:focus-visible { outline: 2px solid #8db1ff; outline-offset: 2px; }
+
+/* ---------- Components: terminal ---------- */
+.term-wrap { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; min-height: 0; }
+.term { flex: 1; min-height: 0; width: 100%; height: var(--term-h, 100%); background: #272822; border-radius: 12px; overflow: hidden; }
+.term .ap-wrapper, .term .ap-player { max-height: 100%; }
+.term .ap-player .fg-245 { color: #b2b2b2; }
+.term-missing { height: 100%; display: grid; place-items: center; text-align: center; color: #c7d0dc; font-size: 24px; padding: 24px; }
+.term-links { flex: none; display: flex; gap: 20px; justify-content: flex-end; padding: 8px 4px 0; font-size: 18px; }
+.term-links a { color: var(--accent); font-weight: 600; }
+.term-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- Notes drawer (real pixels, outside the canvas) ---------- */
+#notes {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; max-height: 46vh; overflow: auto;
+  background: var(--surface); color: var(--ink); border-top: 3px solid var(--accent);
+  transform: translateY(105%); transition: transform .25s ease; visibility: hidden;
+  padding: 12px 24px 20px;
+}
+#notes.open { transform: none; visibility: visible; }
+#notes .nhead { display: flex; align-items: center; justify-content: space-between; font: 700 14px/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 8px; }
+#notes .nhead button { appearance: none; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 8px; padding: 6px 12px; font: 600 14px/1 var(--font-sans); cursor: pointer; }
+.nbody { max-width: 1100px; margin: 0 auto; font-family: var(--font-bn); font-size: 22px; line-height: 1.7; }
+.nbody p, .pres-notes p { margin: 0 0 10px; padding: 4px 12px; border-left: 4px solid transparent; border-radius: 6px; }
+.nbody p.is-current, .pres-notes p.is-current { border-left-color: var(--accent); background: var(--accent-soft); }
+.cue {
+  display: inline-block; font: 700 13px/1 var(--font-sans); letter-spacing: .06em; padding: 4px 8px; border-radius: 6px; margin: 0 6px 0 0;
+  vertical-align: middle; background: var(--surface-2); color: var(--ink); border: 1px solid var(--ink-3);
+}
+.cue-step { background: var(--accent-soft); border-color: var(--accent); }
+.cue-ask { background: var(--c3); border-color: var(--warn); }
+.cue-pause { background: var(--c4); border-color: var(--bad); }
+.cue-demo, .cue-live, .cue-click { background: var(--c2); border-color: var(--ok); }
+.cue-do { display: inline; font: 600 .72em/1.6 var(--font-sans); letter-spacing: 0; background: var(--c3); border-color: var(--warn); padding: 2px 8px; }
+.is-current > .cue-step { background: var(--accent); color: var(--accent-ink); }
+
+/* ---------- Presenter window ---------- */
+body.presenter { overflow: auto; }
+body.presenter #app { display: none; }
+#presenter { display: none; }
+body.presenter #presenter { display: grid; min-height: 100vh; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); grid-template-rows: auto 1fr; gap: 16px; padding: 16px; background: var(--bg); color: var(--ink); font-size: 18px; }
+.pres-head { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 20px 32px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px 20px; }
+.pres-clock { font: 700 56px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.pres-block { display: flex; flex-direction: column; gap: 2px; }
+.pres-label { font: 700 13px/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+.pres-val { font: 700 30px/1.1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.pres-status { font: 700 22px/1 var(--font-sans); padding: 8px 14px; border-radius: 999px; border: 2px solid var(--ok); color: var(--ink); background: var(--c2); }
+.pres-status.behind { border-color: var(--bad); background: var(--c4); }
+.pres-status.ahead { border-color: var(--accent); background: var(--accent-soft); }
+.pres-main, .pres-side { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 20px; min-width: 0; }
+.pres-main h1 { margin: 4px 0 6px; font-size: 32px; line-height: 1.2; }
+.pres-step { font-size: 22px; font-weight: 600; color: var(--ink-2); margin: 0 0 10px; }
+.pres-caption { font-size: 24px; font-weight: 600; margin: 0 0 14px; padding: 10px 14px; background: var(--surface-2); border-radius: 10px; }
+.pres-notes { font-family: var(--font-bn); font-size: 28px; line-height: 1.7; max-height: 56vh; overflow: auto; }
+.pres-side h2 { margin: 4px 0 6px; font-size: 24px; }
+.pres-side p { margin: 0 0 14px; font-size: 20px; color: var(--ink-2); }
+.pres-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.pres-btns button { appearance: none; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 10px; padding: 12px 18px; font: 600 18px/1 var(--font-sans); cursor: pointer; }
+.pres-btns button:hover { border-color: var(--accent); }
+.pres-btns button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pres-btns .primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.pres-hint { color: var(--ink-3); font-size: 16px; margin-top: 12px; }
+@media (max-width: 800px) { body.presenter #presenter { grid-template-columns: 1fr; } .pres-clock { font-size: 40px; } }
+
+/* ---------- Phone: canvas on top, caption and controls below in real pixels ---------- */
+#dock { display: none; }
+@media (max-width: 760px) {
+  body { overflow: auto; }
+  body:not(.presenter):not(.capture) #app { position: static; min-height: 100vh; flex-direction: column; justify-content: flex-start; align-items: stretch; }
+  body:not(.presenter):not(.capture) #fit { margin: 0 auto; height: calc(636px * var(--s, 1)); }
+  body:not(.presenter):not(.capture) .footer { bottom: 84px; }
+  body:not(.presenter):not(.capture) #dock { display: block; padding: 12px 16px 24px; background: var(--bg); color: var(--ink); }
+  #dock .capbar { position: static; height: auto; padding: 12px 0 0; flex-direction: column; align-items: stretch; gap: 12px; border-top: 2px solid var(--line); }
+  #dock .cap { font-size: 20px; max-height: none; }
+  #dock .cap.long { font-size: 18px; }
+  #dock .ctl { flex-direction: row; justify-content: space-between; align-items: center; }
+  #dock .btns button { width: 56px; height: 44px; }
+  #dock .steplabel { font-size: 18px; }
+  #dock .dock-extra { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  #dock .dock-extra .tbtn { appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); font: 600 16px/1 var(--font-sans); padding: 10px 14px; border-radius: 999px; cursor: pointer; }
+  #dock .dock-extra .counter { margin-left: auto; font-size: 16px; color: var(--ink-2); }
+  .topbar .counter, .topbar .tbtn, .topbar [data-theme-toggle] { display: none; }
+  .nbody { font-size: 20px; }
+  #notes { max-height: 60vh; }
+}
+
+/* ---------- Reduced motion: same steps, no motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  [data-step], [data-from], svg.diagram *, #notes { transition: none !important; }
+}
+
+/* ---------- Extra diagram vocabulary ---------- */
+svg .lg { font-size: 28px; }
+svg .skel { fill: var(--ink-3); opacity: .45; stroke: none; }
+svg .inv, svg .node.inv { fill: var(--ink); stroke: none; }
+svg text.inv-text { fill: var(--bg); }
+svg .chip-line { fill: none; stroke: var(--ink-3); stroke-width: 2; }
+
+/* ---------- Title slide ---------- */
+.slide.title-slide { flex-direction: row; align-items: stretch; gap: 40px; }
+.title-slide .title-text { flex: 1 1 54%; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 0; padding: 8px 0; }
+.title-slide .eyebrow span { display: block; }
+.title-slide .eyebrow { margin: 0 0 22px; font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.title-slide .day { margin: 0 0 6px; display: inline-flex; align-self: flex-start; padding: 6px 14px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-size: 20px; font-weight: 700; letter-spacing: .04em; }
+.title-slide .course span { display: block; white-space: nowrap; }
+.title-slide .course { margin: 12px 0 0; font-size: 36px; line-height: 1.1; font-weight: 700; letter-spacing: -0.015em; color: var(--navy); }
+.title-slide .rule { width: 88px; height: 6px; border-radius: 3px; background: var(--accent); margin: 26px 0 22px; }
+.title-slide .session-label { margin: 0 0 6px; font-size: 20px; font-weight: 600; color: var(--ink-3); letter-spacing: .04em; text-transform: uppercase; }
+.title-slide h2 { margin: 0; font-size: 32px; line-height: 1.2; font-weight: 600; color: var(--ink); }
+.title-slide .speaker { margin-top: 40px; display: flex; align-items: center; gap: 16px; padding-top: 22px; border-top: 2px solid var(--line); }
+.title-slide .avatar { flex: none; width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-size: 22px; font-weight: 700; }
+.title-slide .speaker-name { margin: 0; font-size: 26px; font-weight: 700; color: var(--ink); }
+.title-slide .speaker-role { margin: 2px 0 0; font-size: 20px; color: var(--ink-2); }
+.title-slide .title-art { flex: 1 1 46%; min-width: 0; display: flex; align-items: center; justify-content: center; border-left: 1px solid var(--line); padding-left: 32px; }
+.title-slide .title-art svg { display: block; width: 100%; height: 100%; }
+.title-art .ln { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.title-art .ln.soft { stroke: var(--ink-3); stroke-width: 2; }
+.title-art .ln.dash { stroke: var(--ink-3); stroke-width: 2; stroke-dasharray: 2 8; }
+.title-art text { fill: var(--ink-3); font-family: var(--font-sans); font-size: 18px; font-weight: 600; }
+.title-art text.chip-text { fill: var(--accent); font-size: 22px; font-weight: 700; letter-spacing: .04em; }

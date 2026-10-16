@@ -1,0 +1,221 @@
+<section class="slide" id="toolcall-1" data-topic="Tool call" data-minutes="2.5" data-steps="5">
+  <h2>The model asks. Our code acts.</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 520" class="diagram" role="img" aria-label="A sequence of four messages between the model, our code and the notes folder. The model sends an order slip to our code. Our code runs list_dir on the folder. The folder returns four file names. Our code sends the result back to the model.">
+      <rect class="node c1" x="30" y="8" width="280" height="72" rx="16"/>
+      <text class="lbl lg mid" x="170" y="41">Model</text>
+      <text class="lbl-3 mid" x="170" y="66">Writes the order slip</text>
+      <rect class="node c3" x="460" y="8" width="280" height="72" rx="16"/>
+      <text class="lbl lg mid" x="600" y="41">Our code</text>
+      <text class="lbl-3 mid" x="600" y="66">Runs the tool</text>
+      <rect class="node c4" x="890" y="8" width="280" height="72" rx="16"/>
+      <text class="lbl lg mid" x="1030" y="41">Folder ./notes</text>
+      <text class="lbl-3 mid" x="1030" y="66">Holds the notes</text>
+      <path class="edge dashed" d="M170 84 V452"/>
+      <path class="edge dashed" d="M600 84 V452"/>
+      <path class="edge dashed" d="M1030 84 V452"/>
+      <g data-step="1">
+        <rect class="node plain" x="225" y="110" width="320" height="54" rx="10"/>
+        <text class="lbl mid" x="385" y="132">Order slip</text>
+        <text class="lbl-2 mono mid" x="385" y="154">list_dir ./notes</text>
+        <path class="edge" d="M176 176 H594" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="2">
+        <rect class="node plain" x="655" y="200" width="320" height="54" rx="10"/>
+        <text class="lbl mid" x="815" y="222">Run the tool</text>
+        <text class="lbl-2 mono mid" x="815" y="244">list_dir(&quot;./notes&quot;)</text>
+        <path class="edge" d="M606 266 H1024" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="3">
+        <rect class="node plain" x="655" y="290" width="320" height="54" rx="10"/>
+        <text class="lbl mid" x="815" y="312">Result</text>
+        <text class="lbl-2 mid" x="815" y="334">4 file names, 49 chars</text>
+        <path class="edge" d="M1024 356 H606" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="4">
+        <rect class="node plain" x="225" y="380" width="320" height="54" rx="10"/>
+        <text class="lbl mid" x="385" y="402">Result goes back</text>
+        <text class="lbl-2 mid" x="385" y="424">Same 4 file names</text>
+        <path class="edge" d="M594 446 H176" marker-end="url(#arrow)"/>
+      </g>
+      <g class="until" data-step="5" data-from="5">
+        <rect class="node c5" x="290" y="466" width="620" height="48" rx="14"/>
+        <text class="lbl lg mid" x="600" y="499">The model only asks. Our code acts.</text>
+      </g>
+    </svg>
+  </div>
+  <ol class="captions">
+    <li>The model writes an order slip. It names the tool and the folder.</li>
+    <li>Our code reads the slip and runs list_dir. The model runs nothing.</li>
+    <li>The folder returns 4 file names. They have 49 characters.</li>
+    <li>Our code sends the result back to the model.</li>
+    <li>The model only asks. Our code decides and acts.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] এবার একটা জরুরি কথা বলি। model নিজের হাতে কিছু চালাতে পারে না, সে শুধু লিখতে পারে। ভাবো তুমি হোটেলে বসে একটা order slip লিখলে, এক প্লেট ভাত আর এক বাটি ডাল। slip লেখা পর্যন্তই তোমার কাজ, রান্না তুমি করো না। model-ও ঠিক তাই করে। সে একটা slip লেখে, যেখানে আছে কোন tool আর কোন folder। এখানে tool হলো list_dir, folder হলো ./notes। [STEP 2] এই slip যায় আমাদের code-এর কাছে। আমাদের code হলো রান্নাঘর। সে slip পড়ে আর list_dir চালায়। খেয়াল করো, model কিছুই চালায়নি, শুধু চেয়েছে। [STEP 3] folder থেকে চারটা file-এর নাম ফেরত আসে, মোট 49 character। এটা শুধু নামের তালিকা, file-এর ভেতরের লেখা নয়। [STEP 4] আমাদের code এই ফল আবার model-কে পাঠায়। এখন model জানে folder-এ কী কী আছে, আর পরের slip লিখতে পারে। [STEP 5] তাহলে পুরো কথাটা এই: model শুধু চায়, আমাদের code করে। [ASK] ধরো model একটা file delete করতে চাইল। সেটা কে আটকাতে পারে, model না আমাদের code? [PAUSE 5s] ঠিক, আমাদের code। কারণ করার হাতটা আমাদের, তাই নিয়ন্ত্রণও আমাদের। তাই কোন tool চলবে আর কোনটা চলবে না, সেই তালিকা আমরাই ঠিক করি।</aside>
+</section>
+
+<section class="slide" id="toolcall-2" data-topic="Tool call" data-minutes="2" data-steps="5">
+  <h2>A tool call is a request in JSON</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 520" class="diagram" role="img" aria-label="Two columns. Left: our loop. The model replies with JSON that has action and args, and our code adds the result to the transcript as text. Right: the native API. The model returns a tool_use block with a name and an input, and we answer with a tool_result block.">
+      <rect class="node c1" x="0" y="6" width="590" height="46" rx="12"/>
+      <text class="lbl lg" x="20" y="38">Our loop.mjs</text>
+      <rect class="node c5" x="610" y="6" width="590" height="46" rx="12"/>
+      <text class="lbl lg" x="630" y="38">Native API (shape only)</text>
+      <g data-step="1">
+        <rect class="node plain" x="0" y="62" width="590" height="184" rx="14"/>
+        <text class="lbl-3" x="22" y="90">Model asks</text>
+        <text class="mono lbl-2" x="22" y="120">{</text>
+        <text class="mono lbl-2" x="44" y="144">&quot;thought&quot;: &quot;I need to list the files…&quot;,</text>
+        <text class="mono lbl-2 hl" x="44" y="168">&quot;action&quot;: &quot;list_dir&quot;,</text>
+        <text class="mono lbl-2 hl" x="44" y="192">&quot;args&quot;: {&quot;path&quot;: &quot;./notes&quot;}</text>
+        <text class="mono lbl-2" x="22" y="216">}</text>
+      </g>
+      <g data-step="2">
+        <rect class="node plain" x="0" y="258" width="590" height="184" rx="14"/>
+        <text class="lbl-3" x="22" y="286">Our code answers: text in the transcript</text>
+        <text class="mono lbl-2" x="22" y="316">Action: list_dir {&quot;path&quot;:&quot;./notes&quot;}</text>
+        <text class="mono lbl-2" x="22" y="340">Result:</text>
+        <text class="mono lbl-2" x="22" y="364">budget.md</text>
+        <text class="mono lbl-2" x="22" y="388">gradient-descent.md</text>
+        <text class="mono lbl-2" x="22" y="412">…</text>
+      </g>
+      <g data-step="3">
+        <rect class="node plain" x="610" y="62" width="590" height="184" rx="14"/>
+        <text class="lbl-3" x="632" y="90">Model asks: a tool_use block</text>
+        <text class="mono lbl-2" x="632" y="120">{</text>
+        <text class="mono lbl-2" x="654" y="144">&quot;type&quot;: &quot;tool_use&quot;,</text>
+        <text class="mono lbl-2" x="654" y="168">&quot;id&quot;: &quot;toolu_…&quot;,</text>
+        <text class="mono lbl-2 hl" x="654" y="192">&quot;name&quot;: &quot;list_dir&quot;,</text>
+        <text class="mono lbl-2 hl" x="654" y="216">&quot;input&quot;: {&quot;path&quot;: &quot;./notes&quot;}</text>
+        <text class="mono lbl-2" x="632" y="240">}</text>
+      </g>
+      <g data-step="4">
+        <rect class="node plain" x="610" y="258" width="590" height="184" rx="14"/>
+        <text class="lbl-3" x="632" y="286">We answer: a tool_result block</text>
+        <text class="mono lbl-2" x="632" y="316">{</text>
+        <text class="mono lbl-2" x="654" y="340">&quot;type&quot;: &quot;tool_result&quot;,</text>
+        <text class="mono lbl-2" x="654" y="364">&quot;tool_use_id&quot;: &quot;toolu_…&quot;,</text>
+        <text class="mono lbl-2" x="654" y="388">&quot;content&quot;: &quot;budget.md\n…&quot;</text>
+        <text class="mono lbl-2" x="632" y="412">}</text>
+      </g>
+      <g class="until" data-step="5" data-from="5">
+        <rect class="node c3" x="0" y="456" width="1200" height="62" rx="14"/>
+        <text class="lbl mid" x="600" y="482">action = name. args = input. Result = tool_result.</text>
+        <text class="lbl-2 mid" x="600" y="506">loop.mjs uses --json-schema to imitate tool_use.</text>
+      </g>
+    </svg>
+  </div>
+  <ol class="captions">
+    <li>Our loop asks the model for JSON with action and args.</li>
+    <li>Our code adds the tool result to the transcript as text.</li>
+    <li>The native API returns a tool_use block. It has a name and an input.</li>
+    <li>We answer with a tool_result block. It uses the same id.</li>
+    <li>The idea is the same. loop.mjs uses --json-schema to imitate tool_use.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] আমাদের loop.mjs-এ model একটা JSON ফেরত দেয়। এতে দুটো জিনিস জরুরি: action আর args। action বলে কোন tool, args বলে সেই tool-এর input, যেমন path। এটা আমাদের নিজেদের বানানো format। thought নামে একটা বাড়তি field-ও আছে, সেটা আমরা শুধু দেখার জন্য রাখি। [STEP 2] আমাদের code tool চালায়, তারপর ফল একটা সাধারণ text হিসেবে transcript-এর শেষে জুড়ে দেয়। আগে Action লাইন, তারপর Result লাইন। [STEP 3] এবার আসল API-র দিকে তাকাও। সেখানে model একটা tool_use block পাঠায়। name হলো আমাদের action, input হলো আমাদের args। সাথে একটা id থাকে। [STEP 4] আমরা ফল পাঠাই tool_result block-এ, ওই একই id দিয়ে, যাতে model বুঝতে পারে এটা কোন অনুরোধের উত্তর। [STEP 5] দুটোর idea এক। আজ আমরা native API চালাচ্ছি না, কারণ তাতে API key লাগে। তাই loop.mjs-এ --json-schema দিয়ে model-কে বলেছি, এই আকারেই JSON দাও। এটা tool_use-এর নকল।</aside>
+</section>
+
+<section class="slide" id="toolcall-3" data-topic="Tool call" data-minutes="2.5" data-steps="4">
+  <h2>Our code runs the command, not the model</h2>
+  <style>
+    #toolcall-3 .ask { width: 80%; margin: auto; display: flex; flex-direction: column; gap: 22px; }
+    #toolcall-3 .slip { background: var(--surface-2); border: 3px solid var(--line); border-radius: 16px; padding: 18px 28px; }
+    #toolcall-3 .slip h3 { margin: 0 0 8px; font: 700 20px/1.2 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+    #toolcall-3 .slip pre { margin: 0; font: 600 34px/1.3 var(--font-mono); color: var(--ink); white-space: pre-wrap; }
+    #toolcall-3 .check { width: 100%; margin: 0; padding: 24px 34px; }
+    #toolcall-3 .check::before { font-size: 20px; }
+    #toolcall-3 .check p { font-size: 44px; margin-bottom: 18px; }
+    #toolcall-3 .check li { font-size: 38px; padding: 16px 22px; }
+  </style>
+  <div class="stage" style="display:block">
+    <div class="scene" data-steps="1" style="position:absolute;inset:0;padding:12px 16px;display:flex;flex-direction:column;gap:8px;min-width:0;min-height:0">
+      <div class="ask">
+        <div class="slip" data-step="1"><h3>The model wrote this slip</h3><pre>{"action":"list_dir","args":{"path":"./notes"}}</pre></div>
+        <div class="check" data-step="1"><p>Who runs list_dir?</p><ol><li>The model</li><li>Our code</li></ol></div>
+      </div>
+    </div>
+    <div class="scene" data-steps="2 3 4" style="position:absolute;inset:0;padding:12px 16px;display:flex;flex-direction:column;gap:8px;min-width:0;min-height:0;visibility:hidden">
+      <div style="flex:1;min-height:0;min-width:0;display:flex;flex-direction:column"><div class="term" data-cast="L1" data-play-step="2" data-rows="19"></div></div>
+      <div style="display:flex;gap:10px"><div class="reveal" data-from="3" style="flex:1;margin:0">Answer B: our code runs it.</div><div class="reveal" data-from="4" style="flex:1;margin:0">2 model calls. 1 tool run.</div></div>
+    </div>
+  </div>
+  <ol class="captions">
+    <li>Vote: who runs the command, the model or our code?</li>
+    <li>Play L1. The command is node loop.mjs --once.</li>
+    <li>Answer B. Our code ran list_dir. The model only wrote the request.</li>
+    <li>The model made 2 calls. Our code ran 1 tool in 9.9 seconds.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] [ASK] এবার তোমাদের একটা প্রশ্ন। model যখন বলে list_dir, তখন command-টা কে চালায়? A, model। নাকি B, আমাদের code? অনুমান করলেও চলবে, ভুল হলে সমস্যা নেই। হাত তোলো। A কে কে? [PAUSE 5s] আর B কে কে? [PAUSE 5s] [STEP 2] [DEMO L1] [DO: L1 cast এই step-এ নিজে চলবে] ঠিক আছে, এবার দেখি। এটা আমার আগে থেকে রেকর্ড করা আসল run। node loop.mjs --once মানে, একবার tool চালিয়েই থামবে। প্রথমে context লাইন, transcript এখনো 62 character। তারপর plan লাইন, model বলছে list_dir, path ./notes। তখন model 1583 token পড়েছে। তারপর act লাইন, list_dir চলেছে, 49 character ফেরত এসেছে। আর check লাইন বলছে, কাজ শেষ হয়নি, ফল model-এর কাছে ফেরত যাবে। [STEP 3] উত্তর হলো B। command চালিয়েছে আমাদের code। model শুধু request লিখেছে। আর এই কারণেই নিয়ন্ত্রণ আমাদের হাতে থাকে। যারা A বলেছিলে, চিন্তা নেই, এটা প্রথমে সবারই গুলিয়ে যায়। [STEP 4] দ্বিতীয়বার model আবার ভেবেছে। এবার সে চেয়েছে read_file, ./notes/trip.md। এবার তার input 1630 token, একটু বেশি, কারণ আগের ফল জমা হয়েছে। মোট model দুবার চলেছে, tool একবার, সময় লেগেছে প্রায় 10 সেকেন্ড।</aside>
+  <script>
+    Deck.onStep('toolcall-3', function (step, el) {
+      el.querySelectorAll('.scene').forEach(function (s) {
+        s.style.visibility = s.dataset.steps.split(' ').indexOf(String(step)) >= 0 ? 'visible' : 'hidden';
+      });
+    });
+  </script>
+</section>
+
+<section class="slide anim-only" id="anim-L1" data-cmd="L1" data-steps="6">
+  <h2>Our code runs the tool that the model asks for</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 520" class="diagram" role="img" aria-label="Command node loop.mjs --once, then five messages between the model, our code and the notes folder.">
+      <rect class="node inv" x="0" y="4" width="1200" height="42" rx="12"/>
+      <text class="lbl mono inv-text" x="22" y="33">$ node loop.mjs --once</text>
+      <rect class="node c1" x="30" y="52" width="280" height="56" rx="16"/>
+      <text class="lbl lg mid" x="170" y="78">Model</text>
+      <text class="lbl-3 mid" x="170" y="97">Writes the order slip</text>
+      <rect class="node c3" x="460" y="52" width="280" height="56" rx="16"/>
+      <text class="lbl lg mid" x="600" y="78">Our code</text>
+      <text class="lbl-3 mid" x="600" y="97">Runs the tool</text>
+      <rect class="node c4" x="890" y="52" width="280" height="56" rx="16"/>
+      <text class="lbl lg mid" x="1030" y="78">Folder ./notes</text>
+      <text class="lbl-3 mid" x="1030" y="97">Holds the notes</text>
+      <path class="edge dashed" d="M170 112 V520"/>
+      <path class="edge dashed" d="M600 112 V520"/>
+      <path class="edge dashed" d="M1030 112 V520"/>
+      <g data-step="2">
+        <rect class="node plain" x="225" y="116" width="320" height="54" rx="10"/>
+        <text class="lbl mid" x="385" y="138">Task</text>
+        <text class="lbl-2 mid" x="385" y="160">1583 input tokens</text>
+        <path class="edge" d="M594 182 H176" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="3">
+        <rect class="node plain" x="225" y="186" width="320" height="54" rx="10"/>
+        <text class="lbl mid" x="385" y="208">Order slip</text>
+        <text class="lbl-2 mono mid" x="385" y="230">list_dir ./notes</text>
+        <path class="edge" d="M176 252 H594" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="4">
+        <rect class="node plain" x="655" y="256" width="320" height="54" rx="10"/>
+        <text class="lbl mid" x="815" y="278">Run the tool</text>
+        <text class="lbl-2 mono mid" x="815" y="300">list_dir(&quot;./notes&quot;)</text>
+        <path class="edge" d="M606 322 H1024" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="4">
+        <rect class="node plain" x="655" y="326" width="320" height="54" rx="10"/>
+        <text class="lbl mid" x="815" y="348">Result</text>
+        <text class="lbl-2 mid" x="815" y="370">4 file names, 49 chars</text>
+        <path class="edge" d="M1024 392 H606" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="5">
+        <rect class="node plain" x="225" y="396" width="320" height="54" rx="10"/>
+        <text class="lbl mid" x="385" y="418">Result goes back</text>
+        <text class="lbl-2 mid" x="385" y="440">1630 input tokens</text>
+        <path class="edge" d="M594 462 H176" marker-end="url(#arrow)"/>
+      </g>
+      <g class="until" data-step="6" data-from="6">
+        <rect class="node c5" x="190" y="472" width="820" height="44" rx="14"/>
+        <text class="lbl lg mid" x="600" y="503">2 model calls. 1 tool run. 9.9 seconds.</text>
+      </g>
+    </svg>
+  </div>
+  <ol class="captions">
+    <li>Run node loop.mjs --once.</li>
+    <li>Our code sends the task to the model. The model reads 1583 input tokens.</li>
+    <li>The model replies with an order slip: list_dir for ./notes.</li>
+    <li>Our code runs list_dir. The folder returns 49 characters.</li>
+    <li>Our code sends the result back. The model then asks for read_file on trip.md.</li>
+    <li>Result: 2 model calls, 1 tool run, 9.9 seconds.</li>
+  </ol>
+</section>

@@ -1,0 +1,107 @@
+/* Design tokens shared by the deck, the worksheet and the video page. */
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #eef4fc;
+  --ink: #0b1f3a;
+  --ink-2: #2c4366;
+  --ink-3: #4d6487;
+  --line: #c8d7ec;
+  --accent: #0b4ea2;
+  --accent-ink: #ffffff;
+  --accent-soft: #dce9fa;
+  --navy: #082a5c;
+  --ok: #17692f;
+  --warn: #9a4a05;
+  --bad: #b3261e;
+  --c1: #e2edfc;
+  --c2: #e0f3e8;
+  --c3: #fcf0d0;
+  --c4: #f9e4ee;
+  --c5: #ebe6fb;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  --font-bn: 'Hind Siliguri', 'Kohinoor Bangla', 'Noto Sans Bengali', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #061429;
+    --surface: #0b1e3b;
+    --surface-2: #12294d;
+    --ink: #eef3fb;
+    --ink-2: #c4d1e6;
+    --ink-3: #94a6c4;
+    --line: #2b4672;
+    --accent: #7fb0ff;
+    --accent-ink: #061429;
+    --accent-soft: #173a72;
+    --navy: #cfe0ff;
+    --ok: #5fd68a;
+    --warn: #f2b45a;
+    --bad: #ff8d85;
+    --c1: #1d3f78;
+    --c2: #1a4a36;
+    --c3: #4d3b0f;
+    --c4: #5a2442;
+    --c5: #3b3373;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #061429;
+  --surface: #0b1e3b;
+  --surface-2: #12294d;
+  --ink: #eef3fb;
+  --ink-2: #c4d1e6;
+  --ink-3: #94a6c4;
+  --line: #2b4672;
+  --accent: #7fb0ff;
+  --accent-ink: #061429;
+  --accent-soft: #173a72;
+  --navy: #cfe0ff;
+  --ok: #5fd68a;
+  --warn: #f2b45a;
+  --bad: #ff8d85;
+  --c1: #1d3f78;
+  --c2: #1a4a36;
+  --c3: #4d3b0f;
+  --c4: #5a2442;
+  --c5: #3b3373;
+}
+
+html { background: var(--bg); }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+/* Three-state theme toggle: light, dark, system. */
+.theme-toggle {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  padding: 2px;
+  gap: 2px;
+}
+.theme-toggle button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ink-2);
+  width: 32px;
+  height: 28px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+}
+.theme-toggle button svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.theme-toggle button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.theme-toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

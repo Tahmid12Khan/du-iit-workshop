@@ -1,0 +1,1 @@
+{"type":"object","properties":{"event":{"type":"string"},"date":{"type":"string","description":"ISO 8601 date, YYYY-MM-DD"},"venue":{"type":"string"},"fee":{"type":"number","description":"regular fee in BDT"}},"required":["event","date","venue","fee"],"additionalProperties":false}

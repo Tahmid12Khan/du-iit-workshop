@@ -1,0 +1,361 @@
+<style>
+.slide [data-only] { transition: opacity .6s ease, visibility 0s linear .6s; }
+.slide [data-only]:not(.on) { opacity: 0; visibility: hidden; pointer-events: none; }
+.slide [data-only].on { transition: opacity .6s ease, visibility 0s; }
+.slide .layer { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; gap: 10px; padding: 10px; background: var(--surface); }
+.slide .layer .term-wrap { height: auto; flex: 1; min-height: 0; }
+.slide .layer .cmdbox { margin: 0; flex: none; }
+.slide .layer .fb { margin: 0; flex: none; font: 600 20px/1.2 var(--font-sans); color: var(--ink-2); }
+.slide .layer .cmdbox pre.cmd { font-size: 20px; }
+.slide .snap.is-future { transform: translateX(60px); }
+.slide .check[data-only] { position: absolute; left: 12px; right: 12px; top: 10px; margin: 0; z-index: 2; }
+.slide .check.five li { font-size: 22px; gap: 8px; padding: 8px 10px; }
+.slide .check.five li::before { width: 34px; height: 34px; font-size: 20px; }
+.slide .reveal.low { position: absolute; left: 12px; right: 12px; bottom: 10px; margin: 0; z-index: 2; font-size: 26px; }
+svg .node.c6 { fill: var(--accent-soft); }
+svg .chiplbl { font-size: 20px; font-weight: 600; }
+svg .cmdtxt { font-size: 19px; }
+svg .edge.okc { stroke: var(--ok); stroke-width: 7; }
+svg text.fence { fill: var(--bad); }
+@media (prefers-reduced-motion: reduce) { .slide [data-only], .slide .snap { transition: none !important; } }
+</style>
+<script>window.W1Only = window.W1Only || function (id) { Deck.onStep(id, function (step, el) { el.querySelectorAll('[data-only]').forEach(function (n) { n.classList.toggle('on', n.getAttribute('data-only').split(' ').indexOf(String(step)) >= 0); }); }); };</script>
+<section class="slide" id="structured-1" data-topic="Structured output" data-minutes="1.5" data-steps="4">
+  <h2>Software needs fields, not prose</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A letter of prose on the left and a form with four typed boxes on the right: event, date, venue and fee. The model fills the boxes from the letter.">
+      <g data-step="1 3">
+        <rect class="node plain" x="20" y="10" width="520" height="480" rx="20"/>
+        <text class="lbl-3" x="44" y="46">PROSE</text>
+        <text class="lbl-2" x="76" y="96">Hi all! The CSE Club annual hackathon</text>
+        <text class="lbl-2" x="76" y="140">"CodeSprint 2026" starts this Sat,</text>
+        <text class="lbl-2" x="76" y="184">24th Oct 2026 at 9 AM.</text>
+        <text class="lbl-2" x="76" y="228">Venue: Arts Building Auditorium,</text>
+        <text class="lbl-2" x="76" y="272">University of Dhaka (not the lab!).</text>
+        <text class="lbl-2" x="76" y="316">Registration: fee Tk 500 per team</text>
+        <text class="lbl-2" x="76" y="360">(students 300). Pay by bKash and</text>
+        <text class="lbl-2" x="76" y="404">get Tk 50 off. Seats are limited!!</text>
+      </g>
+      <g class="until" data-from="3">
+        <rect class="node c1" x="44" y="120" width="20" height="26" rx="6"/>
+        <rect class="node c2" x="44" y="164" width="20" height="26" rx="6"/>
+        <rect class="node c3" x="44" y="208" width="20" height="26" rx="6"/>
+        <rect class="node c3" x="44" y="252" width="20" height="26" rx="6"/>
+        <rect class="node c4" x="44" y="296" width="20" height="26" rx="6"/>
+      </g>
+      <path class="edge" d="M544 250 H614" marker-end="url(#arrow)" data-step="3"/>
+      <g data-step="2 3 4">
+        <rect class="node" x="620" y="10" width="570" height="480" rx="20"/>
+        <text class="lbl-3" x="644" y="46">FIELDS</text>
+        <rect class="node c1" x="640" y="76" width="140" height="80" rx="12"/>
+        <text class="lbl" x="656" y="112">event</text>
+        <text class="lbl-3 mono" x="656" y="140">string</text>
+        <rect class="node plain dashed" x="796" y="76" width="376" height="80" rx="12"/>
+        <rect class="node c2" x="640" y="176" width="140" height="80" rx="12"/>
+        <text class="lbl" x="656" y="212">date</text>
+        <text class="lbl-3 mono" x="656" y="240">string</text>
+        <rect class="node plain dashed" x="796" y="176" width="376" height="80" rx="12"/>
+        <rect class="node c3" x="640" y="276" width="140" height="80" rx="12"/>
+        <text class="lbl" x="656" y="312">venue</text>
+        <text class="lbl-3 mono" x="656" y="340">string</text>
+        <rect class="node plain dashed" x="796" y="276" width="376" height="80" rx="12"/>
+        <rect class="node c4" x="640" y="376" width="140" height="80" rx="12"/>
+        <text class="lbl" x="656" y="412">fee</text>
+        <text class="lbl-3 mono" x="656" y="440">number</text>
+        <rect class="node plain dashed" x="796" y="376" width="376" height="80" rx="12"/>
+      </g>
+      <g class="until" data-from="3">
+        <text class="mono lbl-2" x="812" y="124">CodeSprint 2026</text>
+        <text class="mono lbl-2" x="812" y="224">2026-10-24</text>
+        <text class="mono lbl-2" x="812" y="324">Arts Building Auditorium, ...</text>
+        <text class="mono lbl-2" x="812" y="424">500</text>
+      </g>
+      <rect class="node ring" x="630" y="368" width="552" height="96" rx="14" data-step="4"/>
+    </svg>
+
+  </div>
+  <ol class="captions">
+    <li>A person reads prose with ease.</li>
+    <li>Software needs fields. Each field has a name and a type.</li>
+    <li>The model reads the prose and fills the fields.</li>
+    <li>Each field keeps its type. The fee is a number.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] একটা নোটিশ লিখলে মানুষ সেটা সহজে পড়ে বোঝে। এটা prose। এই hackathon-এর নোটিশটা দেখো: নাম, তারিখ, জায়গা, fee, সব এক prose-এ। আমাদের চোখে এটা পরিষ্কার। [STEP 2] কিন্তু software এই prose বোঝে না। সে চায় একটা application form-এর মতো ঘর: নামের ঘর, তারিখের ঘর, fee-র ঘর। প্রতিটা ঘরের একটা নাম আর একটা type আছে। event string, date string, venue string, fee number। [STEP 3] আমরা model-কে বলি, prose পড়ে ঘরগুলো ভরে দাও। রঙিন দাগগুলো দেখো: কোন লাইন থেকে কোন ঘর ভরল। [STEP 4] fee-র ঘরটা দেখো। type হলো number। এই একটা type আমাদের code-কে বাঁচায়। fee-র সঙ্গে 100 যোগ করা যাবে, কারণ সেটা সংখ্যা। [ASK] আর text হলে কী হতো? "Tk 500" যোগ 100? [PAUSE 3s]</aside>
+</section>
+
+<section class="slide" id="structured-2" data-topic="Structured output" data-minutes="1.5" data-steps="5">
+  <h2>Without a schema, JSON.parse can fail</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A prompt asks for JSON with no schema. The model replies with text: the JSON sits inside a code fence, has extra text in the date and a nested fee object. JSON.parse fails with a SyntaxError.">
+      <g data-step="1">
+        <rect class="node" x="10" y="58" width="280" height="170" rx="20"/>
+        <text class="lbl-3" x="28" y="90">PROMPT</text>
+        <text class="lbl-2 mono" x="28" y="124">Extract event, date,</text>
+        <text class="lbl-2 mono" x="28" y="152">venue and fee as JSON</text>
+        <text class="lbl-2 mono" x="28" y="180">from: &lt;notice&gt;</text>
+        <text class="lbl-3" x="28" y="214">No schema</text>
+      </g>
+      <g data-step="1">
+        <path class="edge" d="M294 143 H330" marker-end="url(#arrow)"/>
+        <rect class="node inv" x="336" y="103" width="140" height="80" rx="18"/>
+        <text class="lbl lg mid inv-text" x="406" y="153">Model</text>
+        <path class="edge" d="M482 143 H524" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="3 5" data-from="3">
+        <rect class="node plain" x="530" y="8" width="660" height="364" rx="20"/>
+        <text class="mono lbl fence" x="554" y="58" xml:space="preserve">```json</text>
+        <text class="mono lbl lbl-2" x="554" y="99" xml:space="preserve">{</text>
+        <text class="mono lbl lbl-2" x="554" y="140" xml:space="preserve">  "event": "CodeSprint 2026",</text>
+        <text class="mono lbl lbl-2" x="554" y="181" xml:space="preserve">  "date": "2026-10-24 (Saturday, 9:00 AM)",</text>
+        <text class="mono lbl lbl-2" x="554" y="222" xml:space="preserve">  "venue": "Arts Building Auditorium, ...",</text>
+        <text class="mono lbl lbl-2" x="554" y="263" xml:space="preserve">  "fee": { "currency": "BDT", ... }</text>
+        <text class="mono lbl lbl-2" x="554" y="304" xml:space="preserve">}</text>
+        <text class="mono lbl fence" x="554" y="345" xml:space="preserve">```</text>
+      </g>
+      <rect class="node ring" x="540" y="34" width="640" height="34" rx="8" data-step="3"/>
+      <rect class="node ring" x="540" y="311" width="640" height="34" rx="8" data-step="3"/>
+      <rect class="node ring" x="540" y="157" width="640" height="34" rx="8" data-step="5"/>
+      <rect class="node ring" x="540" y="239" width="640" height="34" rx="8" data-step="5"/>
+      <g data-step="4" data-from="4">
+        <path class="edge" d="M860 372 V406" marker-end="url(#arrow)"/>
+        <rect class="node plain" x="530" y="410" width="300" height="80" rx="16"/>
+        <text class="lbl mono" x="552" y="458">JSON.parse(reply)</text>
+        <path class="edge" d="M834 450 H864" marker-end="url(#arrow)"/>
+        <rect class="node bad" x="870" y="410" width="320" height="80" rx="16"/>
+        <text class="lbl-2 mono bad" x="888" y="444">SyntaxError:</text>
+        <text class="lbl-2 mono bad" x="888" y="472">Unexpected token '`'</text>
+      </g>
+    </svg>
+    <div class="layer" data-only="2"><div class="term" data-cast="S1" data-play-step="2" data-rows="18" data-speed="1.5"></div></div>
+  </div>
+  <ol class="captions">
+    <li>Ask for JSON in the prompt. Do not send a schema.</li>
+    <li>Play S1. Node reads the reply.</li>
+    <li>The model puts the JSON in a code fence.</li>
+    <li>JSON.parse reads the fence and fails with a SyntaxError.</li>
+    <li>The date has extra text. The fee is an object, not a number.</li>
+  </ol>
+  <script>W1Only('structured-2');</script>
+  <aside class="notes" lang="bn">[STEP 1] এবার schema ছাড়া চেষ্টা করি। prompt-এ শুধু লিখছি, "JSON দাও।" কোনো schema নেই। অনেকে এভাবেই শুরু করে। [STEP 2] [DEMO S1] [DO: S1 cast নিজে চলবে] [PAUSE 5s] model উত্তর দিচ্ছে, তারপর Node সেটাকে JSON.parse করছে। শেষে কী হয়, সেটা দেখো। [STEP 3] উত্তরটা দেখো। JSON-এর চারপাশে তিনটা backtick, মানে code fence। মানুষের চোখে সুন্দর, কিন্তু parser-এর কাছে এটা JSON না। [STEP 4] JSON.parse থেমে গেল। SyntaxError, Unexpected token backtick। প্রথম অক্ষরটাই backtick, তাই parser প্রথমেই আটকে গেল। [STEP 5] আরও দুইটা সমস্যা আছে। date-এর ঘরে শুধু তারিখ নেই, ভেতরে বার আর সময়ও ঢুকে গেছে। আর fee এখানে সংখ্যা না, একটা object, ভেতরে currency আর discount। আমরা এসব চাইনি। [ASK] তাহলে আমাদের code কীভাবে এই উত্তরের ওপর ভরসা করবে? [PAUSE 3s]</aside>
+</section>
+
+<section class="slide" id="structured-3" data-topic="Structured output" data-minutes="2" data-steps="5">
+  <h2>With a schema, the output is valid JSON</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A schema with four typed fields goes to the model. The model returns a JSON object with exactly four fields. Node reads the object: the type of fee is number and fee plus 100 is 600.">
+      <g data-step="1">
+        <rect class="node" x="10" y="40" width="320" height="390" rx="20"/>
+        <text class="lbl" x="30" y="82">Schema</text>
+        <rect class="node c1" x="26" y="102" width="288" height="66" rx="12"/>
+        <text class="lbl" x="42" y="143">event</text>
+        <text class="lbl-2 mono end" x="298" y="142">string</text>
+        <rect class="node c2" x="26" y="182" width="288" height="66" rx="12"/>
+        <text class="lbl" x="42" y="223">date</text>
+        <text class="lbl-2 mono end" x="298" y="222">string</text>
+        <rect class="node c3" x="26" y="262" width="288" height="66" rx="12"/>
+        <text class="lbl" x="42" y="303">venue</text>
+        <text class="lbl-2 mono end" x="298" y="302">string</text>
+        <rect class="node c4" x="26" y="342" width="288" height="66" rx="12"/>
+        <text class="lbl" x="42" y="383">fee</text>
+        <text class="lbl-2 mono end" x="298" y="382">number</text>
+      </g>
+      <g data-step="1 3">
+        <path class="edge" d="M336 255 H376" marker-end="url(#arrow)"/>
+        <rect class="node inv" x="380" y="215" width="120" height="80" rx="18"/>
+        <text class="lbl lg mid inv-text" x="440" y="265">Model</text>
+        <path class="edge" d="M504 255 H544" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="3 5" data-from="3">
+        <rect class="node plain" x="548" y="40" width="642" height="270" rx="20"/>
+        <text class="lbl-3" x="572" y="74">JSON FROM THE MODEL</text>
+        <text class="mono lbl" x="572" y="112" xml:space="preserve">{</text>
+        <text class="mono lbl" x="572" y="142" xml:space="preserve">  "event": "CodeSprint 2026",</text>
+        <text class="mono lbl" x="572" y="172" xml:space="preserve">  "date": "2026-10-24",</text>
+        <text class="mono lbl" x="572" y="202" xml:space="preserve">  "venue": "Arts Building Auditorium,</text>
+        <text class="mono lbl" x="572" y="232" xml:space="preserve">    University of Dhaka",</text>
+        <text class="mono lbl" x="572" y="262" xml:space="preserve">  "fee": 500</text>
+        <text class="mono lbl" x="572" y="292" xml:space="preserve">}</text>
+      </g>
+      <rect class="node ring" x="558" y="242" width="622" height="30" rx="8" data-step="5"/>
+      <g data-step="5" data-from="5">
+        <rect class="node plain" x="548" y="330" width="642" height="160" rx="20"/>
+        <text class="lbl-3" x="572" y="362">NODE PRINTS</text>
+        <text class="mono lbl" x="572" y="408">typeof fee: number</text>
+        <text class="mono lbl" x="572" y="442">fee + 100:  600</text>
+        <text class="mono lbl" x="572" y="476">date: Saturday, 24 October 2026</text>
+      </g>
+    </svg>
+    <div class="layer" data-only="2"><pre class="cmd" data-live>cc "Extract the event, date, venue and fee from: $(cat structured/notice.txt)" \
+  --json-schema "$(cat structured/schema.json)" | jq .structured_output</pre><p class="fb">Fallback: play the recording if the live run fails.</p><div class="term" data-cast="S2" data-play-step="99" data-rows="13"></div></div>
+    <div class="layer" data-only="4"><pre class="cmd" data-live>cc "Extract the event, date, venue and fee from: $(cat structured/notice.txt)" \
+  --json-schema "$(cat structured/schema.json)" | node structured/parse.mjs</pre><p class="fb">Fallback: play the recording if the live run fails.</p><div class="term" data-cast="S3" data-play-step="99" data-rows="13"></div></div>
+  </div>
+  <ol class="captions">
+    <li>A schema names four fields and their types.</li>
+    <li>Run the command. The model must follow the schema.</li>
+    <li>The reply has exactly four fields. The fee is a number.</li>
+    <li>Run the second command. Node loads the JSON.</li>
+    <li>The type of fee is number. The fee plus 100 is 600.</li>
+  </ol>
+  <script>W1Only('structured-3');</script>
+  <aside class="notes" lang="bn">[STEP 1] এবার schema দিয়ে করি। schema হলো চারটা ঘর আর তাদের type: event, date, venue string, আর fee number। এটা আমরা prompt-এর সঙ্গে model-কে দিই। [STEP 2] [LIVE] [DO: slide-এর command copy করে terminal-এ চালাও। network না চললে নিচের recording-এর play চাপো।] cc-র পরে আছে --json-schema। [PAUSE 10s] model এখন schema মেনে উত্তর বানাচ্ছে। [STEP 3] ফল: ঠিক চারটা field। আগের বার model code fence দিয়েছিল, এবার দেয়নি, কারণ schema বলে দিয়েছে কোন ঘরে কোন type যাবে। কোনো fence নেই, কোনো বাড়তি time নেই। fee হলো 500, একটা সংখ্যা। [STEP 4] [LIVE] [DO: দ্বিতীয় command-টাও terminal-এ চালাও, না হলে recording চালাও।] এবার output Node-এ পাঠাই। parse.mjs ফাইল JSON পড়ে। [PAUSE 10s] [STEP 5] দেখো, typeof fee হলো number। fee যোগ 100 হলো 600। তারিখ থেকে বার বের হলো: Saturday, 24 October 2026। এখন আমাদের code এই data-র ওপর ভরসা করতে পারে। এই জিনিসটার ওপরেই tool call দাঁড়িয়ে আছে, কারণ model-এর উত্তর এখন এমন আকারে আসে, যা code সরাসরি পড়তে পারে।</aside>
+</section>
+
+<section class="slide anim-only" id="anim-S1" data-cmd="S1" data-steps="5">
+  <h2>Without a schema, JSON.parse fails</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The prompt goes to the model. The reply holds JSON in a code fence. JSON.parse fails.">
+      <rect class="node inv" x="0" y="4" width="1200" height="56" rx="14"/>
+      <text class="mono cmdtxt inv-text" x="20" y="40">cc "Extract event, date, venue and fee as JSON from: ..." | jq -r .result | node structured/plain.mjs</text>
+      <g data-step="2 5" data-from="2">
+        <rect class="node" x="10" y="122" width="280" height="170" rx="20"/>
+        <text class="lbl-3" x="28" y="154">PROMPT</text>
+        <text class="lbl-2 mono" x="28" y="188">Extract event, date,</text>
+        <text class="lbl-2 mono" x="28" y="216">venue and fee as JSON</text>
+        <text class="lbl-2 mono" x="28" y="244">from: &lt;notice&gt;</text>
+        <text class="lbl-3" x="28" y="278">No schema</text>
+      </g>
+      <g data-step="2 5" data-from="2">
+        <path class="edge" d="M294 207 H330" marker-end="url(#arrow)"/>
+        <rect class="node inv" x="336" y="167" width="140" height="80" rx="18"/>
+        <text class="lbl lg mid inv-text" x="406" y="217">Model</text>
+        <path class="edge" d="M482 207 H524" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="3 5" data-from="3">
+        <rect class="node plain" x="530" y="72" width="660" height="292" rx="20"/>
+        <text class="mono lbl fence" x="554" y="106" xml:space="preserve">```json</text>
+        <text class="mono lbl lbl-2" x="554" y="140" xml:space="preserve">{</text>
+        <text class="mono lbl lbl-2" x="554" y="174" xml:space="preserve">  "event": "CodeSprint 2026",</text>
+        <text class="mono lbl lbl-2" x="554" y="208" xml:space="preserve">  "date": "2026-10-24 (Saturday, 9:00 AM)",</text>
+        <text class="mono lbl lbl-2" x="554" y="242" xml:space="preserve">  "venue": "Arts Building Auditorium, ...",</text>
+        <text class="mono lbl lbl-2" x="554" y="276" xml:space="preserve">  "fee": { "currency": "BDT", ... }</text>
+        <text class="mono lbl lbl-2" x="554" y="310" xml:space="preserve">}</text>
+        <text class="mono lbl fence" x="554" y="344" xml:space="preserve">```</text>
+      </g>
+      <rect class="node ring" x="540" y="82" width="640" height="34" rx="8" data-step="3"/>
+      <rect class="node ring" x="540" y="310" width="640" height="34" rx="8" data-step="3"/>
+      <rect class="node ring" x="540" y="184" width="640" height="34" rx="8" data-step="5"/>
+      <rect class="node ring" x="540" y="252" width="640" height="34" rx="8" data-step="5"/>
+      <g data-step="4 5" data-from="4">
+        <path class="edge" d="M860 364 V380" marker-end="url(#arrow)"/>
+        <rect class="node plain" x="530" y="384" width="300" height="76" rx="16"/>
+        <text class="lbl mono" x="552" y="430">JSON.parse(reply)</text>
+        <path class="edge" d="M834 422 H864" marker-end="url(#arrow)"/>
+        <rect class="node bad" x="870" y="384" width="320" height="76" rx="16"/>
+        <text class="lbl-2 mono bad" x="888" y="416">SyntaxError:</text>
+        <text class="lbl-2 mono bad" x="888" y="444">Unexpected token '`'</text>
+      </g>
+    </svg>
+
+  </div>
+  <ol class="captions">
+    <li>Run the command. The prompt asks for JSON. It sends no schema.</li>
+    <li>The prompt goes to the model.</li>
+    <li>The reply is text. The JSON sits in a code fence.</li>
+    <li>JSON.parse fails: Unexpected token backtick.</li>
+    <li>The date has extra text and the fee is an object.</li>
+  </ol>
+</section>
+
+<section class="slide anim-only" id="anim-S2" data-cmd="S2" data-steps="5">
+  <h2>With a schema, the reply has exactly 4 fields</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A schema goes to the model. The reply is a JSON object with four fields. The fee is 500.">
+      <rect class="node inv" x="0" y="4" width="1200" height="56" rx="14"/>
+      <text class="mono cmdtxt inv-text" x="20" y="40">cc "Extract ..." --json-schema "$(cat structured/schema.json)" | jq .structured_output</text>
+      <g data-step="2 5" data-from="2">
+        <rect class="node" x="10" y="84" width="320" height="310" rx="20"/>
+        <text class="lbl" x="30" y="126">Schema</text>
+        <rect class="node c1" x="26" y="146" width="288" height="50" rx="12"/>
+        <text class="lbl" x="42" y="179">event</text>
+        <text class="lbl-2 mono end" x="298" y="178">string</text>
+        <rect class="node c2" x="26" y="206" width="288" height="50" rx="12"/>
+        <text class="lbl" x="42" y="239">date</text>
+        <text class="lbl-2 mono end" x="298" y="238">string</text>
+        <rect class="node c3" x="26" y="266" width="288" height="50" rx="12"/>
+        <text class="lbl" x="42" y="299">venue</text>
+        <text class="lbl-2 mono end" x="298" y="298">string</text>
+        <rect class="node c4" x="26" y="326" width="288" height="50" rx="12"/>
+        <text class="lbl" x="42" y="359">fee</text>
+        <text class="lbl-2 mono end" x="298" y="358">number</text>
+      </g>
+      <g data-step="3 5" data-from="3">
+        <path class="edge" d="M336 250 H376" marker-end="url(#arrow)"/>
+        <rect class="node inv" x="380" y="210" width="120" height="80" rx="18"/>
+        <text class="lbl lg mid inv-text" x="440" y="260">Model</text>
+        <path class="edge" d="M504 250 H544" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="4 5" data-from="4">
+        <rect class="node plain" x="548" y="84" width="642" height="300" rx="20"/>
+        <text class="lbl-3" x="572" y="118">REPLY: 4 FIELDS</text>
+        <text class="mono lbl" x="572" y="164" xml:space="preserve">{</text>
+        <text class="mono lbl" x="572" y="196" xml:space="preserve">  "event": "CodeSprint 2026",</text>
+        <text class="mono lbl" x="572" y="228" xml:space="preserve">  "date": "2026-10-24",</text>
+        <text class="mono lbl" x="572" y="260" xml:space="preserve">  "venue": "Arts Building Auditorium,</text>
+        <text class="mono lbl" x="572" y="292" xml:space="preserve">    University of Dhaka",</text>
+        <text class="mono lbl" x="572" y="324" xml:space="preserve">  "fee": 500</text>
+        <text class="mono lbl" x="572" y="356" xml:space="preserve">}</text>
+      </g>
+      <rect class="node ring" x="558" y="300" width="622" height="34" rx="8" data-step="4"/>
+      <g data-from="5">
+        <rect class="node c3" x="150" y="410" width="900" height="76" rx="20"/>
+        <text class="lbl lg mid" x="600" y="458">The schema fixes the field names and the types.</text>
+      </g>
+    </svg>
+
+  </div>
+  <ol class="captions">
+    <li>Run the command with a schema.</li>
+    <li>The schema goes to the model with the prompt.</li>
+    <li>The model must return JSON that fits the schema.</li>
+    <li>The reply has exactly 4 fields. The fee is 500.</li>
+    <li>The schema fixes the field names and the types.</li>
+  </ol>
+</section>
+
+<section class="slide anim-only" id="anim-S3" data-cmd="S3" data-steps="5">
+  <h2>Node reads the typed JSON without an error</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="The model returns a JSON object. Node parses it. The type of fee is number and fee plus 100 is 600.">
+      <rect class="node inv" x="0" y="4" width="1200" height="56" rx="14"/>
+      <text class="mono cmdtxt inv-text" x="20" y="40">cc "Extract ..." --json-schema "$(cat structured/schema.json)" | node structured/parse.mjs</text>
+      <g data-step="2 5" data-from="2">
+        <rect class="node plain" x="10" y="90" width="480" height="250" rx="20"/>
+        <text class="lbl-3" x="34" y="124">JSON OBJECT</text>
+        <text class="mono lbl" x="34" y="166" xml:space="preserve">{</text>
+        <text class="mono lbl" x="34" y="198" xml:space="preserve">  "event": "CodeSprint 2026",</text>
+        <text class="mono lbl" x="34" y="230" xml:space="preserve">  "date": "2026-10-24",</text>
+        <text class="mono lbl" x="34" y="262" xml:space="preserve">  "venue": "Arts Building ...",</text>
+        <text class="mono lbl" x="34" y="294" xml:space="preserve">  "fee": 500</text>
+        <text class="mono lbl" x="34" y="326" xml:space="preserve">}</text>
+      </g>
+      <g data-step="3 5" data-from="3">
+        <path class="edge" d="M496 215 H540" marker-end="url(#arrow)"/>
+        <rect class="node c2" x="546" y="150" width="230" height="130" rx="20"/>
+        <text class="lbl mid" x="661" y="200">parse.mjs</text>
+        <text class="lbl-2 mid" x="661" y="236">JSON.parse</text>
+        <path class="edge" d="M782 215 H820" marker-end="url(#arrow)"/>
+      </g>
+      <g data-step="4 5" data-from="4">
+        <rect class="node plain" x="826" y="90" width="364" height="250" rx="20"/>
+        <text class="lbl-3" x="848" y="124">NODE PRINTS</text>
+        <text class="mono lbl-2" x="848" y="180">typeof fee: number</text>
+        <text class="mono lbl-2" x="848" y="220">fee + 100:  600</text>
+        <text class="mono lbl-2" x="848" y="260">date:</text>
+        <text class="mono lbl-2" x="848" y="296">Saturday, 24 October 2026</text>
+      </g>
+      <g data-from="5">
+        <rect class="node c3" x="150" y="380" width="900" height="80" rx="20"/>
+        <text class="lbl lg mid" x="600" y="432">A number stays a number. Code can use it.</text>
+      </g>
+    </svg>
+
+  </div>
+  <ol class="captions">
+    <li>Run the command. It sends the reply to Node.</li>
+    <li>The model returns a JSON object.</li>
+    <li>Node reads the JSON with no error.</li>
+    <li>Fee is a number. The fee plus 100 is 600.</li>
+    <li>Valid JSON with types is safe for code.</li>
+  </ol>
+</section>

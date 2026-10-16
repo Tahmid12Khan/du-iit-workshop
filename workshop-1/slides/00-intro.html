@@ -1,0 +1,232 @@
+<section class="slide title-slide" id="intro-0" data-topic="Intro" data-minutes="0.5" data-steps="1">
+  <div class="title-text">
+    <p class="eyebrow"><span>Institute of Information Technology</span> <span>University of Dhaka</span></p>
+    <p class="day">Day 1</p>
+    <p class="course"><span>Agentic Architecture:</span> <span>Next-Gen Software Development</span></p>
+    <div class="rule" aria-hidden="true"></div>
+    <p class="session-label">Session 1</p>
+    <h2>Foundations of LLMs and Agentic Systems</h2>
+    <div class="speaker">
+      <div class="avatar" aria-hidden="true">TK</div>
+      <div>
+        <p class="speaker-name">Tahmidur Rahman Khan</p>
+        <p class="speaker-role">Staff Software Engineer, Cefalo Bangladesh Ltd.</p>
+      </div>
+    </div>
+  </div>
+  <div class="title-art">
+    <svg viewBox="0 0 480 520" role="img" aria-label="Line icons: a chat prompt goes into an LLM chip, and a reply document comes out.">
+      <defs>
+        <marker id="t0-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ln soft" d="M1 1L8 5L1 9"/></marker>
+      </defs>
+      <path class="ln" d="M44 64 H164 Q182 64 182 82 V134 Q182 152 164 152 H92 L66 174 V152 H62 Q44 152 44 134 V82 Q44 64 62 64 Z"/>
+      <path class="ln soft" d="M78 96 H148 M78 120 H126"/>
+      <text x="113" y="208" text-anchor="middle">Prompt</text>
+      <path class="ln dash" d="M113 226 V256 Q113 278 135 278 H146" marker-end="url(#t0-arrow)"/>
+      <rect class="ln" x="170" y="208" width="140" height="140" rx="20"/>
+      <rect class="ln soft" x="198" y="236" width="84" height="84" rx="12"/>
+      <path class="ln" d="M210 208 V186 M240 208 V186 M270 208 V186 M210 348 V370 M240 348 V370 M270 348 V370 M170 248 H148 M170 308 H148 M310 248 H332 M310 278 H332 M310 308 H332"/>
+      <text class="chip-text" x="240" y="286" text-anchor="middle">LLM</text>
+      <path class="ln dash" d="M334 278 H345 Q367 278 367 300 V330" marker-end="url(#t0-arrow)"/>
+      <path class="ln" d="M312 352 H398 L436 390 V476 Q436 492 420 492 H312 Q296 492 296 476 V368 Q296 352 312 352 Z M398 352 V390 H436"/>
+      <path class="ln soft" d="M322 410 H384 M322 434 H410 M322 458 H372"/>
+      <text x="366" y="516" text-anchor="middle">Reply</text>
+    </svg>
+  </div>
+  <ol class="captions">
+    <li>Welcome to Day 1, Session 1.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] সবাইকে স্বাগতম! আমি তাহমিদুর রহমান খান, Cefalo Bangladesh-এ Staff Software Engineer। আজ Day 1, আর এটা প্রথম session: Foundations of LLMs and Agentic Systems। আজকে আমরা দেখব একটা LLM ভেতরে কীভাবে কাজ করে, আর ওকে দিয়ে কীভাবে ঠিকমতো কাজ করানো যায়। চলো শুরু করি।</aside>
+</section>
+
+<style>
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) #intro-1 svg rect.bbox { fill: var(--bg); stroke: var(--ink-3); stroke-width: 3; }
+  :root:not([data-theme="light"]) #intro-1 svg text.bbox-text { fill: var(--ink); }
+}
+:root[data-theme="dark"] #intro-1 svg rect.bbox { fill: var(--bg); stroke: var(--ink-3); stroke-width: 3; }
+:root[data-theme="dark"] #intro-1 svg text.bbox-text { fill: var(--ink); }
+</style>
+<section class="slide" id="intro-1" data-topic="Intro" data-minutes="1" data-steps="4">
+  <h2>Today we open the black box</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="A chat window sends Hello into a black box. A reply comes out in a second chat window. In the last step the box shows token, context window and next token inside.">
+      <g>
+        <rect class="node plain" x="250" y="12" width="700" height="62" rx="31"/>
+        <text class="lbl lg mid" x="600" y="54">Who used ChatGPT or Claude today?</text>
+      </g>
+      <g data-step="1">
+        <rect class="node plain" x="30" y="108" width="310" height="340" rx="20"/>
+        <path class="edge" d="M30 158 H340"/>
+        <text class="lbl-2" x="52" y="140">You</text>
+        <rect class="node c1" x="150" y="196" width="170" height="64" rx="18"/>
+        <text class="lbl lg mono mid" x="235" y="239">Hello</text>
+        <rect class="node plain" x="52" y="390" width="266" height="40" rx="20"/>
+        <rect class="skel" x="72" y="404" width="120" height="12" rx="6"/>
+      </g>
+      <path class="edge" d="M346 278 H424" marker-end="url(#arrow)" data-step="2"/>
+      <rect class="node inv bbox" x="430" y="108" width="340" height="340" rx="24"/>
+      <rect class="node ring" x="424" y="102" width="352" height="352" rx="28" data-step="2 3"/>
+      <g data-step="2 3">
+        <text class="lbl lg mid inv-text bbox-text" x="600" y="162">Black box</text>
+        <text class="huge mid inv-text bbox-text" x="600" y="320">?</text>
+      </g>
+      <path class="edge" d="M776 278 H854" marker-end="url(#arrow)" data-step="3"/>
+      <g data-step="3">
+        <rect class="node plain" x="860" y="108" width="310" height="340" rx="20"/>
+        <path class="edge" d="M860 158 H1170"/>
+        <text class="lbl-2" x="882" y="140">Reply</text>
+        <rect class="node c2" x="882" y="186" width="266" height="150" rx="18"/>
+        <rect class="skel" x="906" y="214" width="218" height="14" rx="7"/>
+        <rect class="skel" x="906" y="248" width="170" height="14" rx="7"/>
+        <rect class="skel" x="906" y="282" width="196" height="14" rx="7"/>
+      </g>
+      <g class="until" data-step="4" data-from="4">
+        <rect class="node c1" x="462" y="186" width="276" height="72" rx="16"/>
+        <text class="lbl lg mid" x="600" y="232">Token</text>
+        <rect class="node c2" x="462" y="274" width="276" height="72" rx="16"/>
+        <text class="lbl lg mid" x="600" y="320">Context window</text>
+        <rect class="node c3" x="462" y="362" width="276" height="72" rx="16"/>
+        <text class="lbl lg mid" x="600" y="408">Next token</text>
+      </g>
+      <text class="lbl-3 mid" x="600" y="484">Workshop 1: Foundations of LLMs and Agentic Systems</text>
+    </svg>
+  </div>
+  <ol class="captions">
+    <li>Type Hello in a chat window.</li>
+    <li>Something inside the box reads your text.</li>
+    <li>A reply comes back.</li>
+    <li>Today we open the black box.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] শুরুতে একটা ছোট প্রশ্ন। [ASK] আজ কে কে ChatGPT বা Claude ব্যবহার করেছ? হাত তোলো। [PAUSE 5s] ভালো। এবার ভাবো, তুমি যখন শুধু Hello লেখো, ভেতরে কী ঘটে? [STEP 2] মাঝখানের এই box-টা আমাদের কাছে এখনও black box। [STEP 3] একটা reply ফিরে আসে, কিন্তু কীভাবে আসে, সেটা আমরা জানি না। [STEP 4] আজ আমরা এই black box খুলব। ভেতরে তিনটা জিনিস পাবে: token, context window আর next token।</aside>
+</section>
+
+<section class="slide" id="intro-2" data-topic="Intro" data-minutes="1" data-steps="4">
+  <h2>Three ideas explain how a model writes a reply</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Four cards in a row joined by arrows: token, context window, next token and reply.">
+      <g data-step="1">
+        <rect class="node c1" x="13" y="60" width="244" height="380" rx="20"/>
+        <rect class="skel" x="50" y="112" width="170" height="16" rx="8"/>
+        <rect class="node plain" x="50" y="164" width="46" height="46" rx="10"/>
+        <rect class="node plain" x="112" y="164" width="46" height="46" rx="10"/>
+        <rect class="node plain" x="174" y="164" width="46" height="46" rx="10"/>
+        <path class="edge" d="M73 138 V158 M135 138 V158 M197 138 V158"/>
+        <text class="lbl lg mid" x="135" y="320">Token</text>
+        <text class="lbl-2 mid" x="135" y="364">A piece of text.</text>
+        <text class="lbl-2 mid" x="135" y="394">The model reads tokens.</text>
+      </g>
+      <path class="edge" d="M261 250 H319" marker-end="url(#arrow)" data-step="2"/>
+      <g data-step="2">
+        <rect class="node c2" x="323" y="60" width="244" height="380" rx="20"/>
+        <rect class="node plain" x="360" y="96" width="170" height="150" rx="12"/>
+        <rect class="skel" x="378" y="118" width="134" height="12" rx="6"/>
+        <rect class="skel" x="378" y="146" width="104" height="12" rx="6"/>
+        <rect class="skel" x="378" y="174" width="124" height="12" rx="6"/>
+        <rect class="skel" x="378" y="202" width="84" height="12" rx="6"/>
+        <text class="lbl lg mid" x="445" y="320">Context window</text>
+        <text class="lbl-2 mid" x="445" y="364">All text the model sees.</text>
+        <text class="lbl-2 mid" x="445" y="394">It has a size limit.</text>
+      </g>
+      <path class="edge" d="M571 250 H629" marker-end="url(#arrow)" data-step="3"/>
+      <g data-step="3">
+        <rect class="node c3" x="633" y="60" width="244" height="380" rx="20"/>
+        <rect class="node plain" x="660" y="130" width="40" height="46" rx="10"/>
+        <rect class="node plain" x="710" y="130" width="40" height="46" rx="10"/>
+        <rect class="node plain" x="760" y="130" width="40" height="46" rx="10"/>
+        <rect class="node dashed" x="810" y="130" width="40" height="46" rx="10"/>
+        <text class="lbl mid" x="830" y="161">?</text>
+        <path class="edge" d="M780 210 Q 806 226 826 186" marker-end="url(#arrow)"/>
+        <text class="lbl lg mid" x="755" y="320">Next token</text>
+        <text class="lbl-2 mid" x="755" y="364">It picks one token.</text>
+        <text class="lbl-2 mid" x="755" y="394">Then it picks the next.</text>
+      </g>
+      <path class="edge" d="M881 250 H939" marker-end="url(#arrow)" data-step="4"/>
+      <g data-step="4" data-from="4">
+        <rect class="node c4" x="943" y="60" width="244" height="380" rx="20"/>
+        <rect class="node plain" x="985" y="100" width="160" height="120" rx="18"/>
+        <rect class="skel" x="1005" y="126" width="120" height="12" rx="6"/>
+        <rect class="skel" x="1005" y="154" width="96" height="12" rx="6"/>
+        <rect class="skel" x="1005" y="182" width="108" height="12" rx="6"/>
+        <text class="lbl lg mid" x="1065" y="320">Reply</text>
+        <text class="lbl-2 mid" x="1065" y="364">Tokens join into text.</text>
+        <text class="lbl-2 mid" x="1065" y="394">You read the reply.</text>
+      </g>
+    </svg>
+  </div>
+  <ol class="captions">
+    <li>A token is a piece of text. The model reads tokens.</li>
+    <li>The context window holds all the tokens the model sees.</li>
+    <li>The model picks the next token, one token at a time.</li>
+    <li>The new tokens join into the reply.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] তিনটা idea আজকের পুরো session চালাবে। প্রথমটা token। model তোমার লেখা পড়ে না, সে পড়ে ছোট ছোট টুকরো। [STEP 2] দ্বিতীয়টা context window। model একবারে যতটুকু দেখতে পায়, ঠিক ততটুকুই। পরীক্ষার হলের desk-এর মতো, desk ছোট হলে সব খাতা রাখা যায় না। [STEP 3] তৃতীয়টা next token। model পুরো উত্তর একবারে লেখে না। সে একটা token বাছে, তারপর পরেরটা, তারপর আবার পরেরটা। [STEP 4] এই token-গুলো জোড়া লাগিয়েই তুমি reply পাও। আজ প্রতিটা idea আমরা terminal-এ নিজের চোখে দেখব।</aside>
+</section>
+
+<section class="slide" id="intro-3" data-topic="Intro" data-minutes="1" data-steps="4">
+  <h2>Eight topics show how an LLM works and how we use it</h2>
+  <div class="stage">
+    <svg viewBox="0 0 1200 500" class="diagram" role="img" aria-label="Roadmap of eight topics in two rows of four, and three extra topics below.">
+      <g data-step="1">
+        <text class="big hl" x="10" y="52">8</text>
+        <text class="lbl-2" x="58" y="50">topics</text>
+      </g>
+      <text class="lbl-3" x="10" y="98" data-step="1 2">How the model behaves</text>
+      <g data-step="1 2">
+        <rect class="node c1" x="7" y="112" width="262" height="84" rx="16"/>
+        <text class="lbl hl" x="27" y="164">1</text>
+        <text class="lbl" x="61" y="164">Tokens</text>
+        <path class="edge" d="M273 154 H311" marker-end="url(#arrow)"/>
+        <rect class="node c1" x="315" y="112" width="262" height="84" rx="16"/>
+        <text class="lbl hl" x="335" y="164">2</text>
+        <text class="lbl" x="369" y="164">Context window</text>
+        <path class="edge" d="M581 154 H619" marker-end="url(#arrow)"/>
+        <rect class="node c1" x="623" y="112" width="262" height="84" rx="16"/>
+        <text class="lbl hl" x="643" y="164">3</text>
+        <text class="lbl" x="677" y="164">Effort levels</text>
+        <path class="edge" d="M889 154 H927" marker-end="url(#arrow)"/>
+        <rect class="node c1" x="931" y="112" width="262" height="84" rx="16"/>
+        <text class="lbl hl" x="951" y="164">4</text>
+        <text class="lbl" x="985" y="164">Hallucination</text>
+      </g>
+      <text class="lbl-3" x="10" y="246" data-step="1 3">How we build with the model</text>
+      <g data-step="1 3">
+        <rect class="node c2" x="7" y="260" width="262" height="84" rx="16"/>
+        <text class="lbl hl" x="27" y="312">5</text>
+        <text class="lbl" x="61" y="312">Parts of a prompt</text>
+        <path class="edge" d="M273 302 H311" marker-end="url(#arrow)"/>
+        <rect class="node c2" x="315" y="260" width="262" height="84" rx="16"/>
+        <text class="lbl hl" x="335" y="312">6</text>
+        <text class="lbl" x="369" y="312">Structured output</text>
+        <path class="edge" d="M581 302 H619" marker-end="url(#arrow)"/>
+        <rect class="node c2" x="623" y="260" width="262" height="84" rx="16"/>
+        <text class="lbl hl" x="643" y="312">7</text>
+        <text class="lbl" x="677" y="312">Tool call</text>
+        <path class="edge" d="M889 302 H927" marker-end="url(#arrow)"/>
+        <rect class="node c2" x="931" y="260" width="262" height="84" rx="16"/>
+        <text class="lbl hl" x="951" y="312">8</text>
+        <text class="lbl" x="985" y="312">Agent loop</text>
+      </g>
+      <g data-step="4" data-from="4">
+        <text class="big hl" x="14" y="432" data-count="3" data-count-step="4">0</text>
+        <text class="lbl-2" x="62" y="430">extras</text>
+        <rect class="node c3" x="170" y="380" width="320" height="84" rx="16"/>
+        <text class="lbl" x="190" y="416">Extra A</text>
+        <text class="lbl-2" x="190" y="446">Next token and sampling</text>
+        <rect class="node c3" x="520" y="380" width="320" height="84" rx="16"/>
+        <text class="lbl" x="540" y="416">Extra B</text>
+        <text class="lbl-2" x="540" y="446">No memory between calls</text>
+        <rect class="node c3" x="870" y="380" width="320" height="84" rx="16"/>
+        <text class="lbl" x="890" y="416">Extra C</text>
+        <text class="lbl-2" x="890" y="446">Cost and model choice</text>
+      </g>
+    </svg>
+  </div>
+  <ol class="captions">
+    <li>Today has eight topics.</li>
+    <li>Topics 1 to 4 show how the model behaves.</li>
+    <li>Topics 5 to 8 show how we build with the model.</li>
+    <li>Three extra topics support the main topics.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] আজকে আমাদের আটটা topic। প্রতিটা diagram আমি ধাপে ধাপে চালাব, তাই চোখ রাখো কোন অংশ জ্বলে উঠছে। [STEP 2] প্রথম চারটা topic, মানে token, context window, effort আর hallucination, আমাদের বলে model আসলে কেমন আচরণ করে। [STEP 3] পরের চারটা, মানে prompt, structured output, tool call আর agent loop, বলে model-কে দিয়ে আমরা কীভাবে কিছু বানাই। [STEP 4] এর ভেতরে তিনটা extra topic ঢুকবে: next token আর sampling, model-এর memory নেই, আর খরচ ও model বাছাই।</aside>
+</section>
