@@ -1,31 +1,29 @@
 # Sourced after lib.sh. Parallel puzzle runs with a live table.
 # usage: runs <expected> <n> <effort>...   (reads $PUZZLE, $RUN_ID; writes demo/effort/out/$RUN_ID.json)
 runs() {
-  [ -n "$ZSH_VERSION" ] && setopt local_options null_glob
   local expected="$1" n="$2"; shift 2
-  local dir="../work/runs"
-  rm -rf "$dir" && mkdir -p "$dir"
-  local e i
-  # The outer subshell keeps an interactive shell from printing a job notice for each run.
-  (
+  local dir="$PWD/../work/runs/$RUN_ID"
+  rm -rf "$dir"; mkdir -p "$dir"
+  local e i f
+  # "( … & )" starts each run outside the job table, so bash and zsh print no job numbers.
+  for e in "$@"; do
+    for ((i = 1; i <= n; i++)); do
+      ( ( cc "$PUZZLE" --effort "$e" --max-budget-usd 1 > "$dir/$e.$i.json" 2>/dev/null; touch "$dir/$e.$i.done" ) & )
+    done
+  done
+  local total=$(($# * n)) shown=0
+  printf '%-7s %-4s %-8s %-9s %-8s %s\n' effort run answer 'correct?' tokens seconds
+  while [ "$shown" -lt "$total" ]; do
     for e in "$@"; do
       for ((i = 1; i <= n; i++)); do
-        ( cc "$PUZZLE" --effort "$e" --max-budget-usd 1 > "$dir/$e.$i.json" 2>/dev/null; touch "$dir/$e.$i.done" ) &
+        f="$dir/$e.$i"
+        [ -e "$f.done" ] && [ ! -e "$f.shown" ] || continue
+        touch "$f.shown"; shown=$((shown + 1))
+        row "$expected" "$f.json"
       done
-    done
-  )
-  local total=$(($# * n)) shown=0 f
-  printf '%-7s %-4s %-8s %-9s %-8s %s\n' effort run answer correct? tokens seconds
-  while [ "$shown" -lt "$total" ]; do
-    for f in "$dir"/*.done; do
-      [ -e "$f" ] || continue
-      [ -e "$f.shown" ] && continue
-      touch "$f.shown"; shown=$((shown + 1))
-      row "$expected" "${f%.done}.json"
     done
     sleep 1
   done
-  wait
   summary "$expected" "$n" "$dir" "$@"
 }
 fields() {  # fields <json> → answer TAB ok TAB tokens TAB seconds
