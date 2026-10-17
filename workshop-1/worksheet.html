@@ -30,10 +30,10 @@
     <ol>
       <li>Install Claude Code and log in. Run <code>claude --version</code> to check.</li>
       <li>Use macOS, Linux, WSL or Git Bash. Install Node.js 20 or newer, <code>jq</code> and <code>python3</code>.</li>
-      <li>Open a terminal in the <code>workshop-1</code> folder.</li>
+      <li>Open a terminal in the repo folder.</li>
       <li>Load the helpers. <code>cc</code> calls the model without the Claude Code overhead. <code>tokens</code> counts the input tokens of a text.</li>
     </ol>
-    <pre class="code"><code>cd workshop-1
+    <pre class="code"><code>cd "$(git rev-parse --show-toplevel)/workshop-1"
 source demo/cc.sh</code></pre>
     <p class="note">The commands work in bash and in zsh. In zsh, do not paste a line that starts with <code>#</code>. An interactive zsh does not accept comments, and the line fails.</p>
     <p class="note">Run the second command again in each new terminal window. Each task also has a demo script in <code>demo/</code>. Run it to see the presenter version.</p>
@@ -227,7 +227,7 @@ cc "Extract the event, date, venue and fee from: $(cat demo/structured/notice.tx
       <li>Do TODO 1. Write <code>list_dir</code> and <code>read_file</code> in the object <code>tools</code>.</li>
       <li>Under the TODO 2 comment, add a test. Call <code>askModel</code> once, run the tool that the model asks for, and print the result. End the test with <code>process.exit(0)</code>. Task 8 replaces the test.</li>
     </ol>
-    <pre class="code"><code>cd demo
+    <pre class="code"><code>cd "$(git rev-parse --show-toplevel)/workshop-1/demo"
 cp loop.starter.mjs my-loop.mjs
 node my-loop.mjs</code></pre>
     <p>Compare your output with <code>bash L1.sh</code>.</p>
@@ -253,7 +253,7 @@ node my-loop.mjs</code></pre>
       <li>Stop when the model returns <code>final_answer</code>. Stop at <code>MAX_STEPS</code> if it does not.</li>
       <li>Run the loop with a step limit of 8. Run it again with a step limit of 4.</li>
     </ol>
-    <pre class="code"><code>cd demo
+    <pre class="code"><code>cd "$(git rev-parse --show-toplevel)/workshop-1/demo"
 MAX_STEPS=8 node my-loop.mjs
 MAX_STEPS=4 node my-loop.mjs</code></pre>
     <p>Compare your output with <code>bash L2.sh</code> and <code>bash L3.sh</code>.</p>

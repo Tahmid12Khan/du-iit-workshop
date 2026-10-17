@@ -64,8 +64,8 @@ Arrow keys and Space are ignored while a button has focus. Play (button) advance
 ### Before a live demo
 
 ```bash
-cd workshop-1/demo
-source cc.sh                 # cc and tokens helpers (structured output demo)
+cd "$(git rev-parse --show-toplevel)/workshop-1/demo"
+source ./cc.sh
 ```
 
 - Context demo, once before the session: run `cd demo/context && claude --model haiku --strict-mcp-config --setting-sources "" --no-chrome`. Choose Yes on the folder trust prompt. Then exit.
