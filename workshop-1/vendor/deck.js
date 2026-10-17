@@ -299,6 +299,36 @@
     return col;
   }
 
+  function filesPane(id, files) {
+    var pane = make('details', 'term-files');
+    pane.appendChild(make('summary', null, 'Files (' + files.length + ')'));
+    var body = make('div', 'files-body');
+    body.setAttribute('aria-label', 'Files of recording ' + id);
+    pane.appendChild(body);
+    // The file text goes into the page on the first open, so a closed pane adds no hidden text to the slide.
+    pane.addEventListener('toggle', function () { if (pane.open && !body.firstChild) fillFiles(body, files); });
+    return pane;
+  }
+  function fillFiles(body, files) {
+    files.forEach(function (f, i) {
+      var file = make('details', 'file');
+      var src = window.FILES[f];
+      file.open = i === Math.min(1, files.length - 1);
+      file.appendChild(make('summary', null, 'demo/' + f));
+      if (src.cut) {
+        var open = make('a', 'copy', 'Open');
+        open.href = 'demo/' + f;
+        open.target = '_blank';
+        open.rel = 'noopener';
+        file.appendChild(open);
+      } else {
+        file.appendChild(copyButton('copy', 'Copy', 'Copy file demo/' + f, function () { return src.text; }));
+      }
+      file.appendChild(make('pre', null, src.text));
+      body.appendChild(file);
+    });
+  }
+
   // Fewer rows give a larger font, because the player fits the whole terminal into the box.
   // Use data-rows to override the estimate (for example for a recording that moves the cursor).
   function termSize(data, rowsAttr) {
@@ -335,6 +365,8 @@
       requestAnimationFrame(function () { if (col.scrollHeight > col.clientHeight + 1) col.classList.add('dense'); });
     }
     var links = make('div', 'term-links');
+    var files = window.RUNFILES && window.RUNFILES[id];
+    if (files && files.length) links.appendChild(filesPane(id, files));
     [['Terminal video', 'video/term/' + id + '.mp4'], ['Animation video', 'video/anim/' + id + '.mp4']].forEach(function (l) {
       var a = make('a', null, l[0]);
       a.href = l[1];

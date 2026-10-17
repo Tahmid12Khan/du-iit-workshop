@@ -2,7 +2,7 @@
 // Build index.html, videos.html and transcript.html.  Usage: node tools/build.mjs [--strict] [--quiet]
 //   --strict: exit 1 when a hard rule is broken (Bangla outside the speaker notes).
 import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from 'node:fs';
-import { join, dirname, basename } from 'node:path';
+import { join, dirname, basename, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const W = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -148,7 +148,43 @@ for (const id of Object.keys(casts)) {
   else warn(`casts/${id}.cast: no demo/${id}.sh or demo/${id}.claude`);
 }
 
-const castScript = '<script>window.CMDS=' + JSON.stringify(cmds).replace(/</g, '\\u003c') + ';window.CASTS=' + JSON.stringify(casts).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029') + ';</script>';
+// The files each recording runs or reads: paths named in its steps (relative to its cd), their imports and load() calls.
+// Large data files (big.txt) show their start and a link; scripts show in full.
+const FILE_MAX_CHARS = 20000;
+const FILE_PREVIEW_LINES = 80;
+const demoPath = (p) => relative(join(W, 'demo'), p).split(sep).join('/');
+function runFiles(steps) {
+  const found = [], written = new Set();
+  let cwd = join(W, 'demo');
+  const add = (abs) => {
+    if (!existsSync(abs) || !statSync(abs).isFile()) return;
+    const rel = demoPath(abs);
+    if (written.has(rel) || found.includes(rel)) return;
+    found.push(rel);
+    if (!/\.m?js$/.test(rel)) return;
+    const src = readFileSync(abs, 'utf8');
+    for (const m of src.matchAll(/from '(\.{1,2}\/[^']+)'|\bload\('([^']+)'/g)) add(join(dirname(abs), m[1] || m[2]));
+  };
+  for (const st of steps) {
+    for (const m of st.cmd.matchAll(/>\s*([\w./-]+)|extract\.mjs \S+ ([\w./-]+)/g)) written.add(demoPath(join(cwd, m[1] || m[2])));
+    for (const tok of st.cmd.split(/[\s"'$()|;&<>]+/)) if (/^[\w.-]+(\/[\w.-]+)*\.\w+$/.test(tok)) add(join(cwd, tok));
+    const cd = st.where === 'terminal' && st.cmd.match(/^cd ([\w./-]+)/);
+    if (cd) cwd = join(cwd, cd[1]);
+  }
+  return found;
+}
+const fileText = {}, runFilesById = {};
+for (const [id, steps] of Object.entries(cmds)) {
+  runFilesById[id] = runFiles(steps);
+  for (const f of runFilesById[id]) {
+    if (fileText[f] !== undefined) continue;
+    const text = read(join('demo', f)).replace(/\n$/, '');
+    const lines = text.split('\n');
+    fileText[f] = text.length > FILE_MAX_CHARS ? { text: lines.slice(0, FILE_PREVIEW_LINES).join('\n') + `\n… ${lines.length - FILE_PREVIEW_LINES} more lines`, cut: true } : { text };
+  }
+}
+
+const castScript = '<script>window.CMDS=' + JSON.stringify(cmds).replace(/</g, '\\u003c') + ';window.RUNFILES=' + JSON.stringify(runFilesById) + ';window.FILES=' + JSON.stringify(fileText).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029') + ';window.CASTS=' + JSON.stringify(casts).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029') + ';</script>';
 
 // ---------- other Bangla scan ----------
 for (const f of list('demo', '.sh')) if (BANGLA.test(read(join('demo', f)))) err(`demo/${f}: Bangla text`);
