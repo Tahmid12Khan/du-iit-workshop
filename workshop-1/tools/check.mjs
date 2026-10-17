@@ -89,8 +89,8 @@ const dom = await main.page.evaluate(() => [...document.querySelectorAll('sectio
   };
 }));
 const sumMin = dom.filter((d) => !d.animOnly).reduce((a, d) => a + d.minutes, 0);
-check('slide counts', normal.length === 38 && anim.length === 27, `${normal.length} normal + ${anim.length} anim-only = ${slides.length}`);
-check('data-minutes on normal slides sum to 71', Math.abs(sumMin - 71) < 0.01, `sum ${sumMin}`);
+check('slide counts', normal.length === 39 && anim.length === 27, `${normal.length} normal + ${anim.length} anim-only = ${slides.length}`);
+check('data-minutes on normal slides sum to 71.5', Math.abs(sumMin - 71.5) < 0.01, `sum ${sumMin}`);
 const capBad = dom.filter((d) => d.steps !== d.caps).map((d) => `${d.id} steps ${d.steps} caps ${d.caps}`);
 check('captions count == data-steps on every slide', capBad.length === 0, capBad.length ? short(capBad) : `${dom.length} slides`);
 const animIds = new Set(anim.map((s) => s.cmd));
@@ -420,7 +420,7 @@ writeFileSync(join(OUT, 'defects.txt'), defectLog.join('\n'));
   const ordered = tr.ids.length === wantIds.length && tr.ids.every((id, i) => id === wantIds[i]);
   const headNums = tr.head.match(/[\d.]+/g) || [];
   check('transcript.html: one Bangla block per normal slide in deck order, Hind Siliguri, line-height 1.7, theme toggle, cue tags, totals in the header',
-    ordered && tr.bnBlocks === 38 && /Hind Siliguri/.test(tr.font) && Math.abs(tr.lh - 1.7) < 0.02 && tr.toggle === 3 && tr.cues > 100 && headNums[0] === '71',
+    ordered && tr.bnBlocks === 39 && /Hind Siliguri/.test(tr.font) && Math.abs(tr.lh - 1.7) < 0.02 && tr.toggle === 3 && tr.cues > 100 && headNums[0] === '71.5',
     `${tr.ids.length} articles, ${tr.bnBlocks} Bangla blocks, font ${tr.font}, lh ${tr.lh.toFixed(2)}, toggle ${tr.toggle}, cues ${tr.cues}, header ${tr.head.replace(/\s+/g, ' ')}`);
   await c3.close();
 }

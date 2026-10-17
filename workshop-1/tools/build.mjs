@@ -9,7 +9,7 @@ const W = join(dirname(fileURLToPath(import.meta.url)), '..');
 const STRICT = process.argv.includes('--strict');
 const QUIET = process.argv.includes('--quiet');
 const WORDS_PER_MIN = 75;
-const PLAN_MINUTES = 71;
+const PLAN_MINUTES = 71.5;
 const BANGLA = /[ঀ-৿]/;
 
 const errors = [];

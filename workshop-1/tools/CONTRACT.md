@@ -4,7 +4,7 @@ Every agent follows this file. Root: `workshop-1/` (= `$W`).
 
 ## Audience and rules
 - 3rd/4th-year SE students, Dhaka University. Presenter-led. Students do the worksheet at home.
-- 71 minutes of slides + 4 minutes buffer (hard ceiling 75). `data-minutes` on slides must sum to 71.
+- 71.5 minutes of slides + 3.5 minutes buffer (hard ceiling 75). `data-minutes` on slides must sum to 71.5.
 - **Language rule (strict):** every visible thing is English: slides, captions, terminal input and output, commands, worksheet, videos. **Bangla appears ONLY in the speaker notes** (`<aside class="notes" lang="bn">`), which are the transcript the presenter says aloud.
 - Slide text: ASD-STE100 Simplified Technical English (imperative instructions, active voice, simple present, no -ing words except technical names, max 20 words per instruction / 25 per description, ≤ 6 bullets, result first, no marketing words). Title = the result of the slide.
 - Few words. Each slide is mostly a diagram. The diagram uses ≥ 2/3 of the slide area. Slide text ≥ 24px at the 1280×720 design size; diagram text ≥ 18px in the SVG at design size.

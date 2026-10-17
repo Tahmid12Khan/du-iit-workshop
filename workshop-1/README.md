@@ -1,7 +1,7 @@
 # Workshop 1: Foundations of LLMs and Agentic Systems
 
 HTML slide deck, speaker notes, demo recordings and a take-home worksheet.
-Length: 71 minutes of slides plus 4 minutes of buffer (ceiling 75).
+Length: 71.5 minutes of slides plus 3.5 minutes of buffer (ceiling 75).
 Audience: 3rd and 4th year software-engineering students. The presenter speaks Bangla.
 
 **Language rule.** Bangla appears only in `<aside class="notes" lang="bn">` (the speaker transcript) and in `transcript.html` (generated from the notes).
@@ -42,7 +42,7 @@ Arrow keys and Space are ignored while a button has focus. Play (button) advance
 
 | Topic | Slides | Minutes | Demos (recorded casts) | Live |
 | --- | --- | --- | --- | --- |
-| Intro (title slide and 3 slides) | 4 | 3.5 | none | none |
+| Intro (title slide, credit slide and 3 slides) | 5 | 4 | none | none |
 | Tokens (with next-token and cost extras) | 5 | 10 | T1 to T5 | none |
 | Context window (with the no-memory extra) | 4 | 9.5 | C1 to C5 | `/context` in Claude Code (context-3) |
 | Effort levels | 6 | 10 | E1 to E3 | none |
@@ -52,7 +52,7 @@ Arrow keys and Space are ignored while a button has focus. Play (button) advance
 | Tool call | 3 | 7 | L1 | none |
 | Agent loop | 4 | 9 | L2, L3 | none |
 | Wrap-up | 2 | 4 | none | none |
-| **Total** | **38** | **71** | 27 casts | 2 live demos |
+| **Total** | **39** | **71.5** | 27 casts | 2 live demos |
 
 - The presenter runs every command. Students do not type during the session.
 - Two demos run live in the room: `/context` (slide context-3) and structured output (slide structured-3). Every other demo plays a recorded cast inside the slide. Each live slide keeps its cast as a fallback.

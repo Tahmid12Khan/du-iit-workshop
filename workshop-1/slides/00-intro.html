@@ -40,6 +40,32 @@
 </section>
 
 <style>
+#intro-credit { justify-content: center; align-items: center; text-align: center; gap: 28px; }
+#intro-credit .thanks { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+#intro-credit h2 { margin: 0; font-size: 44px; }
+#intro-credit .credit { display: flex; align-items: center; gap: 24px; padding: 28px 40px; border-radius: 20px; background: var(--accent-soft); text-align: left; }
+#intro-credit .avatar { flex: none; width: 96px; height: 96px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); font-size: 34px; font-weight: 700; }
+#intro-credit .name { margin: 0; font-size: 36px; font-weight: 700; color: var(--ink); }
+#intro-credit .role { margin: 4px 0 0; font-size: 24px; color: var(--ink-2); }
+</style>
+<section class="slide" id="intro-credit" data-topic="Intro" data-minutes="0.5" data-steps="1">
+  <p class="thanks">Thank you</p>
+  <h2>Tasmia Zerin reviewed and redesigned these slides</h2>
+  <div class="credit">
+    <div class="avatar" aria-hidden="true">TZ</div>
+    <div>
+      <p class="name">Tasmia Zerin</p>
+      <p class="role">Software Engineer, Cefalo Bangladesh Ltd.</p>
+    </div>
+  </div>
+  <ol class="captions">
+    <li>Thank Tasmia Zerin for the review and the new design.</li>
+  </ol>
+  <aside class="notes" lang="bn">[STEP 1] শুরু করার আগে একজনকে বিশেষ ধন্যবাদ দিতে চাই। Tasmia Zerin, Cefalo-র Software Engineer, এই পুরো slide deck review করেছে আর নতুন করে design করেছে। আজ তোমরা যে পরিষ্কার আর গোছানো slide গুলো দেখবে, তার অনেকটাই ওর কাজ। ধন্যবাদ, Tasmia!</aside>
+</section>
+
+
+<style>
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) #intro-1 svg rect.bbox { fill: var(--bg); stroke: var(--ink-3); stroke-width: 3; }
   :root:not([data-theme="light"]) #intro-1 svg text.bbox-text { fill: var(--ink); }
