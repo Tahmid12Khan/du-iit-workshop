@@ -7,7 +7,8 @@
   var CAPTURE = params.get('capture') === '1';
   var STEP_MS = 3000;
   var COUNT_MS = 1000;
-  var NARROW = '(max-width: 760px) and (orientation: portrait)';
+  var NARROW = '(max-width: 760px) and (orientation: portrait) and (pointer: fine)';
+  var TURNED = '(max-width: 760px) and (orientation: portrait) and (pointer: coarse)';
   var CHANNEL = 'w1-deck';
   var TIMER_KEY = 'w1-timer';
   var instance = Math.random().toString(36).slice(2);
@@ -181,10 +182,11 @@
   }
 
   function layout() {
-    var w = window.innerWidth, h = window.innerHeight;
+    // Measure #app, not innerWidth: mobile browsers widen innerWidth to fit a stale wide canvas,
+    // and on a turned phone #app is the rotated frame.
+    var w = el.fit.parentNode.clientWidth, h = el.fit.parentNode.clientHeight;
     var narrow = window.matchMedia(NARROW).matches && !PRESENTER && !CAPTURE;
-    // Mobile browsers widen innerWidth to fit overflowing content, so a stale wide canvas would keep itself wide.
-    var s = narrow ? el.fit.parentNode.clientWidth / 1280 : Math.min(w / 1280, h / 720);
+    var s = narrow ? w / 1280 : Math.min(w / 1280, h / 720);
     document.documentElement.style.setProperty('--s', String(s));
     if (narrow && el.capbar.parentNode !== el.dock) el.dock.insertBefore(el.capbar, el.dock.firstChild);
     if (!narrow && el.capbar.parentNode !== el.stage) el.stage.appendChild(el.capbar);
@@ -616,7 +618,10 @@
     if (lastPointer !== 'touch' && lastPointer !== 'pen') return;
     if (e.target.closest(TAP_IGNORE)) return;
     var r = el.fit.getBoundingClientRect();
-    if (e.clientX >= r.left + r.width / 2) next(); else prev();
+    var turned = window.matchMedia(TURNED).matches && !PRESENTER && !CAPTURE;
+    // Turned 90deg clockwise, the slide's right half is the bottom half of the screen.
+    var along = turned ? (e.clientY - r.top) / r.height : (e.clientX - r.left) / r.width;
+    if (along >= 0.5) next(); else prev();
   }
 
   /* ---------- Sync between the deck window and the presenter window ---------- */

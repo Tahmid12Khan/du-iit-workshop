@@ -229,7 +229,7 @@ body.presenter #presenter { display: grid; min-height: 100vh; grid-template-colu
 
 /* ---------- Phone: canvas on top, caption and controls below in real pixels ---------- */
 #dock { display: none; }
-@media (max-width: 760px) and (orientation: portrait) {
+@media (max-width: 760px) and (orientation: portrait) and (pointer: fine) {
   body { overflow: auto; }
   body:not(.presenter):not(.capture) #app { position: static; min-height: 100vh; flex-direction: column; justify-content: flex-start; align-items: stretch; }
   body:not(.presenter):not(.capture) #fit { margin: 0 auto; max-width: 100%; height: calc(636px * var(--s, 1)); }
@@ -247,6 +247,16 @@ body.presenter #presenter { display: grid; min-height: 100vh; grid-template-colu
   .topbar .counter, .topbar .tbtn, .topbar [data-theme-toggle] { display: none; }
   .nbody { font-size: 20px; }
   #notes { max-height: 60vh; }
+}
+
+/* ---------- Phone held upright: the whole page turns 90deg so the slide fills the screen ---------- */
+@media (max-width: 760px) and (orientation: portrait) and (pointer: coarse) {
+  body:not(.presenter):not(.capture) {
+    position: fixed; top: 0; left: 100%; width: 100vh; width: 100dvh; height: 100vw;
+    transform: rotate(90deg); transform-origin: 0 0;
+  }
+  /* A fixed element inside a transformed body is sized by the body, so vh would use the wrong axis. */
+  body:not(.presenter):not(.capture) #notes { max-height: 60%; }
 }
 
 /* ---------- Reduced motion: same steps, no motion ---------- */
