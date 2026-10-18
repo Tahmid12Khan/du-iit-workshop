@@ -8,7 +8,7 @@ body { overflow: hidden; font-size: 24px; line-height: 1.35; -webkit-font-smooth
 
 /* ---------- Frame: letterboxed, scaled design canvas ---------- */
 #app { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--bg); }
-#fit { position: relative; width: calc(1280px * var(--s, 1)); height: calc(720px * var(--s, 1)); flex: none; overflow: hidden; }
+#fit { position: relative; width: calc(1280px * var(--s, 1)); height: calc(720px * var(--s, 1)); flex: none; overflow: hidden; overflow: clip; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 #stage {
   position: absolute; left: 0; top: 0; width: 1280px; height: 720px;
   transform: scale(var(--s, 1)); transform-origin: 0 0;
@@ -229,10 +229,10 @@ body.presenter #presenter { display: grid; min-height: 100vh; grid-template-colu
 
 /* ---------- Phone: canvas on top, caption and controls below in real pixels ---------- */
 #dock { display: none; }
-@media (max-width: 760px) {
+@media (max-width: 760px) and (orientation: portrait) {
   body { overflow: auto; }
   body:not(.presenter):not(.capture) #app { position: static; min-height: 100vh; flex-direction: column; justify-content: flex-start; align-items: stretch; }
-  body:not(.presenter):not(.capture) #fit { margin: 0 auto; height: calc(636px * var(--s, 1)); }
+  body:not(.presenter):not(.capture) #fit { margin: 0 auto; max-width: 100%; height: calc(636px * var(--s, 1)); }
   body:not(.presenter):not(.capture) .footer { bottom: 84px; }
   body:not(.presenter):not(.capture) #dock { display: block; padding: 12px 16px 24px; background: var(--bg); color: var(--ink); }
   #dock .capbar { position: static; height: auto; padding: 12px 0 0; flex-direction: column; align-items: stretch; gap: 12px; border-top: 2px solid var(--line); }

@@ -7,7 +7,7 @@
   var CAPTURE = params.get('capture') === '1';
   var STEP_MS = 3000;
   var COUNT_MS = 1000;
-  var NARROW = '(max-width: 760px)';
+  var NARROW = '(max-width: 760px) and (orientation: portrait)';
   var CHANNEL = 'w1-deck';
   var TIMER_KEY = 'w1-timer';
   var instance = Math.random().toString(36).slice(2);
@@ -183,7 +183,8 @@
   function layout() {
     var w = window.innerWidth, h = window.innerHeight;
     var narrow = window.matchMedia(NARROW).matches && !PRESENTER && !CAPTURE;
-    var s = narrow ? w / 1280 : Math.min(w / 1280, h / 720);
+    // Mobile browsers widen innerWidth to fit overflowing content, so a stale wide canvas would keep itself wide.
+    var s = narrow ? el.fit.parentNode.clientWidth / 1280 : Math.min(w / 1280, h / 720);
     document.documentElement.style.setProperty('--s', String(s));
     if (narrow && el.capbar.parentNode !== el.dock) el.dock.insertBefore(el.capbar, el.dock.firstChild);
     if (!narrow && el.capbar.parentNode !== el.stage) el.stage.appendChild(el.capbar);
@@ -608,6 +609,16 @@
     if (handled) e.preventDefault();
   }
 
+  /* ---------- Touch: tap the right half for next, the left half for previous ---------- */
+  var TAP_IGNORE = 'button, a, input, select, textarea, summary, details, label, [contenteditable="true"], .term, .cmd-col';
+  var lastPointer = '';
+  function onTap(e) {
+    if (lastPointer !== 'touch' && lastPointer !== 'pen') return;
+    if (e.target.closest(TAP_IGNORE)) return;
+    var r = el.fit.getBoundingClientRect();
+    if (e.clientX >= r.left + r.width / 2) next(); else prev();
+  }
+
   /* ---------- Sync between the deck window and the presenter window ---------- */
   function broadcast(msg) {
     msg.w1 = 1;
@@ -722,6 +733,8 @@
     if (CAPTURE) document.body.classList.add('capture');
 
     document.addEventListener('keydown', onKey);
+    el.fit.addEventListener('pointerdown', function (e) { lastPointer = e.pointerType; });
+    el.fit.addEventListener('click', onTap);
     window.addEventListener('message', function (e) { receive(e.data); });
     if (channel) channel.onmessage = function (e) { receive(e.data); };
 
